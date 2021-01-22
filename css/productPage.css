@@ -75,3 +75,19 @@ footer
     font-style: oblique;
     font-weight: bold;
 }
+.modal-backdrop {
+    position: relative;
+    z-index: 1400;
+}
+.modal-castom {
+    position: fixed;
+    /* top: 0; */
+    /* left: 0; */
+    right: 0;
+    z-index: 1550;
+    display: none;
+    /* width: 100%; */
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+}
