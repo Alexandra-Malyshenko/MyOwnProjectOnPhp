@@ -6,13 +6,13 @@
     <title>Lovely Bakery</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/mainPage.css">
-    <link rel="stylesheet" href="../css/productPage.css">
+    <link rel="stylesheet" href="../css/registerPage.css">
 </head>
 <body>
 <div class="container-fluid">
     <header>
         <nav class="navbar sticky-top navbar-expand-lg navbar-light">
-            <a class="navbar-brand d-flex align-items-center" href="mainPage.html">
+            <a class="navbar-brand d-flex align-items-center" href="mainPageTemplate.html">
                 <img src="../images/logo/logo2.jpg" width="50" height="50" class="d-inline-block align-top" alt="" loading="lazy">
                 Lovely Bakery
             </a>
@@ -23,27 +23,27 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="mainPage.html">Главная <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="mainPageTemplate.html">Главная <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mainPage.html#about">О нас</a>
+                        <a class="nav-link" href="mainPageTemplate.html#about">О нас</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mainPage.html#question">Вопросы</a>
+                        <a class="nav-link" href="mainPageTemplate.html#question">Вопросы</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Каталог
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="categoryPage.html">Торты</a>
-                            <a class="dropdown-item" href="categoryPage.html">Капкейки</a>
-                            <a class="dropdown-item" href="categoryPage.html">Печенье</a>
-                            <a class="dropdown-item" href="categoryPage.html">Хлеб</a>
+                            <a class="dropdown-item" href="categoryTemplate.html">Торты</a>
+                            <a class="dropdown-item" href="categoryTemplate.html">Капкейки</a>
+                            <a class="dropdown-item" href="categoryTemplate.html">Печенье</a>
+                            <a class="dropdown-item" href="categoryTemplate.html">Хлеб</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="loginPage.html">Аккаунт</a>
+                        <a class="nav-link" href="loginTemplate.html">Аккаунт</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" type="button" data-toggle="modal" data-target="#exampleModal" href="#">
@@ -102,37 +102,59 @@
         <div class="row">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="mainPage.html">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="categoryPage.html">Торты</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Торт Настоящий шоколад</li>
+                    <li class="breadcrumb-item"><a href="mainPageTemplate.html">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Регистрация</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <hr class="hr-shelf mb-5">
-
-    <div class="container pt-5 d-flex justify-content-center">
+    <div class="container d-flex justify-content-center">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12"><img src="../images/category-page/7.jpg" class="card-img-top" alt="..."></div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <h2 class=" pb-3">Торт Настоящий шоколад</h2>
-                <p class="price">490 грн/кг</p>
-                <button class="btn btn-success">Заказать</button>
-                <p class="pt-5 pb-5 "> <i>Это торт для сильных печенью. Его шоколадность зашкаливает.
-                            Мокрые шоко-коржи и крем на основе 70% бельгийского шоколада.
-                            И да - это классическое сочетание не оставит равнодушным ни одного шокоголика 🍫🍫
-                            +орехи 50 грн / кг изделия
-                            +фрукты, сухофрукты 0 грн
-                </i></p>
-
-            </div>
+            <form>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault01">Имя</label>
+                        <input type="text" class="form-control" id="validationDefault01" value="" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault02">Электронный адрес</label>
+                        <input type="email" class="form-control" id="validationDefault02" value="" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault03">Пароль</label>
+                        <input type="password" class="form-control" id="validationDefault03" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault05">Подтвердите пароль</label>
+                        <input type="password" class="form-control" id="validationDefault05" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="validationDefault04">Город</label>
+                        <select class="custom-select" id="validationDefault04" required>
+                            <option selected disabled value="">Выбрать...</option>
+                            <option>Харьков</option>
+                            <option>Киев</option>
+                            <option>Одесса</option>
+                            <option>Львов</option>
+                            <option>Винница</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                        <label class="form-check-label" for="invalidCheck2">
+                            Я согласен/согласна, что бы сайт использовал мои данные
+                        </label>
+                    </div>
+                </div>
+                <button class="btn button-access" type="submit">Зарегестрироваться</button>
+            </form>
         </div>
-
     </div>
-
-
-    <hr class="hr-shelf mt-5 mb-5">
 
     <footer class="row">
         <div class="copyright col-xs-12 col-sm-3 col-sm-pull-6">
