@@ -1,5 +1,7 @@
 <?php
 
+namespace php;
+
 class TemplateMaker
 {
     public $defaultLayout;
