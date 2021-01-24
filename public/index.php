@@ -1,6 +1,7 @@
 <?php
 
-require 'php/TemplateMaker.php';
+require 'autoloader.php';
+use php\TemplateMaker;
 
 $config = require '../Config/config.php';
 
