@@ -17,6 +17,7 @@ class TemplateMaker
 
     public function render(string $templateName, string $layout, array $params)
     {
+
         foreach ($params as $key => $value)
         {
             switch ($key) {
@@ -24,11 +25,11 @@ class TemplateMaker
                 case "cupcakes" : $cupcakes = $params[$key]; break;
                 case "cookies" : $cookies = $params[$key]; break;
                 case "bread" : $bread = $params[$key]; break;
+                default : $product = $params;
             }
-
         }
 
-        $templatePath = dirname(__DIR__).'/html/';
+        $templatePath = dirname(__DIR__) . '/public/html/';
 
         ob_start();
         $header = file_get_contents($this->header);

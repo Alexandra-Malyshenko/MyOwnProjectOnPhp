@@ -1,3 +1,4 @@
+/* Styles for header */
 header{
     position: relative;
 }
@@ -6,12 +7,13 @@ li
     list-style-type: none;
     margin-left: 1vw;
 }
-
 li:first-child
 {
     margin:0;
 }
+/* End style for header */
 
+/* Footer styles */
 footer
 {
     margin-top: 100px;
@@ -23,23 +25,19 @@ footer
     background-color: darksalmon;
     opacity: 0.8;
 }
-
 .copyright
 {
     text-align: center;
     justify-content: end;
 }
-
 .sozial {
     display: flex;
     justify-content: flex-end;
 }
-
 .logo
 {
     height: 5vh;
 }
-
 @media (max-width: 768px)
 {
     li
@@ -47,19 +45,20 @@ footer
         margin-left: 0;
         margin-bottom: 1vh;
     }
-
     .sozial
     {
         margin-bottom: 1vh;
     }
 }
+/* End footer styles*/
 
+/* Styles for section Question on main page */
 .content-question {
     text-align: center;
     color: black;
-
 }
 
+/* Nice Line  */
 .hr-shelf {
     margin: -30px auto 10px;
     padding: 0;
@@ -69,16 +68,15 @@ footer
     box-shadow: 0 20px 20px -20px #333;
     width: 95%;
 }
-.category-item {
-    position: relative;
-}
+/* End nice line styles */
+
+/* Section about us */
 .about {
     position: relative;
     width: 50%;
     display: flex;
     justify-content: center;
 }
-
 .about-text {
     position: absolute;
     left: 50%;
@@ -91,11 +89,15 @@ footer
     font-size: 20px;
     font-family: FontAwesome;
 }
-
 .about:hover .about-text {
     opacity: 1;
 }
+/* End Section about us  */
 
+/* Styles for section categories on main page */
+.category-item {
+    position: relative;
+}
 .category-button {
     position: absolute;
     left: 0;
@@ -107,7 +109,6 @@ footer
     text-align: center;
     transition: .3s ease-in-out;
 }
-
 .button {
     text-decoration: none;
     color: #c0a97a;
@@ -140,20 +141,42 @@ footer
     font-size: 12px;
     text-decoration: none;
 }
+/* End styles for categories on main page */
 
+/* Modal window */
 .modal-backdrop {
     position: relative;
     z-index: 1400;
 }
 .modal-castom {
     position: fixed;
-    /* top: 0; */
-    /* left: 0; */
     right: 0;
     z-index: 1550;
     display: none;
-    /* width: 100%; */
     height: 100%;
     overflow: hidden;
     outline: 0;
 }
+
+/* Breadcrumbs on all site accept main page */
+.breadcrumb a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Styles for login and register pages*/
+.button-access {
+    background-color: darksalmon;
+    color: white;
+}
+.button-register {
+    background-color: lightseagreen;
+}
+.button-access a {
+    text-decoration: none;
+    color: white;
+}
+.button-access a:hover {
+    color: black;
+}
+/* End styles for login and register pages */
