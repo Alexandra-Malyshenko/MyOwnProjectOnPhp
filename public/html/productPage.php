@@ -27,7 +27,7 @@ echo $main;
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php print_r($product["image"]); ?>" class="card-img-top" alt="..."></div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <h2 class=" pb-3"><?php echo ($product["name"]); ?>></h2>
+            <h2 class=" pb-3"><?php echo ($product["name"]); ?></h2>
             <p class="price"><?php echo $product["price"] ; ?> грн/кг</p>
             <button class="btn btn-success">Заказать</button>
             <p class="pt-5 pb-5 "> <i><?php echo $product["description"]; ?></i></p>
