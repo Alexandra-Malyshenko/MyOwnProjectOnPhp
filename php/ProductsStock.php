@@ -11,6 +11,7 @@ class ProductsStock
     public function __construct(array $products, $logger)
     {
         if (empty($products)) {
+            $this->logger->warning('There is no array! You should pass array of products');
             throw new ProductsErrorException('There is no array! You should pass array of products');
         } else {
             $this->products = $products;
@@ -24,10 +25,7 @@ class ProductsStock
         if (empty($id)) {
             throw new ProductsErrorException('You pass no id');
         } elseif ($id > count($this->products)) {
-            $fl = fopen(__DIR__ . "/log/products.log", 'a+');
-            $text = $this->logger->warning('pupurum', ["id" => $id]);
-            fputs($fl, $text);
-            fclose($fl);
+            $this->logger->warning('There is no product by this id=', ["id" => $id]);
             throw new ProductsErrorException($id, 'There id no product by number id=');
         }
         foreach ($this->products as $product) {

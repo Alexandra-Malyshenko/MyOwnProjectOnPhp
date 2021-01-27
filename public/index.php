@@ -12,12 +12,14 @@ use Errors\ProductsErrorException;
 use php\logger\Logger;
 
 $logger = new Logger();
+$loggerName = new Logger("products");
 
 try {
     // include footer and header templates from config, and file of products
     $config = require '../Config/config.php';
     $products = require '../Data/productsList.php';
     if (empty($config)) {
+
         throw new PathException('There is no configuration in this path');
     } elseif (empty($products)) {
         throw new PathException('There is no products file in this path');
@@ -27,14 +29,12 @@ try {
     $path = trim($_SERVER['REQUEST_URI'], '/');
 
     // create ProductStock instants and pass here what category of products we want
-    $stock = new ProductsStock($products["cakes"], $logger);
+    $stock = new ProductsStock($products["cakes"], $loggerName);
     // when pass id number of product
-    $product = $stock->getProduct(7);
-//    if ($product == false) {
-//        echo "There is no product by this id";
-//    }
+    $product = $stock->getProduct(1);
+
     // create TemplateMaker instants and pass default layout with config file with path footer and header templates
-    $render = new TemplateMaker($config);
+    $render = new TemplateMaker([]);
 
     //  Before render page we need to find out what layout we need :
     //   /      - main
@@ -58,16 +58,19 @@ try {
     $render->render($path . 'Template',$path . 'Page', $products);
 
 } catch (PathException $e) {
+    $logger->warning($e->errorMessage());
     echo $e->errorMessage();
 } catch (ConfigException $e) {
+    $logger->warning($e->errorMessage());
     echo $e->errorMessage();
 } catch (ProductsErrorException $e) {
-    $logger->warning($e->errorMessage(), ["id" => $e->getId()]);
+//    $logger->warning($e->errorMessage(), ["id" => $e->getId()]);
     echo $e->errorMessage();
-
 } catch (TemplateRenderException $e) {
+    $logger->warning($e->errorMessage());
     echo $e->errorMessage();
 } catch (\Throwable $e) {
+    $logger->warning($e->errorMessage());
     echo $e->getMessage();
 }
 
