@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Errors;
+namespace App\tools\Errors;
 
 
 class TemplateRenderException extends \Exception

@@ -1,23 +1,21 @@
 <?php
 
-require 'autoloader.php';
-use php\TemplateMaker;
-use php\ProductsStock;
-
-use Errors\TemplateRenderException;
-use Errors\ConfigException;
-use Errors\PathException;
-use Errors\ProductsErrorException;
-
-use php\logger\Logger;
+require '../autoloader.php';
+use App\tools\TemplateMaker;
+use App\models\ProductsStock;
+use App\tools\Errors\TemplateRenderException;
+use App\tools\Errors\ConfigException;
+use App\tools\Errors\PathException;
+use App\tools\Errors\ProductsErrorException;
+use App\tools\logger\Logger;
 
 $logger = new Logger();
 $loggerName = new Logger("products");
 
 try {
     // include footer and header templates from config, and file of products
-    $config = require '../Config/config.php';
-    $products = require '../Data/productsList.php';
+    $config = require '../App/config/config.php';
+    $products = require '../App/models/productsList.php';
     if (empty($config)) {
 
         throw new PathException('There is no configuration in this path');
@@ -32,7 +30,6 @@ try {
     $stock = new ProductsStock($products["cakes"], $loggerName);
     // when pass id number of product
     $product = $stock->getProduct(1);
-
     // create TemplateMaker instants and pass default layout with config file with path footer and header templates
     $render = new TemplateMaker([]);
 
@@ -55,7 +52,7 @@ try {
         $layout = $path;
     }
 
-    $render->render($path . 'Template',$path . 'Page', $products);
+    $render->render($path . 'Template',$layout . 'Page', $products);
 
 } catch (PathException $e) {
     $logger->warning($e->errorMessage());

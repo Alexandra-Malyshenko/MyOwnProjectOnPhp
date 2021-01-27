@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Errors;
+namespace App\tools\Errors;
 
 
 use Throwable;
