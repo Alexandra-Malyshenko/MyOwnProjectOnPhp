@@ -4,10 +4,20 @@ require 'autoloader.php';
 use php\TemplateMaker;
 use php\ProductsStock;
 
+use Errors\TemplateRenderException;
+use Errors\ConfigException;
+use Errors\PathException;
+use Errors\ProductsErrorException;
+
 try {
-    // include footer and header, and file of products
+    // include footer and header templates from config, and file of products
     $config = require '../Config/config.php';
     $products = require '../Data/productsList.php';
+    if (empty($config)) {
+        throw new PathException('There is no configuration in this path');
+    } elseif (empty($products)) {
+        throw new PathException('There is no products file in this path');
+    }
 
     // let's get uri string (custom routing)
     $path = trim($_SERVER['REQUEST_URI'], '/');
@@ -15,7 +25,7 @@ try {
     // create ProductStock instants and pass here what category of products we want
     $stock = new ProductsStock($products["cakes"]);
     // when pass id number of product
-    $product = $stock->getProduct(2);
+    $product = $stock->getProduct(3);
     if ($product == false) {
         echo "There is no product by this id";
     }
@@ -41,9 +51,17 @@ try {
         $layout = $path;
     }
 
-    $render->render($path . 'Template', $layout . 'Page', $products);
+    $render->render($path . 'Template',$path . 'Page', $products);
 
-} catch (\Exception $e) {
-    echo $e;
+} catch (PathException $e) {
+    echo $e->errorMessage();
+} catch (ConfigException $e) {
+    echo $e->errorMessage();
+} catch (ProductsErrorException $e) {
+    echo $e->errorMessage();
+} catch (TemplateRenderException $e) {
+    echo $e->errorMessage();
+} catch (\Throwable $e) {
+    echo $e->getMessage();
 }
 
