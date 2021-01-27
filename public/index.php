@@ -9,6 +9,10 @@ use Errors\ConfigException;
 use Errors\PathException;
 use Errors\ProductsErrorException;
 
+use php\logger\Logger;
+
+$logger = new Logger();
+
 try {
     // include footer and header templates from config, and file of products
     $config = require '../Config/config.php';
@@ -23,12 +27,12 @@ try {
     $path = trim($_SERVER['REQUEST_URI'], '/');
 
     // create ProductStock instants and pass here what category of products we want
-    $stock = new ProductsStock($products["cakes"]);
+    $stock = new ProductsStock($products["cakes"], $logger);
     // when pass id number of product
-    $product = $stock->getProduct(3);
-    if ($product == false) {
-        echo "There is no product by this id";
-    }
+    $product = $stock->getProduct(7);
+//    if ($product == false) {
+//        echo "There is no product by this id";
+//    }
     // create TemplateMaker instants and pass default layout with config file with path footer and header templates
     $render = new TemplateMaker($config);
 
@@ -58,7 +62,9 @@ try {
 } catch (ConfigException $e) {
     echo $e->errorMessage();
 } catch (ProductsErrorException $e) {
+    $logger->warning($e->errorMessage(), ["id" => $e->getId()]);
     echo $e->errorMessage();
+
 } catch (TemplateRenderException $e) {
     echo $e->errorMessage();
 } catch (\Throwable $e) {
