@@ -2,6 +2,9 @@
 
 namespace php;
 
+use Errors\ConfigException;
+use Errors\TemplateRenderException;
+
 class TemplateMaker
 {
     public $header;
@@ -9,12 +12,22 @@ class TemplateMaker
 
     public function __construct(array $config)
     {
-        $this->header = $config['header'];
-        $this->footer = $config['footer'];
+        if (empty($config)){
+            throw new ConfigException('Configuration file should be array, and have two path for HEADER and FOOTER Templates !');
+        } else {
+            $this->header = $config['header'];
+            $this->footer = $config['footer'];
+        }
+
     }
 
     public function render(string $templateName, string $layout, array $params)
     {
+        if (empty($templateName) or empty($layout) or empty($params)) {
+            throw new TemplateRenderException('You should pass three parametrs in TemplateMaker function
+             render(string templateName, string nameLayout, array products )');
+        }
+
         foreach ($params as $key => $value)
         {
             switch ($key) {
