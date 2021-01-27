@@ -1,9 +1,9 @@
 <?php
 
-namespace php;
+namespace App\tools;
 
-use Errors\ConfigException;
-use Errors\TemplateRenderException;
+use App\tools\Errors\ConfigException;
+use App\tools\Errors\TemplateRenderException;
 
 class TemplateMaker
 {
@@ -39,14 +39,15 @@ class TemplateMaker
             }
         }
 
-        $templatePath = dirname(__DIR__) . '/public/html/';
+        $templatePath = dirname(__DIR__) . '/view/templates/';
+        $layoutPath = dirname(__DIR__) . '/view/layout/';
 
         ob_start();
-        $header = file_get_contents($this->header);
+        $header = file_get_contents(dirname(__DIR__) . $this->header);
         $main = file_get_contents($templatePath . $templateName . '.html');
-        $footer = file_get_contents($this->footer);
+        $footer = file_get_contents(dirname(__DIR__) . $this->footer);
         ob_end_clean();
 
-        require_once($templatePath . $layout . ".php");
+        require_once($layoutPath . $layout . ".php");
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace php;
+namespace App\models;
 
-use Errors\ProductsErrorException;
+use App\tools\Errors\ProductsErrorException;
 
 class ProductsStock
 {
