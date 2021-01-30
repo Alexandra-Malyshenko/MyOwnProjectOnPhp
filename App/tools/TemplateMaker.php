@@ -10,14 +10,12 @@ class TemplateMaker
     public $header;
     public $footer;
 
-    public function __construct(array $config)
+    public function __construct()
     {
-        if (empty($config)){
-            throw new ConfigException('Configuration file should be array, and have two path for HEADER and FOOTER Templates !');
-        } else {
-            $this->header = $config['header'];
-            $this->footer = $config['footer'];
-        }
+        $this->config = require '../App/config/config.php';
+        $this->header = $this->config['header'];
+        $this->footer = $this->config['footer'];
+
 
     }
 
@@ -28,19 +26,8 @@ class TemplateMaker
              render(string templateName, string nameLayout, array products )');
         }
 
-        foreach ($params as $key => $value)
-        {
-            switch ($key) {
-                case "cakes" : $cakes = $params[$key]; break;
-                case "cupcakes" : $cupcakes = $params[$key]; break;
-                case "cookies" : $cookies = $params[$key]; break;
-                case "bread" : $bread = $params[$key]; break;
-                default : $product = $params;
-            }
-        }
-
-        $templatePath = dirname(__DIR__) . '/view/templates/';
-        $layoutPath = dirname(__DIR__) . '/view/layout/';
+        $templatePath = dirname(__DIR__) . '/views/templates/';
+        $layoutPath = dirname(__DIR__) . '/views/layout/';
 
         ob_start();
         $header = file_get_contents(dirname(__DIR__) . $this->header);

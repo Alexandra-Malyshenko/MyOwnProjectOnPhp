@@ -1,5 +1,10 @@
 <?php
 
+
+//session_save_path(__DIR__ . '/../App/storage/php-session/');
+//session_start();
+//exit();
+
 require '../autoloader.php';
 use App\tools\TemplateMaker;
 use App\models\ProductsStock;
@@ -8,51 +13,35 @@ use App\tools\Errors\ConfigException;
 use App\tools\Errors\PathException;
 use App\tools\Errors\ProductsErrorException;
 use App\tools\logger\Logger;
+use App\tools\Router;
+
 
 $logger = new Logger();
 $loggerName = new Logger("products");
 
+
 try {
     // include footer and header templates from config, and file of products
-    $config = require '../App/config/config.php';
-    $products = require '../App/models/productsList.php';
-    if (empty($config)) {
+//    $config = require '../App/config/config.php';
+//    $products = require '../App/models/productsList.php';
+//    if (empty($config)) {
+//
+//        throw new PathException('There is no configuration in this path');
+//    } elseif (empty($products)) {
+//        throw new PathException('There is no products file in this path');
+//    }
 
-        throw new PathException('There is no configuration in this path');
-    } elseif (empty($products)) {
-        throw new PathException('There is no products file in this path');
-    }
-
-    // let's get uri string (custom routing)
-    $path = trim($_SERVER['REQUEST_URI'], '/');
 
     // create ProductStock instants and pass here what category of products we want
-    $stock = new ProductsStock($products["cakes"], $loggerName);
+//    $stock = new ProductsStock($products["cakes"], $loggerName);
     // when pass id number of product
-    $product = $stock->getProduct(1);
+//    $product = $stock->getProduct(1);
     // create TemplateMaker instants and pass default layout with config file with path footer and header templates
-    $render = new TemplateMaker([]);
 
-    //  Before render page we need to find out what layout we need :
-    //   /      - main
-    // login    - main
-    // register - main
-    // product  - product
-    // category - category
 
-    if ($path == '') {
-        $path = 'main';
-        $layout = 'main';
-    } elseif ($path == 'login' or $path == 'register') {
-        $layout = 'main';
-    } elseif ($path == 'product') {
-        $layout = $path;
-        $products = $product;
-    } else {
-        $layout = $path;
-    }
 
-    $render->render($path . 'Template',$layout . 'Page', $products);
+    $router = new Router();
+    $router->run();
 
 } catch (PathException $e) {
     $logger->warning($e->errorMessage());
@@ -67,7 +56,7 @@ try {
     $logger->warning($e->errorMessage());
     echo $e->errorMessage();
 } catch (\Throwable $e) {
-    $logger->warning($e->errorMessage());
+//    $logger->warning($e->errorMessage());
     echo $e->getMessage();
 }
 

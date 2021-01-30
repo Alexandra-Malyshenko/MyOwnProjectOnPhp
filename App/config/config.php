@@ -1,5 +1,5 @@
 <?php
 return [
-    'header' => '/view/templates/headerTemplate.html',
-    'footer' => '/view/templates/footerTemplate.html'
+    'header' => '/views/templates/headerTemplate.html',
+    'footer' => '/views/templates/footerTemplate.html'
 ];
