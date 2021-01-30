@@ -14,7 +14,7 @@ class CategoryController
     }
     public function actionIndex()
     {
-        $this->category->getCategoryList();
+        $categoryList = $this->category->getCategoryList();
         $products = $this->product->getListOfProducts();
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates

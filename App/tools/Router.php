@@ -3,7 +3,6 @@
 
 namespace App\tools;
 
-
 class Router
 {
     private $routes;
