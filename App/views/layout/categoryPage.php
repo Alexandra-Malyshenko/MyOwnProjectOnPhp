@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $cakes array
+ * @var $params array
  * @var $header string
  * @var $main string
  * @var $footer string
@@ -26,7 +26,7 @@ echo $main;
 
     <div class="container pt-5">
         <div class="row">
-            <?php foreach ($cakes as $cake): ?>
+            <?php foreach ($params as $cake): ?>
                 <div class="col-lg-4 col-md-4 col-sm-12 pb-5">
                     <div class="card h-100">
                         <img src="<?php echo $cake['image'] ?>" class="card-img-top" alt="...">
@@ -36,7 +36,7 @@ echo $main;
                         </div>
                         <div class="card-footer text-center">
                             <button class="btn btn-success">Заказать</button>
-                            <button class="btn btn-info"><a href="#">Подробнее</a></button>
+                            <button class="btn btn-info"><a href="/product/<?php echo $cake['id']?>">Подробнее</a></button>
                         </div>
                     </div>
                 </div>

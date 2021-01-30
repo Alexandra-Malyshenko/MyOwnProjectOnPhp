@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $product array
+ * @var $params array
  * @var $header string
  * @var $main string
  * @var $footer string
@@ -25,12 +25,12 @@ echo $main;
 ?>
 <div class="container pt-5 d-flex justify-content-center">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php print_r($product["image"]); ?>" class="card-img-top" alt="..."></div>
+        <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php print_r($params["image"]); ?>" class="card-img-top" alt="..."></div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <h2 class=" pb-3"><?php echo ($product["name"]); ?></h2>
-            <p class="price"><?php echo $product["price"] ; ?> грн/кг</p>
+            <h2 class=" pb-3"><?php echo ($params["name"]); ?></h2>
+            <p class="price"><?php echo $params["price"] ; ?> грн/кг</p>
             <button class="btn btn-success">Заказать</button>
-            <p class="pt-5 pb-5 "> <i><?php echo $product["description"]; ?></i></p>
+            <p class="pt-5 pb-5 "> <i><?php echo $params["description"]; ?></i></p>
 
         </div>
     </div>
