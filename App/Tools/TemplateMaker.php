@@ -25,7 +25,7 @@ class TemplateMaker
 
     public function render(string $templateName, string $layout, array $params)
     {
-        if (empty($templateName) or empty($layout) or empty($params)) {
+        if (empty($layout) || empty($params)) {
             throw new TemplateRenderException('You should pass three parametrs in TemplateMaker function
              render(string templateName, string nameLayout, array products )');
         } elseif (empty($params)) {
@@ -38,8 +38,10 @@ class TemplateMaker
 
         ob_start();
         $header = file_get_contents(dirname(__DIR__) . $this->header);
-        $main = file_get_contents($templatePath . $templateName . '.html');
         $footer = file_get_contents(dirname(__DIR__) . $this->footer);
+        if ($templateName == 'mainTemplate'){
+            $main = file_get_contents($templatePath . $templateName . '.html');
+        }
         ob_end_clean();
 
         require_once($layoutPath . $layout . ".php");

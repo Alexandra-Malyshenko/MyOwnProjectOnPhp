@@ -21,22 +21,42 @@
 <?php
 echo $header;
 echo $main;
+/** @var \App\models\Category $category */
+$category = $params[0];
 
+/** @var array $products */
+$products = $params[1];
 ?>
+
+    <div class="container mt-5 d-flex justify-content-end">
+        <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                    <?php if(empty($category)):?>
+                        <li class="breadcrumb-item active" aria-current="page">Вся продукция</li>
+                    <?php else: ?>
+                        <li class="breadcrumb-item active" aria-current="page"><?php echo $category->getName(); ?></li>
+                    <?php endif; ?>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <hr class="hr-shelf mb-5">
 
     <div class="container pt-5">
         <div class="row">
-            <?php foreach ($params as $cake): ?>
+            <?php foreach ($products as $cake): ?>
                 <div class="col-lg-4 col-md-4 col-sm-12 pb-5">
                     <div class="card h-100">
-                        <img src="<?php echo $cake['image'] ?>" class="card-img-top" alt="...">
+                        <img src="<?php echo $cake->getImage(); ?>" class="card-img-top" alt="...">
                         <div class="card-body text-center">
-                            <h5 class=""><?php echo $cake['name'] ?></h5>
-                            <p class=""> <i><?php echo $cake['description'] ?></i></p>
+                            <h5 class=""><?php echo $cake->getName(); ?></h5>
+                            <p class=""> <i><?php echo $cake->getDescription(); ?></i></p>
                         </div>
                         <div class="card-footer text-center">
                             <button class="btn btn-success">Заказать</button>
-                            <button class="btn btn-info"><a href="/product/<?php echo $cake['id']?>">Подробнее</a></button>
+                            <button class="btn btn-info"><a href="/product/<?php echo $cake->getId(); ?>">Подробнее</a></button>
                         </div>
                     </div>
                 </div>

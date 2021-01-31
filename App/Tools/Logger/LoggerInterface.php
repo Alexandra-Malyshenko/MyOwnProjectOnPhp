@@ -3,7 +3,7 @@
 namespace App\tools\logger;
 
 /**
- * Describes a logger instance.
+ * Describes a Logger instance.
  *
  * The message MUST be a string or object implementing __toString().
  *

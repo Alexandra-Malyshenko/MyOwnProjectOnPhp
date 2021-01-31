@@ -50,7 +50,7 @@ class Router
 //                echo  '$params = ' . $params;
 
                 // require file with ControllerName
-                $controllerFile = '../App' . '/controllers/' . $controllerName . '.php';
+                $controllerFile = '../App' . '/Controllers/' . $controllerName . '.php';
                 if (file_exists($controllerFile)) {
                     require_once($controllerFile);
 

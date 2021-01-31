@@ -3,19 +3,19 @@
   { "categories": [
     {
       "id": 1,
-      "name" : "cakes"
+      "name" : "Торты"
     },
     {
       "id": 2,
-      "name" : "cupcakes"
+      "name" : "Капкейки"
     },
     {
       "id": 3,
-      "name" : "cookies"
+      "name" : "Печенье"
     },
     {
       "id": 4,
-      "name" : "bread"
+      "name" : "Хлеб"
     }
     ]
   },

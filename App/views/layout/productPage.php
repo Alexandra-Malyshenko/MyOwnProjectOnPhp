@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $params array
+ * @var $params array of Product object and Category object
  * @var $header string
  * @var $main string
  * @var $footer string
@@ -21,17 +21,33 @@
 <?php
 echo $header;
 echo $main;
+/** @var \App\models\Category $category */
+$category = $params[0];
+/** @var \App\models\Product $product */
+$product = $params[1];
 
 ?>
+<div class="container mt-5 d-flex justify-content-end">
+    <div class="row">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/category/<?php echo $category->getId()?>"><?php echo $category->getName(); ?></a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo $product->getName(); ?></li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<hr class="hr-shelf mb-5">
 <div class="container pt-5 d-flex justify-content-center">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php print_r($params["image"]); ?>" class="card-img-top" alt="..."></div>
+        <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php echo $product->getImage(); ?>" class="card-img-top" alt="..."></div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <h2 class=" pb-3"><?php echo ($params["name"]); ?></h2>
-            <p class="price"><?php echo $params["price"] ; ?> грн/кг</p>
+            <h2 class=" pb-3"><?php echo $product->getName(); ?></h2>
+            <p class="price"><?php echo $product->getPrice(); ?> грн/кг</p>
             <button class="btn btn-success">Заказать</button>
-            <p class="pt-5 pb-5 "> <i><?php echo $params["description"]; ?></i></p>
-
+            <p class="pt-5 pb-5 "> <i><?php echo $product->getDescription(); ?></i></p>
         </div>
     </div>
 </div>
