@@ -1,3 +1,4 @@
+
 /* Styles for header */
 header{
     position: relative;
@@ -180,3 +181,10 @@ footer
     color: black;
 }
 /* End styles for login and register pages */
+
+/* Styles for cabinet page*/
+.button-logout a {
+    text-decoration: none;
+    color: white;
+}
+/*End styles for cabinet page*/

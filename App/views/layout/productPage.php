@@ -1,10 +1,16 @@
 <?php
+
+use App\Tools\Authentication;
+$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+
 /**
  * @var $params array of Product object and Category object
  * @var $header string
  * @var $main string
  * @var $footer string
  */
+/** @var \App\Repository\CategoryRepository $categoryList */
+$categoryList = $params[0];
 ?>
 
 <!DOCTYPE html>
@@ -19,12 +25,12 @@
 <body>
 
 <?php
-echo $header;
+include dirname(__DIR__) . '/templates/headerTemplate.php';
 echo $main;
 /** @var \App\models\Category $category */
-$category = $params[0];
+$category = $params[1];
 /** @var \App\models\Product $product */
-$product = $params[1];
+$product = $params[2];
 
 ?>
 <div class="container mt-5 d-flex justify-content-end">
@@ -52,6 +58,7 @@ $product = $params[1];
     </div>
 </div>
 <hr class="hr-shelf mt-5 mb-5">
+
 <?php
 echo $footer;
 ?>

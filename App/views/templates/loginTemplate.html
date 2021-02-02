@@ -12,22 +12,21 @@
 
     <div class="container d-flex justify-content-center pt-5 pb-5">
         <div class="row">
-            <form>
+            <form method="post" name="login">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Электронный адрес</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <small id="emailHelp" class="form-text text-muted">Мы не будем говорить никому ваш электронный адрес</small>
+                    <label for="exampleInput1">Имя</label>
+                    <input type="text" class="form-control" id="exampleInput1" name="name" aria-describedby="emailHelp">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Пароль</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" class="form-control" name="password" id="exampleInputPassword1">
                 </div>
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
                 </div>
                 <button type="submit" class="btn button-access">Подтвердить</button>
-                <button type="submit" class="btn button-access button-register"><a href="registerTemplate.html">Нет аккаунта, зарегестрироваться</a></button>
+                <button type="submit" class="btn button-access button-register"><a href="/register">Нет аккаунта, зарегестрироваться</a></button>
             </form>
 
         </div>
