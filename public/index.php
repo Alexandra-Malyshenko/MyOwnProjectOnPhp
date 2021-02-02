@@ -1,24 +1,23 @@
 <?php
 
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
-//session_save_path(__DIR__ . '/../App/storage/php-session/');
-//session_start();
-//exit();
+//require '../autoloader.php';
+require '../vendor/autoload.php';
 
-require '../autoloader.php';
-
-use App\tools\Errors\TemplateRenderException;
-use App\tools\Errors\ConfigException;
-use App\tools\Errors\PathException;
-use App\tools\Errors\ProductsErrorException;
-use App\tools\logger\Logger;
-use App\tools\Router;
+use App\Tools\Errors\TemplateRenderException;
+use App\Tools\Errors\ConfigException;
+use App\Tools\Errors\PathException;
+use App\Tools\Errors\ProductsErrorException;
+use App\Tools\logger\Logger;
+use App\Tools\Router;
 
 
 $logger = new Logger();
 
 try {
-
     $router = new Router();
     $router->run();
 
@@ -35,7 +34,7 @@ try {
     $logger->warning($e->errorMessage());
     echo $e->errorMessage();
 } catch (\Throwable $e) {
-    $logger->warning($e->errorMessage());
+//    $logger->warning($e->errorMessage());
     echo $e->getMessage();
 }
 

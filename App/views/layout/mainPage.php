@@ -1,9 +1,15 @@
 <?php
+
+use App\Tools\Authentication;
+$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+
 /**
  * @var $header string
  * @var $main string
  * @var $footer string
+ * @var $params array
  */
+$categoryList = $params;
 ?>
 
 <!DOCTYPE html>
@@ -16,11 +22,10 @@
     <link rel="stylesheet" href="/css/mainPage.css">
 </head>
 <body>
-
     <?php
-        echo $header;
-        echo $main;
-        echo $footer;
+    include dirname(__DIR__) . '/templates/headerTemplate.php';
+    echo $main;
+    echo $footer;
     ?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

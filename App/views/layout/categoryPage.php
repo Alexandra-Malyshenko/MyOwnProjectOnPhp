@@ -1,10 +1,15 @@
 <?php
+
+use App\Tools\Authentication;
+$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
 /**
  * @var $params array
  * @var $header string
  * @var $main string
  * @var $footer string
  */
+
+$categoryList = $params[0];
 ?>
 
 <!DOCTYPE html>
@@ -17,15 +22,15 @@
     <link rel="stylesheet" href="/css/categoryPage.css">
 </head>
 <body>
-
 <?php
-echo $header;
+include dirname(__DIR__) . '/templates/headerTemplate.php';
+
 echo $main;
 /** @var \App\models\Category $category */
-$category = $params[0];
+$category = $params[1];
 
 /** @var array $products */
-$products = $params[1];
+$products = $params[2];
 ?>
 
     <div class="container mt-5 d-flex justify-content-end">

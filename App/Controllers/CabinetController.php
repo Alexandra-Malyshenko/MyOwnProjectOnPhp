@@ -1,16 +1,16 @@
 <?php
 
+
 use App\tools\TemplateMaker;
 use App\Repository\CategoryRepository;
 
-class SiteController
+class CabinetController
 {
     public function actionIndex()
     {
         $render = new TemplateMaker();
         $categoryRepository = new CategoryRepository();
 
-        $render->render('mainTemplate', 'mainPage', $categoryRepository->getCategoryList());
-
+        $render->render('cabinetTemplate', 'cabinetPage', $categoryRepository->getCategoryList());
     }
 }
