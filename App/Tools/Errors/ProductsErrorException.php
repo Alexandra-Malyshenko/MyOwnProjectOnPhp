@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\tools\Errors;
-
 
 use Throwable;
 
@@ -16,15 +14,12 @@ class ProductsErrorException extends \Exception
         $this->id = $id;
     }
 
-    public function errorMessage()
+    public function errorMessage(): string
     {
-        // error message
-        $errMsg = 'Error!' . ': <b>'.$this->getMessage(). $this->id . '</b> ';
-
-        return $errMsg;
+        return 'Error!' . ': <b>' . $this->getMessage() . $this->id . '</b> ';
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

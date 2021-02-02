@@ -8,7 +8,7 @@ use App\tools\logger\Logger;
 
 class ProductRepository
 {
-    private $logger;
+    private Logger $logger;
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ class ProductRepository
     public function getConnection()
     {
         $list =  json_decode(file_get_contents('../App/Models/productList.json'));
-        if (!empty($list)){
+        if (!empty($list)) {
             return $list;
         } else {
             $this->logger->warning('There is no data! Try check if there is right path to file');
@@ -35,22 +35,19 @@ class ProductRepository
     {
         $productsList = $this->getConnection()[1]->products;
         $productsListByCategory = [];
-
-        if (empty($id)){
+        if (empty($id)) {
             $this->logger->warning('There is no category by this id=', ["id" => $id]);
             throw new ProductsErrorException($id, 'There id no category by this id=');
         }
-
-        foreach ($productsList as $product)
-        {
-            if ((int) $product->category_id == $id) {
+        foreach ($productsList as $product) {
+            if ((int)$product->category_id == $id) {
                 $productObject = new Product();
-                $productObject->setId( (int) $product->id);
-                $productObject->setCategoryId( (int) $product->category_id);
-                $productObject->setName((string) $product->name);
-                $productObject->setPrice( (int) $product->price);
-                $productObject->setDescription( (string) $product->description);
-                $productObject->setImage( (string) $product->image);
+                $productObject->setId((int)$product->id);
+                $productObject->setCategoryId((int)$product->category_id);
+                $productObject->setName((string)$product->name);
+                $productObject->setPrice((int)$product->price);
+                $productObject->setDescription((string)$product->description);
+                $productObject->setImage((string)$product->image);
                 array_push($productsListByCategory, $productObject);
             }
         }
@@ -65,17 +62,14 @@ class ProductRepository
     {
         $productsList = $this->getConnection()[1]->products;
         $allProducts = [];
-
-        foreach ($productsList as $product)
-        {
+        foreach ($productsList as $product) {
             $productObject = new Product();
-            $productObject->setId( (int) $product->id);
-            $productObject->setCategoryId( (int) $product->category_id);
+            $productObject->setId((int) $product->id);
+            $productObject->setCategoryId((int) $product->category_id);
             $productObject->setName((string) $product->name);
-            $productObject->setPrice( (int) $product->price);
-            $productObject->setDescription( (string) $product->description);
-            $productObject->setImage( (string) $product->image);
-
+            $productObject->setPrice((int) $product->price);
+            $productObject->setDescription((string) $product->description);
+            $productObject->setImage((string) $product->image);
             array_push($allProducts, $productObject);
         }
         return $allProducts;
@@ -90,23 +84,18 @@ class ProductRepository
     {
         $productsList = $this->getConnection()[1]->products;
         $productObjectById = new Product();
-
         if (empty($id)) {
             $this->logger->warning('There is no product by this id=', ["id" => $id]);
             throw new ProductsErrorException($id, 'There id no product by number id=');
         }
-
-        foreach ($productsList as $product)
-        {
+        foreach ($productsList as $product) {
             if ((int) $product->id == $id) {
-
-                $productObjectById->setId( (int) $product->id);
-                $productObjectById->setCategoryId( (int) $product->category_id);
+                $productObjectById->setId((int) $product->id);
+                $productObjectById->setCategoryId((int) $product->category_id);
                 $productObjectById->setName((string) $product->name);
-                $productObjectById->setPrice( (int) $product->price);
-                $productObjectById->setDescription( (string) $product->description);
-                $productObjectById->setImage( (string) $product->image);
-
+                $productObjectById->setPrice((int) $product->price);
+                $productObjectById->setDescription((string) $product->description);
+                $productObjectById->setImage((string) $product->image);
                 return $productObjectById;
             }
         }

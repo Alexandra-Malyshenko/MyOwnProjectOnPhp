@@ -10,6 +10,14 @@ use App\tools\logger\Logger;
 class TemplateMaker
 {
     public $footer;
+    /**
+     * @var mixed
+     */
+    private $config;
+    /**
+     * @var Logger
+     */
+    private Logger $logger;
 
     public function __construct()
     {
@@ -30,17 +38,14 @@ class TemplateMaker
             $this->logger->warning('There is no array! You should pass array of products');
             throw new ProductsErrorException('There is no array! You should pass array of products');
         }
-
         $templatePath = dirname(__DIR__) . '/views/templates/';
         $layoutPath = dirname(__DIR__) . '/views/layout/';
-
         ob_start();
         $footer = file_get_contents(dirname(__DIR__) . $this->footer);
         if ($templateName !== '') {
             $main = file_get_contents($templatePath . $templateName . '.html');
         }
         ob_end_clean();
-
         require_once($layoutPath . $layout . ".php");
     }
 }

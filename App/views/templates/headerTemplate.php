@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Продолжить покупки</button>
-                                    <button type="button" class="btn btn-primary"><a href="/cabinet" style="text-decoration: none; color: white">Оформить заказ</a></button>
+                                    <button type="button" class="btn btn-info"><a href="/cabinet" style="text-decoration: none; color: white">Оформить заказ</a></button>
                                 </div>
                             </div>
                         </div>

@@ -177,8 +177,8 @@ footer
     text-decoration: none;
     color: white;
 }
-.button-access a:hover {
-    color: black;
+.button-access:hover {
+    background-color: seagreen;
 }
 /* End styles for login and register pages */
 

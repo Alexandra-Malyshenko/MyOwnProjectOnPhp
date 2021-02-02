@@ -8,7 +8,7 @@ use App\tools\logger\Logger;
 
 class CategoryRepository
 {
-    private $logger;
+    private Logger $logger;
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ class CategoryRepository
     public function getConnection()
     {
         $list =  json_decode(file_get_contents('../App/Models/productList.json'));
-        if (!empty($list)){
+        if (!empty($list)) {
             return $list;
         } else {
             $this->logger->warning('There is no data! Try check if there is right path to file');
@@ -30,16 +30,12 @@ class CategoryRepository
     {
         $categoryList = $this->getConnection()[0]->categories;
         $allCategories = [];
-
-
         foreach ($categoryList as $item) {
             $categoryObject = new Category();
             $categoryObject->setId((int) $item->id);
             $categoryObject->setName((string) $item->name);
             array_push($allCategories, $categoryObject);
-
         }
-
         return $allCategories;
     }
 
@@ -49,12 +45,9 @@ class CategoryRepository
             $this->logger->warning('There is no category by this id=', ["id" => $id]);
             throw new ProductsErrorException($id, 'There id no category by this id=');
         }
-
         $categoryList = $this->getConnection()[0]->categories;
         $categoryObject = new Category();
-
         foreach ($categoryList as $item) {
-
             if ((int) $item->id == $id) {
                 $categoryObject->setId((int) $item->id);
                 $categoryObject->setName((string) $item->name);

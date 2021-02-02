@@ -8,7 +8,6 @@ class User
     private string $name;
     private string $email;
     private string $password;
-    private string $city;
 
     public function getId(): int
     {
