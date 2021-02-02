@@ -30,12 +30,14 @@ class CategoryRepository
     {
         $categoryList = $this->getConnection()[0]->categories;
         $allCategories = [];
-        $categoryObject = new Category();
+
 
         foreach ($categoryList as $item) {
+            $categoryObject = new Category();
             $categoryObject->setId((int) $item->id);
             $categoryObject->setName((string) $item->name);
             array_push($allCategories, $categoryObject);
+
         }
 
         return $allCategories;

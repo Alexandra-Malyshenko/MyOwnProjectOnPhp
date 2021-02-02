@@ -9,15 +9,10 @@ return [
     'product/([0-9]+)' => 'product/view/$1', // actionView, ProductController
 
     // user
-    'user/register' => 'user/register',
-    'user/login' => 'user/login',
-    'user/logout' => 'user/logout',
-    'cabinet/edit' => 'cabinet/edit',
+    'register' => 'user/register', // actionRegister, UserController
+    'login' => 'user/login', // actionLogin, UserController
+    'logout' => 'user/logout', // actionLogout, UserController
     'cabinet' => 'cabinet/index',
-
-    // about site
-    'contacts' => 'site/contact',
-    'about' => 'site/about',
 
     // main page
 //    'index.php' => 'site/index', // actionIndex, SiteController

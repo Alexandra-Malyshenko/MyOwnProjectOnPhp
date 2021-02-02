@@ -29,7 +29,7 @@ class CategoryController
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
-        $render->render( '','categoryPage', [[], $products]);
+        $render->render('', 'categoryPage', [$categoryList,[], $products]);
     }
 
     public function actionGetCategory($params)
@@ -39,6 +39,6 @@ class CategoryController
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
-        $render->render( '','categoryPage', [$categoryObjectById, $products]);
+        $render->render('', 'categoryPage', [$this->categoryRepos->getCategoryList(), $categoryObjectById, $products]);
     }
 }

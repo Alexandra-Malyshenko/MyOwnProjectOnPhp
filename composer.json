@@ -1,0 +1,16 @@
+{
+    "name": "parallels/mopop",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alexandra Malyshenko",
+            "email": "alexandra.malyshenko94@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "App"
+        }
+    },
+    "require": {}
+}

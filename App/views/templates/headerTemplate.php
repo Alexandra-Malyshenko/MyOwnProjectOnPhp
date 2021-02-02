@@ -26,14 +26,23 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/catalog">Вся продукция</a>
-                        <a class="dropdown-item" href="/category/1">Торты</a>
-                        <a class="dropdown-item" href="/category/2">Капкейки</a>
-                        <a class="dropdown-item" href="/category/3">Печенье</a>
-                        <a class="dropdown-item" href="/category/4">Хлеб</a>
+                        <?php foreach ($categoryList as $category):?>
+                            <a class="dropdown-item" href=<?php echo "/category/" . $category->getID(); ?> ><?php echo $category->getName(); ?></a>
+                        <?php endforeach;?>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="loginTemplate.html">Аккаунт</a>
+                <li class="nav-item dropdown">
+                    <?php if($auth->isAuth()): ?>
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Привет, <?php echo $auth->getLogin(); ?>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/cabinet">Перейти в кабинет</a>
+                            <a class="dropdown-item" href="/logout">Выйти</a>
+                        </div>
+                    <?php else: ?>
+                        <a class="nav-link" href="/login">Войти</a>
+                    <?php endif ?>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" type="button" data-toggle="modal" data-target="#exampleModal" href="#">
@@ -77,7 +86,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Продолжить покупки</button>
-                                    <button type="button" class="btn btn-primary">Оформить заказ</button>
+                                    <button type="button" class="btn btn-primary"><a href="/cabinet" style="text-decoration: none; color: white">Оформить заказ</a></button>
                                 </div>
                             </div>
                         </div>
