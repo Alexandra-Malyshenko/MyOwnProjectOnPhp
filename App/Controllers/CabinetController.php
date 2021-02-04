@@ -1,6 +1,5 @@
 <?php
 
-
 use App\tools\TemplateMaker;
 use App\Repository\CategoryRepository;
 
@@ -10,7 +9,6 @@ class CabinetController
     {
         $render = new TemplateMaker();
         $categoryRepository = new CategoryRepository();
-
         $render->render('cabinetTemplate', 'cabinetPage', $categoryRepository->getCategoryList());
     }
 }

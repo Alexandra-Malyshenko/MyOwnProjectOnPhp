@@ -28,6 +28,10 @@ class ProductController
         $categoryObject = $this->categoryRepos->getCategoryById($productObjectById->getCategoryId());
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
-        $render->render('', 'productPage', [$this->categoryRepos->getCategoryList(), $categoryObject, $productObjectById]);
+        $render->render('', 'productPage', [
+            $this->categoryRepos->getCategoryList(),
+            $categoryObject,
+            $productObjectById
+        ]);
     }
 }

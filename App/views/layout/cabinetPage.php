@@ -1,6 +1,7 @@
 <?php
 
 use App\Tools\Authentication;
+
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
 
 /**
@@ -59,8 +60,9 @@ $categoryList = $params;
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-between pt-3">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Продолжить покупки</button>
-                    <button type="button" class="btn btn-success">Оформить заказ</button>
+                    <button type="button" class="btn btn-info"><a href="/" style="text-decoration: none; color: white">Продолжить покупки</a></button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Оформить заказ</button>
+
                 </div>
             </div>
 

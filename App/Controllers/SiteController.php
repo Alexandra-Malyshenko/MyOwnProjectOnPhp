@@ -11,6 +11,5 @@ class SiteController
         $categoryRepository = new CategoryRepository();
 
         $render->render('mainTemplate', 'mainPage', $categoryRepository->getCategoryList());
-
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Tools\Authentication;
+
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
 
 /**

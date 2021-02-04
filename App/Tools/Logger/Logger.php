@@ -6,6 +6,7 @@ class Logger implements LoggerInterface
 {
     public $name;
     public $id;
+
     public function __construct(string $name = '' )
     {
         $this->name = $name;
@@ -61,14 +62,16 @@ class Logger implements LoggerInterface
             $fl = fopen(__DIR__ . '/../', 'a+');
             $date = date('D-M-Y h:m:s');
             $context = implode(',', $context);
-            $message = 'Date: ' . $date . "\n" . 'Message: ' . $message . $context . "\n". '########################' . "\n";
+            $message = 'Date: ' . $date . "\n" . 'Message: ' . $message . $context . "\n"
+                . '########################' . "\n";
             fwrite($fl, $message);
             fclose($fl);
         } elseif (!empty($this->name)) {
             $fl = fopen(__DIR__ . '/../../storage/log/' . $this->name . ".log", 'a+');
             $date = date('D-M-Y h:m:s');
             $context = implode(',', $context);
-            $message = 'Date: ' . $date . "\n" . 'Message: ' . $message . $context . "\n". '########################' . "\n";
+            $message = 'Date: ' . $date . "\n" . 'Message: ' . $message . $context . "\n"
+                . '########################' . "\n";
             fwrite($fl, $message);
             fclose($fl);
         }

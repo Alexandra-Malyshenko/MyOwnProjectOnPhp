@@ -1,16 +1,11 @@
 <?php
 
-
 namespace App\tools\Errors;
-
 
 class TemplateRenderException extends \Exception
 {
-    public function errorMessage()
+    public function errorMessage(): string
     {
-        // error message
-        $errMsg = 'Error! '.': <b>'.$this->getMessage().'</b> there is no here needed parametr';
-
-        return $errMsg;
+        return 'Error! ' . ': <b>' . $this->getMessage() . '</b> there is no here needed parametr';
     }
 }
