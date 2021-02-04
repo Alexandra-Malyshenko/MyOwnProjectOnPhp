@@ -5,32 +5,16 @@
 //error_reporting(E_ALL);
 
 require '../vendor/autoload.php';
-
-use App\Tools\Errors\TemplateRenderException;
-use App\Tools\Errors\ConfigException;
-use App\Tools\Errors\PathException;
-use App\Tools\Errors\ProductsErrorException;
-use App\Tools\logger\Logger;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 use App\Tools\Router;
 
-$logger = new Logger();
+$logger = new Logger("my-logger");
+$logger->pushHandler(new StreamHandler(__DIR__ . '/../App/storage/log/error.log', Logger::WARNING));
 
 try {
     $router = new Router();
     $router->run();
-
-} catch (PathException $e) {
-    $logger->warning($e->errorMessage());
-    echo $e->errorMessage();
-} catch (ConfigException $e) {
-    $logger->warning($e->errorMessage());
-    echo $e->errorMessage();
-} catch (ProductsErrorException $e) {
-    $logger->warning($e->errorMessage(), ["id" => $e->getId()]);
-    echo $e->errorMessage();
-} catch (TemplateRenderException $e) {
-    $logger->warning($e->errorMessage());
-    echo $e->errorMessage();
 } catch (\Throwable $e) {
     $logger->warning($e->getMessage());
     echo $e->getMessage();

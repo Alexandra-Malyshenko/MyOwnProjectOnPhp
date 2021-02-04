@@ -4,24 +4,16 @@ namespace App\Repository;
 
 use App\models\Product;
 use App\tools\Errors\ProductsErrorException;
-use App\tools\logger\Logger;
+use Exception;
 
 class ProductRepository
 {
-    private Logger $logger;
-
-    public function __construct()
-    {
-        $this->logger = new Logger("products");
-    }
-
     public function getConnection()
     {
         $list =  json_decode(file_get_contents('../App/Models/productList.json'));
         if (!empty($list)) {
             return $list;
         } else {
-            $this->logger->warning('There is no data! Try check if there is right path to file');
             throw new ProductsErrorException('There is no data! Try check if there is right path to file');
         }
     }
@@ -36,8 +28,7 @@ class ProductRepository
         $productsList = $this->getConnection()[1]->products;
         $productsListByCategory = [];
         if (empty($id)) {
-            $this->logger->warning('There is no category by this id=', ["id" => $id]);
-            throw new ProductsErrorException($id, 'There id no category by this id=');
+            throw new ProductsErrorException($id, 'There is no category by this id=' . "$id");
         }
         foreach ($productsList as $product) {
             if ((int)$product->category_id == $id) {
@@ -79,15 +70,12 @@ class ProductRepository
      * @param int $id
      * @return Product
      * @throws ProductsErrorException
+     * @throws Exception
      */
-    public function getProductById(int $id): Product
+    public function getProductById(int $id): ?Product
     {
         $productsList = $this->getConnection()[1]->products;
         $productObjectById = new Product();
-        if (empty($id)) {
-            $this->logger->warning('There is no product by this id=', ["id" => $id]);
-            throw new ProductsErrorException($id, 'There id no product by number id=');
-        }
         foreach ($productsList as $product) {
             if ((int) $product->id == $id) {
                 $productObjectById->setId((int) $product->id);
@@ -96,8 +84,12 @@ class ProductRepository
                 $productObjectById->setPrice((int) $product->price);
                 $productObjectById->setDescription((string) $product->description);
                 $productObjectById->setImage((string) $product->image);
-                return $productObjectById;
             }
+        }
+        if (!empty($productObjectById)) {
+            return $productObjectById;
+        } else {
+            throw new ProductsErrorException('There is no product by this id=' . "$id");
         }
     }
 }

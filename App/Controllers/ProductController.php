@@ -22,11 +22,10 @@ class ProductController
         $this->categoryRepos = new CategoryRepository();
     }
 
-    public function actionView($params)
+    public function actionView(int $params)
     {
-        $productObjectById = $this->productRepos->getProductById((int) $params[0]);
+        $productObjectById = $this->productRepos->getProductById($params);
         $categoryObject = $this->categoryRepos->getCategoryById($productObjectById->getCategoryId());
-        // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
         $render->render('', 'productPage', [
             $this->categoryRepos->getCategoryList(),

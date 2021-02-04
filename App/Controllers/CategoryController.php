@@ -32,9 +32,9 @@ class CategoryController
         $render->render('', 'categoryPage', [$categoryList,[], $products]);
     }
 
-    public function actionGetCategory($params)
+    public function actionGetCategory(int $params)
     {
-        $categoryObjectById = $this->categoryRepos->getCategoryById((int) $params[0]);
+        $categoryObjectById = $this->categoryRepos->getCategoryById($params);
         $products = $this->productRepos->getProductsByCategoryId($categoryObjectById->getId());
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates

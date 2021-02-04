@@ -1,4 +1,8 @@
+vendor
+/App/storage/
 .idea
 .DS_Store
 .php_cs.cache
-/vendor/
+composer.lock
+composer.phar
+phpcs.phar

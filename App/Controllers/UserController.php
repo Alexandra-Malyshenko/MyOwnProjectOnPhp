@@ -1,9 +1,9 @@
 <?php
 
 use App\Tools\Authentication;
-use App\Tools\Session;
 use App\tools\TemplateMaker;
 use App\Repository\CategoryRepository;
+use App\tools\Errors\UsersValidationException;
 
 class UserController
 {
@@ -48,11 +48,8 @@ class UserController
         $name = $_POST['name'];
         $password = $_POST['password'];
         if (!empty($name) && !empty($password)) {
-            if ($this->authentication->auth($name, $password)) {
-                header("Location: /");
-            } else {
-                throw new Exception('Wrong name or password! Try again');
-            }
+            $this->authentication->auth($name, $password);
+            header("Location: /");
         }
     }
     public function actionPostRegister()
@@ -67,7 +64,7 @@ class UserController
             $authentication->auth($param[0], $param[1]);
             header("Location: /");
         } else {
-            throw new Exception('Your password does not match');
+            throw new UsersValidationException('Your password does not match');
         }
     }
 }

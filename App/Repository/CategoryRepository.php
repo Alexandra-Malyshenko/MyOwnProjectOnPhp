@@ -4,25 +4,17 @@ namespace App\Repository;
 
 use App\models\Category;
 use App\tools\Errors\ProductsErrorException;
-use App\tools\logger\Logger;
+use App\tools\Errors\PathException;
 
 class CategoryRepository
 {
-    private Logger $logger;
-
-    public function __construct()
-    {
-        $this->logger = new Logger("category");
-    }
-
     public function getConnection()
     {
         $list =  json_decode(file_get_contents('../App/Models/productList.json'));
         if (!empty($list)) {
             return $list;
         } else {
-            $this->logger->warning('There is no data! Try check if there is right path to file');
-            throw new ProductsErrorException('There is no data! Try check if there is right path to file');
+            throw new PathException('There is no data! Try check if there is right path to file');
         }
     }
 
@@ -42,7 +34,6 @@ class CategoryRepository
     public function getCategoryById(int $id): ?Category
     {
         if (empty($id)) {
-            $this->logger->warning('There is no category by this id=', ["id" => $id]);
             throw new ProductsErrorException($id, 'There id no category by this id=');
         }
         $categoryList = $this->getConnection()[0]->categories;
@@ -51,9 +42,12 @@ class CategoryRepository
             if ((int) $item->id == $id) {
                 $categoryObject->setId((int) $item->id);
                 $categoryObject->setName((string) $item->name);
-                return $categoryObject;
             }
         }
+        if (!empty($categoryObject)) {
+            return $categoryObject;
+        } else {
+            throw new ProductsErrorException('There id no category by this id=' . "$id");
+        }
     }
-
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\models;
 
 class Product
@@ -71,5 +70,4 @@ class Product
     {
         $this->image = $image;
     }
-
 }

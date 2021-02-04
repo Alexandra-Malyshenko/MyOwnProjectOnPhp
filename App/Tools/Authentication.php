@@ -4,11 +4,12 @@ namespace App\Tools;
 
 use App\models\User;
 use App\Tools\Session;
+use App\tools\Errors\UsersValidationException;
 use App\tools\Errors\ProductsErrorException;
 
 class Authentication
 {
-    private \App\Tools\Session $sessionObject;
+    private Session $sessionObject;
     public function __construct(string $path)
     {
         $this->sessionObject = new Session();
@@ -24,7 +25,6 @@ class Authentication
         if (!empty($list)) {
             return $list;
         } else {
-            $this->logger->warning('There is no data! Try check if there is right path to file');
             throw new ProductsErrorException('There is no data! Try check if there is right path to file');
         }
     }
@@ -43,7 +43,7 @@ class Authentication
             $this->sessionObject->set('userID', $userID);
             return true;
         } else {
-            return false;
+            throw new UsersValidationException('Wrong name or password! Try again');
         }
     }
 
@@ -71,9 +71,9 @@ class Authentication
         $userList = $this->getConnection();
         $str = '[';
         if ($this->checkName($name)) {
-            throw new \Exception('This name is already use!');
+            throw new UsersValidationException('This name is already use!');
         } elseif ($this->checkEmail($email)) {
-            throw new \Exception('This email is already use!');
+            throw new UsersValidationException('This email is already use!');
         }
         // register user by creating instance User
         $userRegister = new User();

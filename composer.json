@@ -12,5 +12,7 @@
             "App\\": "App"
         }
     },
-    "require": {}
+    "require": {
+        "monolog/monolog": "^2.2"
+    }
 }
