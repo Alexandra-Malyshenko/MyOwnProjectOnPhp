@@ -14,7 +14,7 @@ class CategoryRepository
         if (!empty($list)) {
             return $list;
         } else {
-            throw new PathException('There is no data! Try check if there is right path to file');
+            throw new PathException('There is no data! Try to check if there is the right path to your file');
         }
     }
 
@@ -34,9 +34,12 @@ class CategoryRepository
     public function getCategoryById(int $id): ?Category
     {
         if (empty($id)) {
-            throw new ProductsErrorException($id, 'There id no category by this id=');
+            throw new ProductsErrorException('Must be enter an id for category');
         }
         $categoryList = $this->getConnection()[0]->categories;
+        if ($id > count($categoryList)) {
+            throw new ProductsErrorException('There is no category by this id=' . "$id");
+        }
         $categoryObject = new Category();
         foreach ($categoryList as $item) {
             if ((int) $item->id == $id) {
@@ -47,7 +50,7 @@ class CategoryRepository
         if (!empty($categoryObject)) {
             return $categoryObject;
         } else {
-            throw new ProductsErrorException('There id no category by this id=' . "$id");
+            throw new ProductsErrorException('There is no category by this id=' . "$id");
         }
     }
 }

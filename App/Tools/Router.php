@@ -32,7 +32,7 @@ class Router
             // find if request is in array of routes
             if (preg_match("~$uriPattern~", $uri, $matches, PREG_UNMATCHED_AS_NULL)) {
                 if ($uriPattern == '' && $uri !== '') {
-                    throw new PathException('You put a wrong path! There is no information to this uri' . "$uri");
+                    throw new PathException('You put a wrong path! There is no information for this uri = ' . "$uri");
                 } else {
                     // example :
                     // preg_replace($uriPattern='product/([0-9])+',$path='product/view/$1',$uri='product/3')

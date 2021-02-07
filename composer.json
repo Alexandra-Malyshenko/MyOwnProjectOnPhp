@@ -13,6 +13,9 @@
         }
     },
     "require": {
-        "monolog/monolog": "^2.2"
+        "monolog/monolog": "^2.2",
+        "swarletta/telegram-logger": "^1.0",
+        "ext-curl": "*",
+        "vlucas/phpdotenv": "^5.3"
     }
 }

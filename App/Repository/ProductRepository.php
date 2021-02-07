@@ -28,7 +28,7 @@ class ProductRepository
         $productsList = $this->getConnection()[1]->products;
         $productsListByCategory = [];
         if (empty($id)) {
-            throw new ProductsErrorException($id, 'There is no category by this id=' . "$id");
+            throw new ProductsErrorException('There is no category by this id=' . "$id");
         }
         foreach ($productsList as $product) {
             if ((int)$product->category_id == $id) {
@@ -75,6 +75,9 @@ class ProductRepository
     public function getProductById(int $id): ?Product
     {
         $productsList = $this->getConnection()[1]->products;
+        if ($id > count($productsList)) {
+            throw new ProductsErrorException('There is no product by this id=' . "$id");
+        }
         $productObjectById = new Product();
         foreach ($productsList as $product) {
             if ((int) $product->id == $id) {

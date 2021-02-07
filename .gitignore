@@ -6,3 +6,5 @@ vendor
 composer.lock
 composer.phar
 phpcs.phar
+.env
+App/storage/log/error.log
