@@ -51,6 +51,7 @@ class Authentication
     {
         $this->sessionObject->start();
         $userID = (int) $this->sessionObject->get('userID');
+//        var_dump($userID);
         $userList = $this->getConnection();
         foreach ($userList as $user) {
             if ($user->id == $userID) {
@@ -62,8 +63,13 @@ class Authentication
     public function logOut(): void
     {
         $this->sessionObject->start();
-        $this->sessionObject->delete('userID');
-        $this->sessionObject->destroy();
+        if ($this->sessionObject->cookieExists()) {
+//            var_dump($_COOKIE['PHPSESSID']);
+            setcookie("PHPSESSID", 'false', time() - 1);
+//            var_dump($_COOKIE['PHPSESSID']); die();
+            $this->sessionObject->delete('userID');
+            $this->sessionObject->destroy();
+        }
     }
 
     public function register($name, $email, $password): array
@@ -104,7 +110,7 @@ class Authentication
         return [$name, $password];
     }
 
-    public function checkUserData($name, $password): bool
+    public function checkUserData($name, $password): int
     {
         $userList = $this->getConnection();
         foreach ($userList as $user) {

@@ -26,7 +26,7 @@ class Session
 
     public function cookieExists(): bool
     {
-        // TODO realization of this method
+        return !empty($_COOKIE);
     }
 
     public function sessionExists(): bool
