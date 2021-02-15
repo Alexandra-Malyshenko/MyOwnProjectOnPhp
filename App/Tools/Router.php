@@ -43,7 +43,7 @@ class Router
                     $controllerName = array_shift($segments) . 'Controller';
                     $controllerName = ucfirst($controllerName);
                     // find out action for this Controller
-                    $actionName = 'action' . ucfirst(array_shift($segments));
+                    $actionName = array_shift($segments);
                     while (!empty($segments)) {
                         $parametr = (int) array_shift($segments);
                         if (!$parametr) {
@@ -57,6 +57,7 @@ class Router
                     $controllerObject = new $controllerName();
                     $controllerObject->$actionName($parametr);
                 }
+                break;
             }
         }
     }

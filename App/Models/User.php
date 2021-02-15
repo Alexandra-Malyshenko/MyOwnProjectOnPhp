@@ -8,6 +8,7 @@ class User
     private string $name;
     private string $email;
     private string $password;
+    private string $city;
 
     public function getId(): int
     {
@@ -27,6 +28,11 @@ class User
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
     }
 
     public function setId(int $id): void
@@ -49,6 +55,11 @@ class User
         $this->password = $password;
     }
 
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
     public function __toString(): string
     {
         return sprintf(
@@ -56,7 +67,8 @@ class User
             $this->getId(),
             $this->getName(),
             $this->getEmail(),
-            $this->getPassword()
+            $this->getPassword(),
+            $this->getCity()
         );
     }
 }

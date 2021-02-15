@@ -22,23 +22,24 @@ class CategoryController
         $this->productRepos = new ProductRepository();
     }
 
-    public function actionIndex()
+    public function index()
     {
-        $categoryList = $this->categoryRepos->getCategoryList();
-        $products = $this->productRepos->getListOfProducts();
+        $categoryList = $this->categoryRepos->getAll();
+        $products = $this->productRepos->getAll();
+//        var_dump($products);
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
         $render->render('', 'categoryPage', [$categoryList,[], $products]);
     }
 
-    public function actionGetCategory(int $params)
+    public function getCategory(int $params)
     {
-        $categoryObjectById = $this->categoryRepos->getCategoryById($params);
-        $products = $this->productRepos->getProductsByCategoryId($categoryObjectById->getId());
+        $categoryObjectById = $this->categoryRepos->getById($params);
+        $products = $this->productRepos->getByCategoryId($categoryObjectById->getId());
 
         // create TemplateMaker instants and pass default layout with config file with path footer and header templates
         $render = new TemplateMaker();
-        $render->render('', 'categoryPage', [$this->categoryRepos->getCategoryList(), $categoryObjectById, $products]);
+        $render->render('', 'categoryPage', [$this->categoryRepos->getAll(), $categoryObjectById, $products]);
     }
 }

@@ -5,16 +5,16 @@ namespace App\models;
 class Category
 {
     private int $id;
-    private string $name;
+    private string $title;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function setId(int $id): void
@@ -22,8 +22,8 @@ class Category
         $this->id = $id;
     }
 
-    public function setName(string $name): void
+    public function setTitle(string $title): void
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 }

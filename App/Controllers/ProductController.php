@@ -22,13 +22,13 @@ class ProductController
         $this->categoryRepos = new CategoryRepository();
     }
 
-    public function actionView(int $params)
+    public function view(int $params)
     {
-        $productObjectById = $this->productRepos->getProductById($params);
-        $categoryObject = $this->categoryRepos->getCategoryById($productObjectById->getCategoryId());
+        $productObjectById = $this->productRepos->getById($params);
+        $categoryObject = $this->categoryRepos->getById($productObjectById->getCategoryId());
         $render = new TemplateMaker();
         $render->render('', 'productPage', [
-            $this->categoryRepos->getCategoryList(),
+            $this->categoryRepos->getAll(),
             $categoryObject,
             $productObjectById
         ]);

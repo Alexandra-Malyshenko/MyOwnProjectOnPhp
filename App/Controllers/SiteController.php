@@ -5,11 +5,12 @@ use App\Repository\CategoryRepository;
 
 class SiteController
 {
-    public function actionIndex()
+    public function index()
     {
         $render = new TemplateMaker();
-        $categoryRepository = new CategoryRepository();
-
-        $render->render('mainTemplate', 'mainPage', $categoryRepository->getCategoryList());
+        $categoryList = new CategoryRepository();
+        $categoryList = $categoryList->getAll();
+//        var_dump($categoryList); die();
+        $render->render('mainTemplate', 'mainPage', $categoryList);
     }
 }

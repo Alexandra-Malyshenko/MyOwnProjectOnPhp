@@ -2,30 +2,29 @@
 
 namespace App\Tools;
 
-use App\models\User;
 use App\Tools\Session;
 use App\tools\Errors\UsersValidationException;
-use App\tools\Errors\ProductsErrorException;
+use App\Services\UserService;
 
 class Authentication
 {
+    /**
+     * @var Session
+     */
     private Session $sessionObject;
+    /**
+     * @var UserService
+     */
+    private UserService $userService;
+
     public function __construct(string $path)
     {
         $this->sessionObject = new Session();
+        $this->userService = new UserService();
         if ($path == null) {
             $this->sessionObject->setSavePath(__DIR__ . '/../storage/php-session/');
         } else {
             $this->sessionObject->setSavePath($path);
-        }
-    }
-    public function getConnection()
-    {
-        $list =  json_decode(file_get_contents('../App/Models/userList.json'));
-        if (!empty($list)) {
-            return $list;
-        } else {
-            throw new ProductsErrorException('There is no data! Try check if there is right path to file');
         }
     }
 
@@ -37,108 +36,38 @@ class Authentication
 
     public function auth(string $email, string $password): bool
     {
-        $userID = $this->checkUserData($email, $password);
-        if ($userID) {
-            $this->sessionObject->start();
-            $this->sessionObject->set('userID', $userID);
-            return true;
-        } else {
-            throw new UsersValidationException('Wrong name or password! Try again');
-        }
+        $userID = $this->userService->checkUserData($email, $password);
+        $this->sessionObject->start();
+        $this->sessionObject->set('userID', $userID);
+        return true;
     }
 
     public function getLogin(): string
     {
         $this->sessionObject->start();
         $userID = (int) $this->sessionObject->get('userID');
-//        var_dump($userID);
-        $userList = $this->getConnection();
-        foreach ($userList as $user) {
-            if ($user->id == $userID) {
-                return $user->name;
-            }
-        }
+        return $this->userService->getLogin($userID);
     }
 
     public function logOut(): void
     {
         $this->sessionObject->start();
         if ($this->sessionObject->cookieExists()) {
-//            var_dump($_COOKIE['PHPSESSID']);
             setcookie("PHPSESSID", 'false', time() - 1);
-//            var_dump($_COOKIE['PHPSESSID']); die();
             $this->sessionObject->delete('userID');
             $this->sessionObject->destroy();
         }
     }
 
-    public function register($name, $email, $password): array
+    public function register(string $name, string $email, string $password, string $city): array
     {
-        $userList = $this->getConnection();
-        $str = '[';
-        if ($this->checkName($name)) {
+        if ($this->userService->checkUserName($name)) {
             throw new UsersValidationException('This name is already use!');
-        } elseif ($this->checkEmail($email)) {
+        } elseif ($this->userService->checkUserEmail($email)) {
             throw new UsersValidationException('This email is already use!');
         }
-        // register user by creating instance User
-        $userRegister = new User();
-        $userRegister->setName($name);
-        $userRegister->setId(count($userList) + 1);
-        $userRegister->setEmail($email);
-        $userRegister->setPassword($password);
-        // to write in file we need get all object and create them like object User
-        if (!empty($userList)) {
-            foreach ($userList as $item) {
-                $userItem = new User();
-                $userItem->setName($item->name);
-                $userItem->setId($item->id);
-                $userItem->setEmail($item->email);
-                $userItem->setPassword($item->password);
-                // then write them like string
-                $str = $str . $userItem->__toString() . ',';
-            }
-            // then add our registered user
-            $str = $str . $userRegister->__toString() . ']';
-        } else {
-            $str = $str . $userRegister->__toString() . ']';
+        if ($this->userService->register($name, $email, $password, $city)) {
+            return [$name, $password];
         }
-        // write in file
-        $fl = fopen(__DIR__ . '/../Models/userList.json', 'w+');
-        fwrite($fl, $str);
-        fclose($fl);
-        return [$name, $password];
-    }
-
-    public function checkUserData($name, $password): int
-    {
-        $userList = $this->getConnection();
-        foreach ($userList as $user) {
-            if ($user->name == $name && $user->password == $password) {
-                return $user->id;
-            }
-        }
-        return false;
-    }
-
-    public function checkName($name): bool
-    {
-        $userList = $this->getConnection();
-        foreach ($userList as $user) {
-            if ($user->name == $name) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public function checkEmail($email): bool
-    {
-        $userList = $this->getConnection();
-        foreach ($userList as $user) {
-            if ($user->email == $email) {
-                return true;
-            }
-        }
-        return false;
     }
 }
