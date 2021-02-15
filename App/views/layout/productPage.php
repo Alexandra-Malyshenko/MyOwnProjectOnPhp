@@ -1,8 +1,10 @@
 <?php
 
+use App\Repository\CartRepository;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
 
 /**
  * @var $params array of Product object and Category object
@@ -52,7 +54,7 @@ $product = $params[2];
         <div class="col-lg-6 col-md-6 col-sm-12">
             <h2 class=" pb-3"><?php echo $product->getTitle(); ?></h2>
             <p class="price"><?php echo $product->getPrice(); ?> грн/кг</p>
-            <button class="btn btn-success">Заказать</button>
+            <button class="btn btn-success"><a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>">Заказать</a></button>
             <p class="pt-5 pb-5 "> <i><?php echo $product->getDescription(); ?></i></p>
         </div>
     </div>

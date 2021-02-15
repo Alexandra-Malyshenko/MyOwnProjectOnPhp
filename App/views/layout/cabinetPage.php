@@ -1,8 +1,10 @@
 <?php
 
+use App\Repository\CartRepository;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
 
 /**
  * @var $header string
