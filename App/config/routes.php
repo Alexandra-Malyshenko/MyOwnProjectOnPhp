@@ -14,6 +14,11 @@ return [
     'logout' => 'user/logout', // logout, UserController
     'cabinet' => 'cabinet/index',
 
+    // cart
+    'cart/add/([0-9]+)' => 'cart/add/$1', // add, CartController
+    'cart/delete/([0-9]+)' => 'cart/delete/$1', // add, CartController
+    'cart' => 'cart/index', // index, CartController
+
     // main page
     '' => 'site/index', // index, SiteController
 ];

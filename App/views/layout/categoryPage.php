@@ -1,8 +1,10 @@
 <?php
 
+use App\Repository\CartRepository;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
 /**
  * @var $params array
  * @var $header string
@@ -53,17 +55,17 @@ $products = $params[2];
 
     <div class="container pt-5">
         <div class="row">
-            <?php foreach ($products as $cake): ?>
+            <?php foreach ($products as $product): ?>
                 <div class="col-lg-4 col-md-4 col-sm-12 pb-5">
                     <div class="card h-100">
-                        <img src="<?php echo $cake->getImage(); ?>" class="card-img-top" alt="...">
+                        <img src="<?php echo $product->getImage(); ?>" class="card-img-top" alt="...">
                         <div class="card-body text-center">
-                            <h5 class=""><?php echo $cake->getTitle(); ?></h5>
-                            <p class=""> <i><?php echo $cake->getDescription(); ?></i></p>
+                            <h5 class=""><?php echo $product->getTitle(); ?></h5>
+                            <p class=""> <i><?php echo $product->getDescription(); ?></i></p>
                         </div>
                         <div class="card-footer text-center">
-                            <button class="btn btn-success">Заказать</button>
-                            <button class="btn btn-info"><a href="/product/<?php echo $cake->getId(); ?>">Подробнее</a></button>
+                            <button class="btn btn-success"><a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>">Заказать</a></button>
+                            <button class="btn btn-info"><a href="/product/<?php echo $product->getId(); ?>">Подробнее</a></button>
                         </div>
                     </div>
                 </div>
