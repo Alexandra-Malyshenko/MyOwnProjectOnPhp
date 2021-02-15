@@ -4,53 +4,57 @@ namespace App\Repository;
 
 use App\models\Category;
 use App\tools\Errors\ProductsErrorException;
-use App\tools\Errors\PathException;
+use App\Tools\Database;
+use PDO;
 
 class CategoryRepository
 {
-    public function getConnection()
+    public function getConnect(): PDO
     {
-        $list =  json_decode(file_get_contents('../App/Models/productList.json'));
-        if (!empty($list)) {
-            return $list;
-        } else {
-            throw new PathException('There is no data! Try to check if there is the right path to your file');
-        }
+        return Database::getInstance()->getConnection();
     }
 
-    public function getCategoryList(): array
+    public function getAll(): array
     {
-        $categoryList = $this->getConnection()[0]->categories;
-        $allCategories = [];
-        foreach ($categoryList as $item) {
-            $categoryObject = new Category();
-            $categoryObject->setId((int) $item->id);
-            $categoryObject->setName((string) $item->name);
-            array_push($allCategories, $categoryObject);
-        }
-        return $allCategories;
+        $sql = "SELECT id, title FROM categories";
+        $statement = $this->getConnect()->query($sql);
+        $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
+        return $statement->fetchAll();
     }
 
-    public function getCategoryById(int $id): ?Category
+    public function getById(int $id): ?Category
     {
         if (empty($id)) {
             throw new ProductsErrorException('Must be enter an id for category');
         }
-        $categoryList = $this->getConnection()[0]->categories;
-        if ($id > count($categoryList)) {
-            throw new ProductsErrorException('There is no category by this id=' . "$id");
-        }
-        $categoryObject = new Category();
-        foreach ($categoryList as $item) {
-            if ((int) $item->id == $id) {
-                $categoryObject->setId((int) $item->id);
-                $categoryObject->setName((string) $item->name);
-            }
-        }
-        if (!empty($categoryObject)) {
-            return $categoryObject;
-        } else {
-            throw new ProductsErrorException('There is no category by this id=' . "$id");
-        }
+        $sql = "SELECT id, title FROM categories WHERE id = :id";
+        $statement = $this->getConnect()->prepare($sql);
+        $statement->execute(['id' => $id]);
+        $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
+        return $statement->fetch();
+    }
+
+    public function create(int $category_id, string $title, int $price, string $description, string $image): bool
+    {
+        $sql = "INSERT INTO categories title VALUE :title";
+        $statement = $this->getConnect()->prepare($sql);
+        $statement->execute(['title' => $title]);
+        return true;
+    }
+
+    public function update(int $id, string $title): bool
+    {
+        $sql = "UPDATE categories SET title = :title WHERE id = :id";
+        $statement = $this->getConnect()->prepare($sql);
+        $statement->execute(['title' => $title, 'id' => $id]);
+        return true;
+    }
+
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM categories WHERE id = :id";
+        $statement = $this->getConnect()->prepare($sql);
+        $statement->execute(['id' => $id]);
+        return true;
     }
 }

@@ -27,7 +27,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/catalog">Вся продукция</a>
                         <?php foreach ($categoryList as $category):?>
-                            <a class="dropdown-item" href=<?php echo "/category/" . $category->getID(); ?> ><?php echo $category->getName(); ?></a>
+                            <a class="dropdown-item" href=<?php echo "/category/" . $category->getID(); ?> ><?php echo $category->getTitle(); ?></a>
                         <?php endforeach;?>
                     </div>
                 </li>

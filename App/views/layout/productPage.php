@@ -28,20 +28,18 @@ $categoryList = $params[0];
 <div class="container-fluid">
 <?php
 include dirname(__DIR__) . '/templates/headerTemplate.php';
-echo $main;
 /** @var \App\models\Category $category */
 $category = $params[1];
 /** @var \App\models\Product $product */
 $product = $params[2];
-
 ?>
 <div class="container mt-5 d-flex justify-content-end">
     <div class="row">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/category/<?php echo $category->getId()?>"><?php echo $category->getName(); ?></a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo $product->getName(); ?></li>
+                <li class="breadcrumb-item"><a href="/category/<?php echo $category->getId()?>"><?php echo $category->getTitle(); ?></a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo $product->getTitle(); ?></li>
             </ol>
         </nav>
     </div>
@@ -52,7 +50,7 @@ $product = $params[2];
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12"><img src="<?php echo $product->getImage(); ?>" class="card-img-top" alt="..."></div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <h2 class=" pb-3"><?php echo $product->getName(); ?></h2>
+            <h2 class=" pb-3"><?php echo $product->getTitle(); ?></h2>
             <p class="price"><?php echo $product->getPrice(); ?> грн/кг</p>
             <button class="btn btn-success">Заказать</button>
             <p class="pt-5 pb-5 "> <i><?php echo $product->getDescription(); ?></i></p>

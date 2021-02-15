@@ -5,10 +5,10 @@ use App\Repository\CategoryRepository;
 
 class CabinetController
 {
-    public function actionIndex()
+    public function index()
     {
         $render = new TemplateMaker();
         $categoryRepository = new CategoryRepository();
-        $render->render('cabinetTemplate', 'cabinetPage', $categoryRepository->getCategoryList());
+        $render->render('cabinetTemplate', 'cabinetPage', $categoryRepository->getAll());
     }
 }

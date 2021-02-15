@@ -28,7 +28,6 @@ $categoryList = $params[0];
 <?php
 include dirname(__DIR__) . '/templates/headerTemplate.php';
 
-echo $main;
 /** @var \App\models\Category $category */
 $category = $params[1];
 
@@ -44,7 +43,7 @@ $products = $params[2];
                     <?php if(empty($category)):?>
                         <li class="breadcrumb-item active" aria-current="page">Вся продукция</li>
                     <?php else: ?>
-                        <li class="breadcrumb-item active" aria-current="page"><?php echo $category->getName(); ?></li>
+                        <li class="breadcrumb-item active" aria-current="page"><?php echo $category->getTitle(); ?></li>
                     <?php endif; ?>
                 </ol>
             </nav>
@@ -59,7 +58,7 @@ $products = $params[2];
                     <div class="card h-100">
                         <img src="<?php echo $cake->getImage(); ?>" class="card-img-top" alt="...">
                         <div class="card-body text-center">
-                            <h5 class=""><?php echo $cake->getName(); ?></h5>
+                            <h5 class=""><?php echo $cake->getTitle(); ?></h5>
                             <p class=""> <i><?php echo $cake->getDescription(); ?></i></p>
                         </div>
                         <div class="card-footer text-center">

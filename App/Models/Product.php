@@ -6,7 +6,7 @@ class Product
 {
     private int $id;
     private int $category_id;
-    private string $name;
+    private string $title;
     private int $price;
     private string $description;
     private string $image;
@@ -21,9 +21,9 @@ class Product
         return $this->category_id;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function getPrice(): int
@@ -51,9 +51,9 @@ class Product
         $this->category_id = $category_id;
     }
 
-    public function setName(string $name): void
+    public function setTitle(string $title): void
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
     public function setPrice(int $price): void

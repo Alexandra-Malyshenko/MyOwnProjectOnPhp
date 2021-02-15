@@ -17,6 +17,6 @@
         "swarletta/telegram-logger": "^1.0",
         "ext-curl": "*",
         "vlucas/phpdotenv": "^5.3",
-      "ext-pdo": "*"
+        "ext-pdo": "*"
     }
 }

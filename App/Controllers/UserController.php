@@ -17,33 +17,33 @@ class UserController
         $this->authentication = new Authentication('');
     }
 
-    public function actionRegister()
+    public function register()
     {
         if (!empty($_POST)) {
-            $this->actionPostRegister();
+            $this->postRegister();
         }
         $render = new TemplateMaker();
         $categoryRepository = new CategoryRepository();
-        $render->render('registerTemplate', 'mainPage', $categoryRepository->getCategoryList());
+        $render->render('registerTemplate', 'mainPage', $categoryRepository->getAll());
     }
 
-    public function actionLogin($params)
+    public function login($params)
     {
         if (!empty($_POST)) {
-            $this->actionPost();
+            $this->post();
         }
         $categoryRepository = new CategoryRepository();
         $render = new TemplateMaker();
-        $render->render('loginTemplate', 'mainPage', $categoryRepository->getCategoryList());
+        $render->render('loginTemplate', 'mainPage', $categoryRepository->getAll());
     }
 
-    public function actionLogout()
+    public function logout()
     {
         $this->authentication->logOut();
         header("Location: /");
     }
 
-    public function actionPost()
+    public function post()
     {
         $name = $_POST['name'];
         $password = $_POST['password'];
@@ -52,15 +52,16 @@ class UserController
             header("Location: /");
         }
     }
-    public function actionPostRegister()
+    public function postRegister()
     {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $password_again = $_POST['password_again'];
+        $city = $_POST['city'];
         if ($password == $password_again) {
             $authentication = new Authentication('');
-            $param = $authentication->register($name, $email, $password);
+            $param = $authentication->register($name, $email, $password, $city);
             $authentication->auth($param[0], $param[1]);
             header("Location: /");
         } else {
