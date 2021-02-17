@@ -2,6 +2,7 @@
 
 namespace App\Tools;
 
+use App\models\User;
 use App\Tools\Session;
 use App\tools\Errors\UsersValidationException;
 use App\Services\UserService;
@@ -16,11 +17,13 @@ class Authentication
      * @var UserService
      */
     private UserService $userService;
+    private string $sessionKey;
 
     public function __construct(string $path)
     {
         $this->sessionObject = new Session();
         $this->userService = new UserService();
+        $this->sessionKey = 'userID';
         if ($path == null) {
             $this->sessionObject->setSavePath(__DIR__ . '/../storage/php-session/');
         } else {
@@ -31,21 +34,25 @@ class Authentication
     public function isAuth(): bool
     {
         $this->sessionObject->start();
-        return $this->sessionObject->sessionExists();
+        if ($this->sessionObject->sessionExists() && $this->sessionObject->contains($this->sessionKey)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function auth(string $email, string $password): bool
     {
         $userID = $this->userService->checkUserData($email, $password);
         $this->sessionObject->start();
-        $this->sessionObject->set('userID', $userID);
+        $this->sessionObject->set($this->sessionKey, $userID);
         return true;
     }
 
     public function getLogin(): string
     {
         $this->sessionObject->start();
-        $userID = (int) $this->sessionObject->get('userID');
+        $userID = (int) $this->sessionObject->get($this->sessionKey);
         return $this->userService->getLogin($userID);
     }
 
@@ -54,7 +61,7 @@ class Authentication
         $this->sessionObject->start();
         if ($this->sessionObject->cookieExists()) {
             setcookie("PHPSESSID", 'false', time() - 1);
-            $this->sessionObject->delete('userID');
+            $this->sessionObject->delete($this->sessionKey);
             $this->sessionObject->destroy();
         }
     }
@@ -68,6 +75,14 @@ class Authentication
         }
         if ($this->userService->register($name, $email, $password, $city)) {
             return [$name, $password];
+        }
+    }
+
+    public function getUser(): User
+    {
+        if ($this->isAuth()) {
+            $id = $this->sessionObject->get($this->sessionKey);
+            return $this->userService->getUser($id);
         }
     }
 }

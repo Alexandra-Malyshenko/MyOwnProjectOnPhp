@@ -1,8 +1,8 @@
 <?php
 
+use App\Services\CategoryService;
 use App\Tools\Authentication;
 use App\tools\TemplateMaker;
-use App\Repository\CategoryRepository;
 use App\tools\Errors\UsersValidationException;
 
 class UserController
@@ -23,8 +23,7 @@ class UserController
             $this->postRegister();
         }
         $render = new TemplateMaker();
-        $categoryRepository = new CategoryRepository();
-        $render->render('registerTemplate', 'mainPage', $categoryRepository->getAll());
+        $render->render('registerTemplate', 'mainPage', (new CategoryService())->getAll());
     }
 
     public function login($params)
@@ -32,9 +31,8 @@ class UserController
         if (!empty($_POST)) {
             $this->post();
         }
-        $categoryRepository = new CategoryRepository();
         $render = new TemplateMaker();
-        $render->render('loginTemplate', 'mainPage', $categoryRepository->getAll());
+        $render->render('loginTemplate', 'mainPage', (new CategoryService())->getAll());
     }
 
     public function logout()

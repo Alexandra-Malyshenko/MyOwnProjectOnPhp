@@ -22,7 +22,7 @@ $handler = new TelegramHandler(
     Logger::WARNING
 );
 $handler->setFormatter(new LineFormatter("%message%", null, true));
-$logger->pushHandler($handler);
+//$logger->pushHandler($handler);
 
 try {
     $router = new Router();

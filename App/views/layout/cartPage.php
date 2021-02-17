@@ -1,10 +1,12 @@
 <?php
 
-use App\Repository\CartRepository;
+use App\Services\CartService;
+use App\Services\WishListService;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
-$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
+$cart = new CartService(__DIR__ . '/../../storage/php-session/');
+$wish = new WishListService();
 $productsFromSession = $cart->getProductsFromSession();
 /**
  * @var $header string
@@ -83,7 +85,7 @@ $totalPrice = $params[2];
                 </table>
                 <div class="d-flex justify-content-between pt-3">
                     <button type="button" class="btn btn-info"><a href="/" style="text-decoration: none; color: white">Продолжить покупки</a></button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Оформить заказ</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"><a href="/cart/checkout" style="text-decoration: none; color: white">Оформить заказ</a></button>
 
                 </div>
                 <?php endif; ?>

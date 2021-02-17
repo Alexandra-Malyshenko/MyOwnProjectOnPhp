@@ -1,45 +1,24 @@
 <?php
 
+use App\Services\CategoryService;
+use App\Services\ProductService;
 use App\tools\TemplateMaker;
-use App\Repository\ProductRepository;
-use App\Repository\CategoryRepository;
 
 class CategoryController
 {
-    /**
-     * @var CategoryRepository
-     */
-    private CategoryRepository $categoryRepos;
-
-    /**
-     * @var ProductRepository
-     */
-    private ProductRepository $productRepos;
-
-    public function __construct()
-    {
-        $this->categoryRepos = new CategoryRepository();
-        $this->productRepos = new ProductRepository();
-    }
-
     public function index()
     {
-        $categoryList = $this->categoryRepos->getAll();
-        $products = $this->productRepos->getAll();
-//        var_dump($products);
-
-        // create TemplateMaker instants and pass default layout with config file with path footer and header templates
+        $categoryList = (new CategoryService())->getAll();
+        $products = (new ProductService())->getAll();
         $render = new TemplateMaker();
         $render->render('', 'categoryPage', [$categoryList,[], $products]);
     }
 
-    public function getCategory(int $params)
+    public function getCategory(int $id)
     {
-        $categoryObjectById = $this->categoryRepos->getById($params);
-        $products = $this->productRepos->getByCategoryId($categoryObjectById->getId());
-
-        // create TemplateMaker instants and pass default layout with config file with path footer and header templates
+        $categoryObjectById = (new CategoryService())->getCategoryById($id);
+        $products = (new ProductService())->getByCategoryId($categoryObjectById->getId());
         $render = new TemplateMaker();
-        $render->render('', 'categoryPage', [$this->categoryRepos->getAll(), $categoryObjectById, $products]);
+        $render->render('', 'categoryPage', [(new CategoryService())->getAll(), $categoryObjectById, $products]);
     }
 }

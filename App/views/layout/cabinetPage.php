@@ -1,10 +1,12 @@
 <?php
 
-use App\Repository\CartRepository;
+use App\Services\CartService;
+use App\Services\WishListService;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
-$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
+$cart = new CartService(__DIR__ . '/../../storage/php-session/');
+$wish = new WishListService();
 
 /**
  * @var $header string
@@ -12,7 +14,8 @@ $cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
  * @var $footer string
  * @var $params array
  */
-$categoryList = $params;
+$categoryList = $params[0];
+$orders = $params[1];
 ?>
 
 <!DOCTYPE html>
@@ -36,38 +39,39 @@ $categoryList = $params;
             <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/logout" style="text-decoration: none;
     color: white;">Выйти из аккауна</a></button>
         </div>
-        <div class="row mt-2 d-flex justify-content-center">
-            <div class="col-lg-9 col-md-9 col-sm-12 ">
-                <h5 class="pb-3">Ваша корзина: </h5>
+        <div class="row mt-2">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <ul class="list-group">
+                    <li class="list-group-item disabled" aria-disabled="true">Мой кабинет</li>
+                    <li class="list-group-item active"><a href="/" style="text-decoration: none; color: white">История заказов</a></li>
+                    <li class="list-group-item"><a href="/cabinet/wishList" style="text-decoration: none; color: black">Список моих хотелок</a></li>
+                    <li class="list-group-item"><a href="/cabinet/comments" style="text-decoration: none; color:black;">Мои комментарии</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-9 col-md-8 col-sm-12">
                 <table class="table table-hover ">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Наименование</th>
-                        <th scope="col">Количество</th>
-                        <th scope="col">Цена</th>
+                        <th scope="col">Номер</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Адрес доставки</th>
+                        <th scope="col">Дата покупки</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <?php foreach ($orders as $order): ?>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Торт шоколадный</td>
-                        <td>1</td>
-                        <td>490 грн/кг</td>
+                        <th scope="row"><?php echo $order->getId();?></th>
+                        <td><?php echo $order->getPriceTotal();?> грн.</td>
+                        <td><?php echo $order->getAddress();?></td>
+                        <td><?php echo $order->getDate(); ?></td>
+                        <td scope="col"><a href="/cabinet/order/<?php echo $order->getId();?>" style="text-decoration: none; color: black"><button class="btn btn-secondary">Посмотреть</button></a></td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Хлеб бородинский</td>
-                        <td>2</td>
-                        <td>25 грн/шт</td>
-                    </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-between pt-3">
-                    <button type="button" class="btn btn-info"><a href="/" style="text-decoration: none; color: white">Продолжить покупки</a></button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Оформить заказ</button>
 
-                </div>
             </div>
 
         </div>

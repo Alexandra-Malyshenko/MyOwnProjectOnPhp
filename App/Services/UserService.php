@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\models\User;
 use App\Repository\UserRepository;
 use App\tools\Errors\ProductsErrorException;
 use App\tools\Errors\UsersValidationException;
@@ -42,10 +43,18 @@ class UserService
     public function getLogin(int $id): string
     {
         if (empty($id)) {
-            throw new ProductsErrorException('Must be enter an id for category');
+            throw new ProductsErrorException('Must be enter an id user');
         }
         $user = $this->userRepos->getById($id);
         return $user->getName();
+    }
+
+    public function getUser(int $id): User
+    {
+        if (empty($id)) {
+            throw new ProductsErrorException('Must be enter an id user');
+        }
+        return $this->userRepos->getById($id);
     }
 
     public function register(string $name, string $email, string $password, string $city): bool
@@ -61,8 +70,17 @@ class UserService
     public function delete(int $id): string
     {
         if (empty($id)) {
-            throw new ProductsErrorException('Must be enter an id for category');
+            throw new ProductsErrorException('Must be enter an id user');
         }
         return $this->userRepos->delete($id);
+    }
+
+    public function getUserByComments(array $comments)
+    {
+        $users = [];
+        foreach ($comments as $comment) {
+            array_push($users, $this->getUser($comment->getUserId()));
+        }
+        return $users;
     }
 }
