@@ -1,10 +1,12 @@
 <?php
 
-use App\Repository\CartRepository;
+use App\Services\CartService;
+use App\Services\WishListService;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
-$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
+$cart = new CartService(__DIR__ . '/../../storage/php-session/');
+$wish = new WishListService();
 
 /**
  * @var $params array of Product object and Category object
@@ -34,6 +36,8 @@ include dirname(__DIR__) . '/templates/headerTemplate.php';
 $category = $params[1];
 /** @var \App\models\Product $product */
 $product = $params[2];
+$comments = $params[3];
+$users = $params[4];
 ?>
 <div class="container mt-5 d-flex justify-content-end">
     <div class="row">
@@ -54,12 +58,79 @@ $product = $params[2];
         <div class="col-lg-6 col-md-6 col-sm-12">
             <h2 class=" pb-3"><?php echo $product->getTitle(); ?></h2>
             <p class="price"><?php echo $product->getPrice(); ?> грн/кг</p>
-            <button class="btn btn-success"><a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>">Заказать</a></button>
+            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>" style="text-decoration: none; color: white">
+                <button class="btn btn-success">Заказать</button>
+            </a>
+            <?php if($auth->isAuth()): ?>
+            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/wishList/<?php echo $product->getId(); ?>">
+                <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            </a>
+            <?php endif; ?>
             <p class="pt-5 pb-5 "> <i><?php echo $product->getDescription(); ?></i></p>
         </div>
     </div>
 </div>
-<hr class="hr-shelf mt-5 mb-5">
+    <hr class="hr-shelf mt-5 mb-5">
+    <h4 align="center">Комментарии</h4>
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <?php if ($comments):?>
+            <table class="table table-borderless" >
+                <thead>
+                <tr>
+                    <th scope="col">Комментарий от пользователя </th>
+                    <th scope="col">Дата публикации</th>
+                    <th scope="col">Текст комментария</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($comments as $comment): ?>
+                    <?php foreach ($users as $user): ?>
+                        <?php if ($user->getId() == $comment->getUserId()): ?>
+                        <tr>
+                            <td><?php echo $user->getName()?></td>
+                            <td><?php echo $comment->getDate()?></td>
+                            <td><?php echo $comment->getText()?></td>
+                        </tr>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <p align="center">Для этого продукта пока нет комметариев</p>
+            <?php endif;?>
+            <hr class="hr-shelf mt-5 mb-5">
+                <?php if($auth->isAuth()): ?>
+                <h6 align="center">Написать комментарий</h6>
+                <form method="post">
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationDefault01">Имя пользователя</label>
+                            <input type="text" class="form-control" id="validationDefault01" name="name" value="<?php echo $auth->getLogin(); ?>" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationDefault01">О продукте</label>
+                            <input class="form-control" id="validationDefault01" name="productComment" value="<?php echo $product->getTitle(); ?>" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationDefault02">Текст комментария</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="text" value="" required></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-info" type="submit">Создать</button>
+                </form>
+                <?php else: ?>
+                <p>Для того, что бы написать комментарий сначала нужно авторизоваться</p>
+                <a href="/login"><button class="btn btn-info">Войти</button></a>
+                <?php endif;?>
+        </div>
+    </div>
+</div>
+    <hr class="hr-shelf mt-5 mb-5">
 
 <?php
 echo $footer;

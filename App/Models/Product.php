@@ -8,6 +8,7 @@ class Product
     private int $category_id;
     private string $title;
     private int $price;
+    private int $quantity;
     private string $description;
     private string $image;
 
@@ -29,6 +30,11 @@ class Product
     public function getPrice(): int
     {
         return $this->price;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
     }
 
     public function getDescription(): string
@@ -59,6 +65,11 @@ class Product
     public function setPrice(int $price): void
     {
         $this->price = $price;
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
     }
 
     public function setDescription(string $description): void

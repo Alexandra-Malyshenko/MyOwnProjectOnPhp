@@ -44,60 +44,20 @@
                         <a class="nav-link" href="/login">Войти</a>
                     <?php endif ?>
                 </li>
+                <?php if($auth->isAuth()): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cabinet/wishList">
+                        <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+                        <span id="cart-count">(<?php echo $wish->count($auth->getUser()->getId()); ?>)</span>
+                    </a>
+                </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/cart">
                         Корзина
                         <span id="cart-count">(<?php echo $cart->countItems(); ?>)</span>
                         <img src="/images/logo/shopping-cart.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-
                     </a>
-<!--                    <a class="nav-link" type="button" data-toggle="modal" data-target="#exampleModal" href="#">-->
-<!--                        Корзина-->
-<!--                        <span id="cart-count">(--><?php //echo $cart->countItems(); ?><!--)</span>-->
-<!--                        <img src="/images/logo/shopping-cart.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">-->
-<!--                    </a>-->
-<!--                    <div class="fade modal-castom" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--                        <div class="modal-dialog">-->
-<!--                            <div class="modal-content">-->
-<!--                                <div class="modal-header">-->
-<!--                                    <h5 class="modal-title" id="exampleModalLabel">Ваша корзина</h5>-->
-<!--                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                                        <span aria-hidden="true">&times;</span>-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                                <div class="modal-body">-->
-<!--                                    <table class="table table-hover">-->
-<!--                                        <thead>-->
-<!--                                        <tr>-->
-<!--                                            <th scope="col">#</th>-->
-<!--                                            <th scope="col">Наименование</th>-->
-<!--                                            <th scope="col">Количество</th>-->
-<!--                                            <th scope="col">Цена</th>-->
-<!--                                        </tr>-->
-<!--                                        </thead>-->
-<!--                                        <tbody>-->
-<!--                                        <tr>-->
-<!--                                            <th scope="row">1</th>-->
-<!--                                            <td>Торт шоколадный</td>-->
-<!--                                            <td>1</td>-->
-<!--                                            <td>490 грн/кг</td>-->
-<!--                                        </tr>-->
-<!--                                        <tr>-->
-<!--                                            <th scope="row">2</th>-->
-<!--                                            <td>Хлеб бородинский</td>-->
-<!--                                            <td>2</td>-->
-<!--                                            <td>25 грн/шт</td>-->
-<!--                                        </tr>-->
-<!--                                        </tbody>-->
-<!--                                    </table>-->
-<!--                                </div>-->
-<!--                                <div class="modal-footer">-->
-<!--                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Продолжить покупки</button>-->
-<!--                                    <button type="button" class="btn btn-info"><a href="/cabinet" style="text-decoration: none; color: white">Оформить заказ</a></button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </li>
             </ul>
         </div>

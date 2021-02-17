@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\models\Category;
-use App\tools\Errors\ProductsErrorException;
 use App\Tools\Database;
 use PDO;
 
@@ -16,7 +15,8 @@ class CategoryRepository
 
     public function getAll(): array
     {
-        $sql = "SELECT id, title FROM categories";
+        $sql = "SELECT id, title 
+                FROM categories";
         $statement = $this->getConnect()->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
         return $statement->fetchAll();
@@ -24,19 +24,19 @@ class CategoryRepository
 
     public function getById(int $id): ?Category
     {
-        if (empty($id)) {
-            throw new ProductsErrorException('Must be enter an id for category');
-        }
-        $sql = "SELECT id, title FROM categories WHERE id = :id";
+        $sql = "SELECT id, title 
+                FROM categories 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
         return $statement->fetch();
     }
 
-    public function create(int $category_id, string $title, int $price, string $description, string $image): bool
+    public function create(string $title): bool
     {
-        $sql = "INSERT INTO categories title VALUE :title";
+        $sql = "INSERT INTO categories title 
+                VALUE :title";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['title' => $title]);
         return true;
@@ -44,7 +44,9 @@ class CategoryRepository
 
     public function update(int $id, string $title): bool
     {
-        $sql = "UPDATE categories SET title = :title WHERE id = :id";
+        $sql = "UPDATE categories 
+                SET title = :title 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['title' => $title, 'id' => $id]);
         return true;
@@ -52,7 +54,8 @@ class CategoryRepository
 
     public function delete(int $id): bool
     {
-        $sql = "DELETE FROM categories WHERE id = :id";
+        $sql = "DELETE FROM categories 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;

@@ -1,36 +1,46 @@
 <?php
 
-use App\Repository\CategoryRepository;
-use App\Repository\ProductRepository;
+use App\Services\CategoryService;
+use App\Services\CommentService;
+use App\Services\ProductService;
+use App\Services\UserService;
+use App\Tools\Authentication;
 use App\tools\TemplateMaker;
 
 class ProductController
 {
-    /**
-     * @var ProductRepository
-     */
-    private ProductRepository $productRepos;
-
-    /**
-     * @var CategoryRepository
-     */
-    private CategoryRepository $categoryRepos;
-
-    public function __construct()
-    {
-        $this->productRepos = new ProductRepository();
-        $this->categoryRepos = new CategoryRepository();
-    }
-
     public function view(int $params)
     {
-        $productObjectById = $this->productRepos->getById($params);
-        $categoryObject = $this->categoryRepos->getById($productObjectById->getCategoryId());
+        $productObjectById = (new ProductService())->getProductById($params);
+        $categoryObject = (new CategoryService())->getCategoryById($productObjectById->getCategoryId());
+        $comments = (new CommentService())->getCommentsByProductId($productObjectById->getId());
+        $users = (new UserService())->getUserByComments($comments);
+
+        if (!empty($_POST)) {
+            $user = (new Authentication(''))->getUser();
+            if ($this->post($user, $productObjectById->getId())) {
+                $referrer = $_SERVER['HTTP_REFERER'];
+                header("Location: $referrer");
+            }
+        }
+
         $render = new TemplateMaker();
         $render->render('', 'productPage', [
-            $this->categoryRepos->getAll(),
+            (new CategoryService())->getAll(),
             $categoryObject,
-            $productObjectById
+            $productObjectById,
+            $comments,
+            $users
         ]);
+    }
+
+    public function post($user, $product_id)
+    {
+        $name = $_POST['name'];
+        $product = (int) $_POST['productComment'];
+        $text = $_POST['text'];
+        if ($name == $user->getName()) {
+            return (new CommentService())->createComment($product_id, $user->getId(), $text);
+        }
     }
 }

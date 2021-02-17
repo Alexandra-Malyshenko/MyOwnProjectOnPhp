@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace App\Services;
 
 use App\Tools\Session;
 use App\Repository\ProductRepository;
 
-class CartRepository
+class CartService
 {
     /**
      * @var Session
@@ -97,6 +97,13 @@ class CartRepository
             array_push($productsList, $productRepos->getById($id));
         }
         return $productsList;
+    }
+
+    public function clear()
+    {
+        $this->session->start();
+        $productsCart = [];
+        $this->session->set($this->sessionKey, $productsCart);
     }
 
 }

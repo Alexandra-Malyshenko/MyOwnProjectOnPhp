@@ -22,7 +22,9 @@ class ProductRepository
      */
     public function getByCategoryId(int $id): array
     {
-        $sql = "SELECT id, category_id, title, price, description, image  FROM products WHERE category_id = :id";
+        $sql = "SELECT id, category_id, title, price, description, image  
+                FROM products 
+                WHERE category_id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
@@ -35,7 +37,8 @@ class ProductRepository
      */
     public function getAll(): array
     {
-        $sql = "SELECT id, category_id, title, price, description, image  FROM products";
+        $sql = "SELECT id, category_id, title, price, description, image  
+                FROM products";
         $statement = $this->getConnect()->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetchAll();
@@ -49,7 +52,9 @@ class ProductRepository
      */
     public function getById(int $id): ?Product
     {
-        $sql = "SELECT id, category_id, title, price, description, image  FROM products WHERE id = :id";
+        $sql = "SELECT id, category_id, title, price, description, image  
+                FROM products 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
@@ -73,11 +78,13 @@ class ProductRepository
 
     public function update(int $id, int $category_id, string $title, int $price, string $description, string $image): bool
     {
-        $sql = "UPDATE products SET (category_id = :category_id, 
-                                     title = :title,
-                                     price = :price, 
-                                     description = :description,
-                                     image = :image) WHERE id = :id";
+        $sql = "UPDATE products 
+                SET (   category_id = :category_id, 
+                        title = :title,
+                        price = :price, 
+                        description = :description,
+                        image = :image) 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute([
             'id' => $id,
@@ -92,7 +99,8 @@ class ProductRepository
 
     public function delete(int $id): bool
     {
-        $sql = "DELETE FROM products WHERE id = :id";
+        $sql = "DELETE FROM products 
+                WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;

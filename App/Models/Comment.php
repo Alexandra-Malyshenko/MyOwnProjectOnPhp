@@ -6,8 +6,9 @@ class Comment
 {
     private int $id;
     private string $text;
-    private string $publication_date;
+    private string $created_at;
     private int $user_id;
+    private int $product_id;
 
     public function getId(): int
     {
@@ -24,9 +25,14 @@ class Comment
         return $this->user_id;
     }
 
-    public function getPublicationDate(): string
+    public function getProductId(): int
     {
-        return $this->publication_date;
+        return $this->product_id;
+    }
+
+    public function getDate(): string
+    {
+        return $this->created_at;
     }
 
     public function setId(int $id): void
@@ -39,13 +45,18 @@ class Comment
         $this->user_id = $user_id;
     }
 
+    public function setProductId(int $product_id): void
+    {
+        $this->product_id = $product_id;
+    }
+
     public function setText(string $text): void
     {
         $this->text = $text;
     }
 
-    public function setPublicationDate(string $date): void
+    public function setDate(string $date): void
     {
-        $this->publication_date = $date;
+        $this->created_at = $date;
     }
 }

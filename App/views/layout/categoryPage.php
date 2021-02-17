@@ -1,10 +1,12 @@
 <?php
 
-use App\Repository\CartRepository;
+use App\Services\CartService;
+use App\Services\WishListService;
 use App\Tools\Authentication;
 
 $auth = new Authentication(__DIR__ . '/../../storage/php-session/');
-$cart = new CartRepository(__DIR__ . '/../../storage/php-session/');
+$cart = new CartService(__DIR__ . '/../../storage/php-session/');
+$wish = new WishListService();
 /**
  * @var $params array
  * @var $header string
@@ -61,11 +63,21 @@ $products = $params[2];
                         <img src="<?php echo $product->getImage(); ?>" class="card-img-top" alt="...">
                         <div class="card-body text-center">
                             <h5 class=""><?php echo $product->getTitle(); ?></h5>
+                            <p>Цена : <b><?php echo $product->getPrice(); ?> грн. / кг</b> </p>
                             <p class=""> <i><?php echo $product->getDescription(); ?></i></p>
                         </div>
                         <div class="card-footer text-center">
-                            <button class="btn btn-success"><a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>">Заказать</a></button>
-                            <button class="btn btn-info"><a href="/product/<?php echo $product->getId(); ?>">Подробнее</a></button>
+                            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>" style="text-decoration: none">
+                                <button class="btn btn-success">Заказать</button>
+                            </a>
+                            <a href="/product/<?php echo $product->getId(); ?>" style="text-decoration: none">
+                                <button class="btn btn-info">Подробнее</button>
+                            </a>
+                            <?php if($auth->isAuth()): ?>
+                            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/wishList/<?php echo $product->getId(); ?>">
+                                <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+                            </a>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>

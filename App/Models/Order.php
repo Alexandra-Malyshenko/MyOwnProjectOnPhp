@@ -8,7 +8,11 @@ class Order
     private int $user_id;
     private string $address;
     private string $price_total;
-    private array $products;
+    private $comments;
+    private string $contact_phone;
+    private string $user_name;
+    private string $user_email;
+    private string $created_at;
 
     public function getId(): int
     {
@@ -18,6 +22,16 @@ class Order
     public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function getUserName(): int
+    {
+        return $this->user_name;
+    }
+
+    public function getUserEmail(): int
+    {
+        return $this->user_email;
     }
 
     public function getAddress(): string
@@ -30,9 +44,19 @@ class Order
         return $this->price_total;
     }
 
-    public function getProducts(): array
+    public function getContactPhone(): string
     {
-        return $this->products;
+        return $this->contact_phone;
+    }
+
+    public function getComments(): string
+    {
+        return $this->comments == null ? '' : $this->comments;
+    }
+
+    public function getDate(): string
+    {
+        return $this->created_at;
     }
 
     public function setId(int $id): void
@@ -45,6 +69,16 @@ class Order
         $this->user_id = $user_id;
     }
 
+    public function setUserName(int $user_name): void
+    {
+        $this->user_name = $user_name;
+    }
+
+    public function setUserEmail(int $user_email): void
+    {
+        $this->user_email = $user_email;
+    }
+
     public function setAddress(string $address): void
     {
         $this->address = $address;
@@ -55,8 +89,13 @@ class Order
         $this->price_total = $total_price;
     }
 
-    public function setProducts(array $products): void
+    public function setContactPhone(string $phone): void
     {
-        $this->products = $products;
+        $this->contact_phone = $phone;
+    }
+
+    public function setComments(string $comments): void
+    {
+        $this->comments = $comments;
     }
 }
