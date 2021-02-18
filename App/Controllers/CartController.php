@@ -4,9 +4,8 @@ use App\Services\CartService;
 use App\Services\CategoryService;
 use App\Services\MailService;
 use App\Services\OrderService;
-use App\Repository\CategoryRepository;
-use App\tools\TemplateMaker;
-use App\Tools\Authentication;
+use libs\TemplateMaker;
+use libs\Authentication;
 
 class CartController
 {
@@ -52,7 +51,7 @@ class CartController
         $productsFromSession = $this->cartService->getProductsFromSession();
         $products = $this->cartService->getProducts();
         $total = $this->cartService->getTotalPrice($products);
-        $user = (new Authentication(''))->getUser();
+        $user = (new Authentication())->getUser();
         $result = false;
         if (!empty($_POST)) {
             $result = $this->post($productsFromSession, $products, $user, $total);

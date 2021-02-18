@@ -2,8 +2,8 @@
 
 use App\Services\CategoryService;
 use App\Services\MailService;
-use App\Tools\Authentication;
-use App\tools\TemplateMaker;
+use libs\Authentication;
+use libs\TemplateMaker;
 use App\tools\Errors\UsersValidationException;
 
 class UserController
@@ -15,7 +15,7 @@ class UserController
 
     public function __construct()
     {
-        $this->authentication = new Authentication('');
+        $this->authentication = new Authentication();
     }
 
     public function register()
@@ -59,7 +59,7 @@ class UserController
         $password_again = $_POST['password_again'];
         $city = $_POST['city'];
         if ($password == $password_again) {
-            $authentication = new Authentication('');
+            $authentication = new Authentication();
             $params = $authentication->register($name, $email, $password, $city);
             (new MailService())->sendMessage('register', $params);
             $authentication->auth($params[0], $params[1]);

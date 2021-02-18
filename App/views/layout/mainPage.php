@@ -1,10 +1,10 @@
 <?php
 
 use App\Services\WishListService;
-use App\Tools\Authentication;
 use App\Services\CartService;
+use libs\Authentication;
 
-$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$auth = new Authentication();
 $cart = new CartService(__DIR__ . '/../../storage/php-session/');
 $wish = new WishListService();
 

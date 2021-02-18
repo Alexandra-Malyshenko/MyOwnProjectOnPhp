@@ -5,8 +5,8 @@ use App\Services\CommentService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\WishListService;
-use App\Tools\Authentication;
-use App\tools\TemplateMaker;
+use libs\Authentication;
+use libs\TemplateMaker;
 
 class CabinetController
 {
@@ -22,7 +22,7 @@ class CabinetController
 
     public function index()
     {
-        $user = (new Authentication(''))->getUser();
+        $user = (new Authentication())->getUser();
         $orders = (new OrderService())->getByUserId($user->getId());
         $this->render->render('cabinetTemplate', 'cabinetPage', [(new CategoryService())->getAll(), $orders]);
     }
@@ -37,7 +37,7 @@ class CabinetController
 
     public function viewWishList()
     {
-        $user = (new Authentication(''))->getUser();
+        $user = (new Authentication())->getUser();
         $wishList = (new WishListService())->getListByUserId($user->getId());
         $this->render
             ->render('cabinetTemplate', 'cabinetWishListPage', [(new CategoryService())->getAll(), $wishList]);
@@ -45,7 +45,7 @@ class CabinetController
 
     public function addWish(int $product_id)
     {
-        $user = (new Authentication(''))->getUser();
+        $user = (new Authentication())->getUser();
         if ($user) {
             (new WishListService())->createWish($product_id, $user->getId());
             $referrer = $_SERVER['HTTP_REFERER'];
@@ -62,7 +62,7 @@ class CabinetController
 
     public function viewComments()
     {
-        $user = (new Authentication(''))->getUser();
+        $user = (new Authentication())->getUser();
         $commentList = (new CommentService())->getCommentsByUserId($user->getId());
         $products = (new CommentService())->getProductsInComment($commentList);
         $this->render

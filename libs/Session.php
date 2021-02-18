@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tools;
+namespace libs;
 
 class Session
 {
@@ -32,7 +32,6 @@ class Session
     public function sessionExists(): bool
     {
         return !empty($_SESSION);
-//        return session_status() === PHP_SESSION_ACTIVE;
     }
 
     public function start(): bool

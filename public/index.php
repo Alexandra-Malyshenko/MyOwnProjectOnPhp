@@ -9,7 +9,7 @@ use Monolog\Logger;
 use App\TelegramHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
-use App\Tools\Router;
+use libs\Router;
 
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__));
 $dotenv->load();

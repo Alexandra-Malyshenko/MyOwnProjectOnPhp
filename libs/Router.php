@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tools;
+namespace libs;
 
 use App\tools\Errors\PathException;
 

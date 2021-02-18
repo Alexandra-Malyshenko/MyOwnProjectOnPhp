@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\models\Product;
 use App\tools\Errors\ProductsErrorException;
 use Exception;
-use App\Tools\Database;
+use libs\Database;
 use PDO;
 
 class ProductRepository

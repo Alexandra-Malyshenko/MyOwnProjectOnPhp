@@ -2,9 +2,9 @@
 
 use App\Services\CartService;
 use App\Services\WishListService;
-use App\Tools\Authentication;
+use libs\Authentication;
 
-$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$auth = new Authentication();
 $cart = new CartService(__DIR__ . '/../../storage/php-session/');
 $wish = new WishListService();
 
@@ -69,12 +69,14 @@ $wishList = $params[1];
                             <td><?php echo $wishList[$item]->getPrice();?> грн.</td>
                             <td scope="col">
                                 <a href="/cart/add/<?php echo $wishList[$item]->getId();?>" style="text-decoration: none; color: black">
-                                    <button class="btn btn-warning">Добавить в корзину</button>
+                                    <img src="/images/logo/shopping-cart.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+<!--                                    <button class="btn btn-warning">Добавить в корзину</button>-->
                                 </a>
                             </td>
                             <td scope="col">
                                 <a href="/cabinet/deleteWish/<?php echo $item; ?>" style="text-decoration: none; color: black">
-                                    <button class="btn btn-danger">Удалить</button>
+                                    <img src="/images/logo/delete.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+<!--                                    <button class="btn btn-danger">Удалить</button>-->
                                 </a>
                             </td>
                         </tr>

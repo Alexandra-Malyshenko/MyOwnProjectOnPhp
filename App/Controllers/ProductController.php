@@ -5,8 +5,8 @@ use App\Services\CommentService;
 use App\Services\MailService;
 use App\Services\ProductService;
 use App\Services\UserService;
-use App\Tools\Authentication;
-use App\tools\TemplateMaker;
+use libs\Authentication;
+use libs\TemplateMaker;
 
 class ProductController
 {
@@ -18,7 +18,7 @@ class ProductController
         $users = (new UserService())->getUserByComments($comments);
 
         if (!empty($_POST)) {
-            $user = (new Authentication(''))->getUser();
+            $user = (new Authentication())->getUser();
             if ($this->post($user, $productObjectById->getId())) {
                 $referrer = $_SERVER['HTTP_REFERER'];
                 header("Location: $referrer");

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tools;
+namespace libs;
 
 use App\models\User;
-use App\Tools\Session;
+use libs\Session;
 use App\tools\Errors\UsersValidationException;
 use App\Services\UserService;
 
@@ -19,16 +19,12 @@ class Authentication
     private UserService $userService;
     private string $sessionKey;
 
-    public function __construct(string $path)
+    public function __construct()
     {
         $this->sessionObject = new Session();
         $this->userService = new UserService();
         $this->sessionKey = 'userID';
-        if ($path == null) {
-            $this->sessionObject->setSavePath(__DIR__ . '/../storage/php-session/');
-        } else {
-            $this->sessionObject->setSavePath($path);
-        }
+        $this->sessionObject->setSavePath(__DIR__ . '/../App/storage/php-session/');
     }
 
     public function isAuth(): bool

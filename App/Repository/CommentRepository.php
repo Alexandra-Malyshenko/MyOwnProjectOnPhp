@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\models\Comment;
-use App\Tools\Database;
+use libs\Database;
 use PDO;
 
 class CommentRepository

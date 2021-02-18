@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\models\User;
-use App\Tools\Database;
+use libs\Database;
 use App\tools\Errors\ProductsErrorException;
 use PDO;
 

@@ -1,7 +1,7 @@
 <?php
 
 use App\Services\CategoryService;
-use App\tools\TemplateMaker;
+use libs\TemplateMaker;
 
 class SiteController
 {

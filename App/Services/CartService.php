@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Tools\Session;
+use libs\Session;
 use App\Repository\ProductRepository;
 
 class CartService

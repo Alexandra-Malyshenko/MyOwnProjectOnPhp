@@ -2,9 +2,9 @@
 
 use App\Services\CartService;
 use App\Services\WishListService;
-use App\Tools\Authentication;
+use libs\Authentication;
 
-$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$auth = new Authentication();
 $cart = new CartService(__DIR__ . '/../../storage/php-session/');
 $wish = new WishListService();
 
@@ -74,7 +74,7 @@ $products = $params[2];
                             <td><?php echo $item->getText();?></td>
                             <td scope="col">
                                 <a href="/cabinet/deleteComment/<?php echo $item->getId();?>" style="text-decoration: none; color: black">
-                                    <button class="btn btn-danger">Удалить</button>
+                                    <img src="/images/logo/delete.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
                                 </a>
                             </td>
                         </tr>

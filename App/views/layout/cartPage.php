@@ -2,9 +2,9 @@
 
 use App\Services\CartService;
 use App\Services\WishListService;
-use App\Tools\Authentication;
+use libs\Authentication;
 
-$auth = new Authentication(__DIR__ . '/../../storage/php-session/');
+$auth = new Authentication();
 $cart = new CartService(__DIR__ . '/../../storage/php-session/');
 $wish = new WishListService();
 $productsFromSession = $cart->getProductsFromSession();
@@ -73,7 +73,7 @@ $totalPrice = $params[2];
                         <td><a style="text-decoration: none; color: black;" href="/product/view/<?php echo $product->getId(); ?>" ><?php echo $product->getTitle();?></a></td>
                         <td><?php echo $productsFromSession[$product->getId()]?></td>
                         <td><?php echo $product->getPrice();?> грн.</td>
-                        <td><a style="text-decoration: none; color: black;" href="/cart/delete/<?php echo $product->getId(); ?>"> Удалить </a></td>
+                        <td><a style="text-decoration: none; color: black;" href="/cart/delete/<?php echo $product->getId(); ?>"> <img src="/images/logo/delete.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy"> </a></td>
                     </tr>
                     <?php endforeach; ?>
                     <tr>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\tools;
+namespace libs;
 
 use App\tools\Errors\ConfigException;
 use App\tools\Errors\ProductsErrorException;
@@ -38,8 +38,8 @@ class TemplateMaker
             $this->logger->warning('There is no array! You should pass array of products');
             throw new ProductsErrorException('There is no array! You should pass array of products');
         }
-        $templatePath = dirname(__DIR__) . '/views/templates/';
-        $layoutPath = dirname(__DIR__) . '/views/layout/';
+        $templatePath = dirname(__DIR__) . '/App/views/templates/';
+        $layoutPath = dirname(__DIR__) . '/App/views/layout/';
         ob_start();
         $footer = file_get_contents(dirname(__DIR__) . $this->footer);
         if ($templateName !== '') {

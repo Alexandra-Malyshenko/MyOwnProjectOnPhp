@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\models\Order;
 use App\models\Product;
-use App\Tools\Database;
+use libs\Database;
 use App\tools\Errors\ProductsErrorException;
 use PDO;
 
