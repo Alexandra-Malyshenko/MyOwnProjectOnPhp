@@ -89,4 +89,9 @@ class OrderService
         }
         return $this->orderRepos->delete($id);
     }
+
+    public function getIdOfLastOrder(): int
+    {
+        return $this->orderRepos->getLastId();
+    }
 }

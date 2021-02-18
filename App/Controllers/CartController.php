@@ -2,6 +2,7 @@
 
 use App\Services\CartService;
 use App\Services\CategoryService;
+use App\Services\MailService;
 use App\Services\OrderService;
 use App\Repository\CategoryRepository;
 use App\tools\TemplateMaker;
@@ -56,6 +57,7 @@ class CartController
         if (!empty($_POST)) {
             $result = $this->post($productsFromSession, $products, $user, $total);
             if ($result) {
+                (new MailService())->sendMessage('order');
                 $this->cartService->clear();
             }
         }

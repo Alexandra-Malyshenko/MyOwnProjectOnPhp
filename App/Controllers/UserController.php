@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\CategoryService;
+use App\Services\MailService;
 use App\Tools\Authentication;
 use App\tools\TemplateMaker;
 use App\tools\Errors\UsersValidationException;
@@ -59,8 +60,9 @@ class UserController
         $city = $_POST['city'];
         if ($password == $password_again) {
             $authentication = new Authentication('');
-            $param = $authentication->register($name, $email, $password, $city);
-            $authentication->auth($param[0], $param[1]);
+            $params = $authentication->register($name, $email, $password, $city);
+            (new MailService())->sendMessage('register', $params);
+            $authentication->auth($params[0], $params[1]);
             header("Location: /");
         } else {
             throw new UsersValidationException('Your password does not match');

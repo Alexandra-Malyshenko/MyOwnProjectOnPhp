@@ -2,6 +2,7 @@
 
 use App\Services\CategoryService;
 use App\Services\CommentService;
+use App\Services\MailService;
 use App\Services\ProductService;
 use App\Services\UserService;
 use App\Tools\Authentication;
@@ -40,7 +41,10 @@ class ProductController
         $product = (int) $_POST['productComment'];
         $text = $_POST['text'];
         if ($name == $user->getName()) {
-            return (new CommentService())->createComment($product_id, $user->getId(), $text);
+            if ((new CommentService())->createComment($product_id, $user->getId(), $text)) {
+                (new MailService())->sendMessage('auth', [$product]);
+                return true;
+            }
         }
     }
 }
