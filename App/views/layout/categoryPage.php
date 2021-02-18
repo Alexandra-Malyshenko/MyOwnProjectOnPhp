@@ -70,11 +70,11 @@ $products = $params[2];
                             <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cart/add/<?php echo $product->getId(); ?>" style="text-decoration: none">
                                 <button class="btn btn-success">Заказать</button>
                             </a>
-                            <a href="/product/<?php echo $product->getId(); ?>" style="text-decoration: none">
+                            <a href="/product/view/<?php echo $product->getId(); ?>" style="text-decoration: none">
                                 <button class="btn btn-info">Подробнее</button>
                             </a>
                             <?php if($auth->isAuth()): ?>
-                            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/wishList/<?php echo $product->getId(); ?>">
+                            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/viewWishList<?php echo $product->getId(); ?>">
                                 <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
                             </a>
                             <?php endif;?>

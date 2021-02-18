@@ -67,7 +67,7 @@ $result = $params[4];
                     <tbody>
                     <?php foreach ($products as $product): ?>
                         <tr>
-                            <td><a style="text-decoration: none; color: black;" href="/product/<?php echo $product->getId(); ?>" ><?php echo $product->getTitle();?></a></td>
+                            <td><a style="text-decoration: none; color: black;" href="/product/view/<?php echo $product->getId(); ?>" ><?php echo $product->getTitle();?></a></td>
                             <td><?php echo $productsFromSession[$product->getId()]?></td>
                             <td><?php echo $product->getPrice();?> грн.</td>
                         </tr>
