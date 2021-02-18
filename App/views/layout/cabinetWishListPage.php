@@ -36,7 +36,7 @@ $wishList = $params[1];
     <div class="container">
         <div class="d-flex justify-content-between">
             <h3 class="pb-5">Привет, <?php echo $auth->getLogin(); ?></h3>
-            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/logout" style="text-decoration: none;
+            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/user/logout" style="text-decoration: none;
     color: white;">Выйти из аккауна</a></button>
         </div>
         <div class="row mt-2">
@@ -44,11 +44,12 @@ $wishList = $params[1];
                 <ul class="list-group">
                     <li class="list-group-item disabled" aria-disabled="true">Мой кабинет</li>
                     <li class="list-group-item"><a href="/cabinet" style="text-decoration: none; color: black">История заказов</a></li>
-                    <li class="list-group-item active"><a href="/cabinet/wishList" style="text-decoration: none; color: white">Список моих хотелок</a></li>
-                    <li class="list-group-item"><a href="/cabinet/comments" style="text-decoration: none; color:black;">Мои комментарии</a></li>
+                    <li class="list-group-item active"><a href="/cabinet/viewWishList" style="text-decoration: none; color: white">Список моих хотелок</a></li>
+                    <li class="list-group-item"><a href="/cabinet/viewComments" style="text-decoration: none; color:black;">Мои комментарии</a></li>
                 </ul>
             </div>
             <div class="col-lg-9 col-md-8 col-sm-12">
+                <?php if ($wishList): ?>
                 <h5 class="pb-3" align="center">Список ваших хотелок</h5>
                 <table class="table table-hover">
                     <thead>
@@ -64,7 +65,7 @@ $wishList = $params[1];
                     <?php foreach ($wishList as $item => $product): ?>
                         <tr>
                             <th scope="row"><?php echo $wishList[$item]->getId();?></th>
-                            <td><a style="text-decoration: none; color: black;" href="/product/<?php echo $wishList[$item]->getId(); ?>" ><?php echo $wishList[$item]->getTitle();?></a></td>
+                            <td><a style="text-decoration: none; color: black;" href="/product/view/<?php echo $wishList[$item]->getId(); ?>" ><?php echo $wishList[$item]->getTitle();?></a></td>
                             <td><?php echo $wishList[$item]->getPrice();?> грн.</td>
                             <td scope="col">
                                 <a href="/cart/add/<?php echo $wishList[$item]->getId();?>" style="text-decoration: none; color: black">
@@ -72,15 +73,17 @@ $wishList = $params[1];
                                 </a>
                             </td>
                             <td scope="col">
-                                <a href="/cabinet/wishList/delete/<?php echo $item; ?>" style="text-decoration: none; color: black">
+                                <a href="/cabinet/deleteWish/<?php echo $item; ?>" style="text-decoration: none; color: black">
                                     <button class="btn btn-danger">Удалить</button>
                                 </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
-
                     </tbody>
                 </table>
+                <?php else: ?>
+                <h5 class="pb-3" align="center">У вас пока нет хотелок :) </h5>
+                <?php endif;?>
             </div>
 
         </div>

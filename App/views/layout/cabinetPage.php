@@ -36,19 +36,20 @@ $orders = $params[1];
     <div class="container">
         <div class="d-flex justify-content-between">
             <h3 class="pb-5">Привет, <?php echo $auth->getLogin(); ?></h3>
-            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/logout" style="text-decoration: none;
+            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/user/logout" style="text-decoration: none;
     color: white;">Выйти из аккауна</a></button>
         </div>
         <div class="row mt-2">
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <ul class="list-group">
                     <li class="list-group-item disabled" aria-disabled="true">Мой кабинет</li>
-                    <li class="list-group-item active"><a href="/" style="text-decoration: none; color: white">История заказов</a></li>
-                    <li class="list-group-item"><a href="/cabinet/wishList" style="text-decoration: none; color: black">Список моих хотелок</a></li>
-                    <li class="list-group-item"><a href="/cabinet/comments" style="text-decoration: none; color:black;">Мои комментарии</a></li>
+                    <li class="list-group-item active"><a href="/cabinet" style="text-decoration: none; color: white">История заказов</a></li>
+                    <li class="list-group-item"><a href="/cabinet/viewWishList" style="text-decoration: none; color: black">Список моих хотелок</a></li>
+                    <li class="list-group-item"><a href="/cabinet/viewComments" style="text-decoration: none; color:black;">Мои комментарии</a></li>
                 </ul>
             </div>
             <div class="col-lg-9 col-md-8 col-sm-12">
+                <?php if ($orders): ?>
                 <table class="table table-hover ">
                     <thead>
                     <tr>
@@ -66,12 +67,14 @@ $orders = $params[1];
                         <td><?php echo $order->getPriceTotal();?> грн.</td>
                         <td><?php echo $order->getAddress();?></td>
                         <td><?php echo $order->getDate(); ?></td>
-                        <td scope="col"><a href="/cabinet/order/<?php echo $order->getId();?>" style="text-decoration: none; color: black"><button class="btn btn-secondary">Посмотреть</button></a></td>
+                        <td scope="col"><a href="/cabinet/getOrder/<?php echo $order->getId();?>" style="text-decoration: none; color: black"><button class="btn btn-secondary">Посмотреть</button></a></td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-
+                <?php else: ?>
+                    <h5 class="pb-3" align="center">У вас пока нет заказов :) </h5>
+                <?php endif;?>
             </div>
 
         </div>

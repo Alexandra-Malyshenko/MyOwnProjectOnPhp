@@ -4,62 +4,101 @@ namespace App\Tools;
 
 use App\tools\Errors\PathException;
 
-class
-Router
+class Router
 {
-    private $routes;
+    /**
+     * table routes
+     * @var array
+     */
+    protected static array $routes = [];
 
-    public function __construct()
-    {
-        $routesPath = require '../App/config/routes.php';
-        $this->routes = $routesPath;
-    }
+    /**
+     * current route
+     * @var array
+     */
+    protected static array $route = [];
 
     /**
      * Returns request string
      * @return string
      */
-    private function getURI(): string
+
+    private static function getURI(): string
     {
         return trim($_SERVER['REQUEST_URI'], '/');
     }
 
-    public function run()
+    /**
+     * add route in table routes
+     *
+     * @param string $regexp regular expression of route
+     * @param array $route array ([controller, action, params])
+     */
+
+    public static function add(string $regexp, $route = [])
     {
-        // let's get uri
-        $uri =  $this->getURI();
-        // find out if we have this request in routes
-        foreach ($this->routes as $uriPattern => $path) {
-            // find if request is in array of routes
-            if (preg_match("~$uriPattern~", $uri, $matches, PREG_UNMATCHED_AS_NULL)) {
-                if ($uriPattern == '' && $uri !== '') {
-                    throw new PathException('You put a wrong path! There is no information for this uri = ' . "$uri");
-                } else {
-                    // example :
-                    // preg_replace($uriPattern='product/([0-9])+',$path='product/view/$1',$uri='product/3')
-                    $internalRoute = preg_replace("~$uriPattern~", $path, $uri, 1);
-                    $uri = explode('/', $uri);
-                    $segments = explode('/', $internalRoute);
-                    // find out name for Controller
-                    $controllerName = array_shift($segments) . 'Controller';
-                    $controllerName = ucfirst($controllerName);
-                    // find out action for this Controller
-                    $actionName = array_shift($segments);
-                    while (!empty($segments)) {
-                        $parametr = (int) array_shift($segments);
-                        if (!$parametr) {
-                            throw new PathException('There is no information for this uri');
-                        }
+        self::$routes[$regexp] = $route;
+    }
+
+    /**
+     * return table routes
+     *
+     * @return array
+     */
+    public static function getRoutes(): array
+    {
+        return self::$routes;
+    }
+
+    /**
+     * return current route (controller, action, [params])
+     *
+     * @return array
+     */
+
+    public static function getRoute(): array
+    {
+        return self::$route;
+    }
+    /**
+     * search URL in routes table
+     * @return bool
+     */
+    public static function matchRoute(): bool
+    {
+        $uri = self::getURI();
+        foreach (self::$routes as $uriPattern => $route) {
+            if (preg_match("~$uriPattern~", $uri, $matches)) {
+                foreach ($matches as $key => $value) {
+                    if (is_string($key)) {
+                        $route[$key] = $value;
                     }
-                    // require file with ControllerName
-                    $controllerFile = '../App' . '/Controllers/' . $controllerName . '.php';
-                    require_once($controllerFile);
-                    // create instance of this class and call his method action
-                    $controllerObject = new $controllerName();
-                    $controllerObject->$actionName($parametr);
                 }
-                break;
+                if (!isset($route['action'])) {
+                    $route['action'] = 'index';
+                }
+                self::$route = $route;
+                return true;
             }
+        }
+        return false;
+    }
+
+    public static function dispatch()
+    {
+        if (self::matchRoute()) {
+            $controller = ucfirst(self::$route['controller']) . 'Controller';
+            $controllerFile = '../App' . '/Controllers/' . $controller . '.php';
+            require_once($controllerFile);
+            $controllerObject = new $controller();
+            $action = self::$route['action'];
+            if (self::$route['id']) {
+                $controllerObject->$action((int) self::$route['id']);
+            } else {
+                $controllerObject->$action();
+            }
+        } else {
+            throw new PathException('There is no information for this uri');
         }
     }
 }

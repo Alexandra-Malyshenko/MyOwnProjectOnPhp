@@ -44,7 +44,7 @@ $users = $params[4];
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/category/<?php echo $category->getId()?>"><?php echo $category->getTitle(); ?></a></li>
+                <li class="breadcrumb-item"><a href="/category/getCategory/<?php echo $category->getId()?>"><?php echo $category->getTitle(); ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo $product->getTitle(); ?></li>
             </ol>
         </nav>
@@ -62,7 +62,7 @@ $users = $params[4];
                 <button class="btn btn-success">Заказать</button>
             </a>
             <?php if($auth->isAuth()): ?>
-            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/wishList/<?php echo $product->getId(); ?>">
+            <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/viewWishList/<?php echo $product->getId(); ?>">
                 <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             </a>
             <?php endif; ?>
@@ -125,7 +125,7 @@ $users = $params[4];
                 </form>
                 <?php else: ?>
                 <p>Для того, что бы написать комментарий сначала нужно авторизоваться</p>
-                <a href="/login"><button class="btn btn-info">Войти</button></a>
+                <a href="/user/login"><button class="btn btn-info">Войти</button></a>
                 <?php endif;?>
         </div>
     </div>

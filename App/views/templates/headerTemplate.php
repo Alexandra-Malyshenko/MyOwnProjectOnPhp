@@ -25,9 +25,9 @@
                         Каталог
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/catalog">Вся продукция</a>
+                        <a class="dropdown-item" href="/category">Вся продукция</a>
                         <?php foreach ($categoryList as $category):?>
-                            <a class="dropdown-item" href=<?php echo "/category/" . $category->getID(); ?> ><?php echo $category->getTitle(); ?></a>
+                            <a class="dropdown-item" href=<?php echo "/category/getCategory/" . $category->getID(); ?> ><?php echo $category->getTitle(); ?></a>
                         <?php endforeach;?>
                     </div>
                 </li>
@@ -38,15 +38,15 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="/cabinet">Перейти в кабинет</a>
-                            <a class="dropdown-item" href="/logout">Выйти</a>
+                            <a class="dropdown-item" href="/user/logout">Выйти</a>
                         </div>
                     <?php else: ?>
-                        <a class="nav-link" href="/login">Войти</a>
+                        <a class="nav-link" href="/user/login">Войти</a>
                     <?php endif ?>
                 </li>
                 <?php if($auth->isAuth()): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cabinet/wishList">
+                    <a class="nav-link" href="/cabinet/viewWishList">
                         <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
                         <span id="cart-count">(<?php echo $wish->count($auth->getUser()->getId()); ?>)</span>
                     </a>

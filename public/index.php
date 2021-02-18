@@ -25,8 +25,9 @@ $handler->setFormatter(new LineFormatter("%message%", null, true));
 //$logger->pushHandler($handler);
 
 try {
-    $router = new Router();
-    $router->run();
+    Router::add('^(?P<controller>[a-zA-Z]+)/?(?P<action>[a-zA-Z]+)?/?(?P<id>[0-9]+)?');
+    Router::add('', ['controller' => 'Site', 'action' => 'index']);
+    Router::dispatch();
 } catch (\Throwable $e) {
     $logger->warning($e->getMessage());
     echo '<pre>';

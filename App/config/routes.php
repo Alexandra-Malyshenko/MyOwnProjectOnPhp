@@ -1,26 +1,25 @@
-<?php
 
-return [
+[
     // category
-    'category/([0-9]+)' => 'category/getCategory/$1', // getCategory, CategoryController
-    'catalog' => 'category/index', // index, CategoryController
+    'category/getCategory/([0-9]+)' => 'category/getCategory/$1', // getCategory, CategoryController
+    'category' => 'category/index', // index, CategoryController
 
-     // product
-    'product/([0-9]+)' => 'product/view/$1', // view, ProductController
+    // product
+    'product/view/([0-9]+)' => 'product/view/$1', // view, ProductController
 
     // user
-    'register' => 'user/register', // register, UserController
-    'login' => 'user/login', // login, UserController
-    'logout' => 'user/logout', // logout, UserController
+    'user/register' => 'user/register', // register, UserController
+    'user/login' => 'user/login', // login, UserController
+    'user/logout' => 'user/logout', // logout, UserController
 
     // cabinet
-    'cabinet/order/([0-9]+)' => 'cabinet/getOrder/$1', // getOrder, CabinetController
-    'cabinet/wishList/([0-9]+)' => 'cabinet/addWish/$1', // addWishList, CabinetController
-    'cabinet/wishList/delete/([0-9]+)' => 'cabinet/deleteWish/$1', // addWishList, CabinetController
-    'cabinet/wishList' => 'cabinet/viewWishList', // viewWishList, CabinetController
-    'cabinet/comments/([0-9]+)' => 'cabinet/getComment/$1', // getComment, CabinetController
-    'cabinet/comments/delete/([0-9]+)' => 'cabinet/deleteComment/$1', // createComment, CabinetController
-    'cabinet/comments' => 'cabinet/viewComments', // viewComments, CabinetController
+    'cabinet/getOrder/([0-9]+)' => 'cabinet/getOrder/$1', // getOrder, CabinetController
+    'cabinet/addWish/([0-9]+)' => 'cabinet/addWish/$1', // addWishList, CabinetController
+    'cabinet/deleteWish/([0-9]+)' => 'cabinet/deleteWish/$1', // addWishList, CabinetController
+    'cabinet/viewWishList' => 'cabinet/viewWishList', // viewWishList, CabinetController
+    'cabinet/getComment/([0-9]+)' => 'cabinet/getComment/$1', // getComment, CabinetController
+    'cabinet/deleteComment/([0-9]+)' => 'cabinet/deleteComment/$1', // createComment, CabinetController
+    'cabinet/viewComments' => 'cabinet/viewComments', // viewComments, CabinetController
     'cabinet' => 'cabinet/index', // index, CabinetController
 
     // cart

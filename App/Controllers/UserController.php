@@ -27,7 +27,7 @@ class UserController
         $render->render('registerTemplate', 'mainPage', (new CategoryService())->getAll());
     }
 
-    public function login($params)
+    public function login()
     {
         if (!empty($_POST)) {
             $this->post();

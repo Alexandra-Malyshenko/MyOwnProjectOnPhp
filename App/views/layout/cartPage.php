@@ -70,7 +70,7 @@ $totalPrice = $params[2];
                     <?php foreach ($products as $product): ?>
                     <tr>
                         <th scope="row"><?php echo $product->getId();?></th>
-                        <td><a style="text-decoration: none; color: black;" href="/product/<?php echo $product->getId(); ?>" ><?php echo $product->getTitle();?></a></td>
+                        <td><a style="text-decoration: none; color: black;" href="/product/view/<?php echo $product->getId(); ?>" ><?php echo $product->getTitle();?></a></td>
                         <td><?php echo $productsFromSession[$product->getId()]?></td>
                         <td><?php echo $product->getPrice();?> грн.</td>
                         <td><a style="text-decoration: none; color: black;" href="/cart/delete/<?php echo $product->getId(); ?>"> Удалить </a></td>

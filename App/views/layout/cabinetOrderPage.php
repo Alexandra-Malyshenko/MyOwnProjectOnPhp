@@ -37,7 +37,7 @@ $products = $params[2];
     <div class="container">
         <div class="d-flex justify-content-between">
             <h3 class="pb-5">Привет, <?php echo $auth->getLogin(); ?></h3>
-            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/logout" style="text-decoration: none;
+            <button type="button" class="btn btn-dark h-50 button-logout"><a class="" href="/user/logout" style="text-decoration: none;
     color: white;">Выйти из аккауна</a></button>
         </div>
         <div class="row mt-2">
