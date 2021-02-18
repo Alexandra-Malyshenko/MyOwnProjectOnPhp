@@ -4,7 +4,8 @@ namespace App\Tools;
 
 use App\tools\Errors\PathException;
 
-class Router
+class
+Router
 {
     private $routes;
 

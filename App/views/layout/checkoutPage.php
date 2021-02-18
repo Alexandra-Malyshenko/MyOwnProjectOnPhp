@@ -48,7 +48,9 @@ $result = $params[4];
     </div>
     <hr class="hr-shelf mb-5">
     <?php if ($result):?>
-    <h3>Поздравляем! Вы успешно оформили заказ!</h3>
+    <div class="mt-5 pt-5 pb-5 mb-5">
+        <h3 align="center">Поздравляем! Вы успешно оформили заказ!</h3>
+    </div>
     <?php else: ?>
     <div class="container mb-5 pb-5 mt-5 pt-5">
         <div class="row mt-2 d-flex justify-content-center">
