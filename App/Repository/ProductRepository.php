@@ -17,29 +17,34 @@ class ProductRepository
 
     /**
      * @param int $id
+     * @param int $start
+     * @param int $itemsOnPage
      * @return array of Product objects
-     * @throws ProductsErrorException
      */
-    public function getByCategoryId(int $id): array
+    public function getByCategoryId(int $id, int $start, int $itemsOnPage): array
     {
         $sql = "SELECT id, category_id, title, price, description, image  
                 FROM products 
-                WHERE category_id = :id";
+                WHERE category_id = $id
+                LIMIT $start, $itemsOnPage";
         $statement = $this->getConnect()->prepare($sql);
-        $statement->execute(['id' => $id]);
+        $statement->execute(['id' => $id, 'start' => $start, 'itemsOnPage' => $itemsOnPage]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetchAll();
     }
 
     /**
+     * @param int $start
+     * @param int $itemsOnPage
      * @return array of Product objects
-     * @throws ProductsErrorException
      */
-    public function getAll(): array
+    public function getAll(int $start, int $itemsOnPage): array
     {
         $sql = "SELECT id, category_id, title, price, description, image  
-                FROM products";
-        $statement = $this->getConnect()->query($sql);
+                FROM products
+                LIMIT $start, $itemsOnPage";
+        $statement = $this->getConnect()->prepare($sql);
+        $statement->execute(['start' => $start, 'itemsOnPage' => $itemsOnPage]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetchAll();
     }
@@ -106,4 +111,12 @@ class ProductRepository
         return true;
     }
 
+    public function count()
+    {
+        $sql = "SELECT COUNT(*) as count FROM products";
+        $statement = $this->getConnect()->query($sql);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $statement->fetch();
+        return $row['count'];
+    }
 }

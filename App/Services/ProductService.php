@@ -21,14 +21,14 @@ class ProductService
         return $this->productRepos->getById($id);
     }
 
-    public function getAll(): array
+    public function getAll(int $start, int $itemsOnPage): array
     {
-        return $this->productRepos->getAll();
+        return $this->productRepos->getAll($start, $itemsOnPage);
     }
 
-    public function getByCategoryId(int $id): array
+    public function getByCategoryId(int $id, int $start, int $itemsOnPage): array
     {
-        return $this->productRepos->getByCategoryId($id);
+        return $this->productRepos->getByCategoryId($id, $start, $itemsOnPage);
     }
 
     public function createProduct(int $category_id, string $title, int $price, string $description, string $image): bool
@@ -44,5 +44,10 @@ class ProductService
     public function deleteProduct(int $id): bool
     {
         return $this->productRepos->delete($id);
+    }
+
+    public function count(): int
+    {
+        return (int) $this->productRepos->count();
     }
 }

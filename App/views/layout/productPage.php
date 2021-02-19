@@ -93,6 +93,7 @@ $users = $params[4];
                             <td><?php echo $comment->getDate()?></td>
                             <td><?php echo $comment->getText()?></td>
                         </tr>
+                        <?php break;?>
                         <?php endif;?>
                     <?php endforeach;?>
                 <?php endforeach;?>

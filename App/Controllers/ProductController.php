@@ -42,7 +42,7 @@ class ProductController
         $text = $_POST['text'];
         if ($name == $user->getName()) {
             if ((new CommentService())->createComment($product_id, $user->getId(), $text)) {
-                (new MailService())->sendMessage('auth', [$product]);
+                (new MailService())->sendMessage('auth', [$product_id]);
                 return true;
             }
         }
