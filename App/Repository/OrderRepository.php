@@ -25,12 +25,13 @@ class OrderRepository
         return $statement->fetchAll();
     }
 
-    public function getAllByUserId(int $user_id): array
+    public function getAllByUserId(int $user_id, $start, $itemsOnPage): array
     {
         // get all information about all orders where user_id = $id
         $sql = "SELECT id, address, price_total, contact_phone, comments, created_at 
                 FROM orders 
-                WHERE user_id = :user_id";
+                WHERE user_id = :user_id
+                LIMIT $start, $itemsOnPage";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Order');
@@ -132,5 +133,14 @@ class OrderRepository
         $statement = $this->getConnect()->query($sql);
         $id = $statement->fetchAll();
         return (int) $id[0]['id'];
+    }
+
+    public function count(int $id)
+    {
+        $sql = "SELECT COUNT(*) as count FROM orders WHERE user_id = $id";
+        $statement = $this->getConnect()->query($sql);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $statement->fetch();
+        return $row['count'];
     }
 }

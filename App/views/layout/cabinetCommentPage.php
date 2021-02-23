@@ -17,6 +17,7 @@ $wish = new WishListService();
 $categoryList = $params[0];
 $commentList = $params[1];
 $products = $params[2];
+$pagination = $params[3];
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +82,11 @@ $products = $params[2];
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <?php echo $pagination;?>
+                        </nav>
+                    </div>
                 <?php else: ?>
                     <h5 class="pb-3" align="center">У вас пока нет комментариев :) </h5>
                 <?php endif;?>

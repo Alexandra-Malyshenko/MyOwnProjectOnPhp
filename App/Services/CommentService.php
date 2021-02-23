@@ -16,9 +16,9 @@ class CommentService
         $this->commentRepos = new CommentRepository();
     }
 
-    public function getCommentsByUserId(int $user_id): array
+    public function getCommentsByUserId(int $user_id, int $start, int $itemsOnPage): array
     {
-        return $this->commentRepos->getByUserId($user_id);
+        return $this->commentRepos->getByUserId($user_id, $start, $itemsOnPage);
     }
 
     public function getCommentsByProductId(int $product_id): array
@@ -54,5 +54,10 @@ class CommentService
             array_push($products, $product);
         }
         return $products;
+    }
+
+    public function count(int $id): int
+    {
+        return (int) $this->commentRepos->count($id);
     }
 }

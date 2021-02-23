@@ -24,12 +24,12 @@ class OrderService
         $this->userService = new UserService();
     }
 
-    public function getByUserId(int $id): array
+    public function getByUserId(int $id, int $start, int $itemsOnPage): array
     {
         if (empty($id)) {
             throw new ProductsErrorException('Must be enter an id for category');
         }
-        return $this->orderRepos->getAllByUserId($id);
+        return $this->orderRepos->getAllByUserId($id, $start, $itemsOnPage);
     }
 
     public function getById(int $id): ?Order
@@ -93,5 +93,10 @@ class OrderService
     public function getIdOfLastOrder(): int
     {
         return $this->orderRepos->getLastId();
+    }
+
+    public function count(int $id): int
+    {
+        return (int) $this->orderRepos->count($id);
     }
 }

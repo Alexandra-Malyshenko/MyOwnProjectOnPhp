@@ -6,25 +6,28 @@ use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\WishListService;
 use libs\Authentication;
+use libs\Pagination;
 use libs\TemplateMaker;
 
 class CabinetController
 {
-    /**
-     * @var TemplateMaker
-     */
     private TemplateMaker $render;
+    private int $itemsOnPage;
 
     public function __construct()
     {
         $this->render = new TemplateMaker();
+        $this->itemsOnPage = 6;
     }
 
     public function index()
     {
         $user = (new Authentication())->getUser();
-        $orders = (new OrderService())->getByUserId($user->getId());
-        $this->render->render('cabinetTemplate', 'cabinetPage', [(new CategoryService())->getAll(), $orders]);
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
+        $pagination = (new Pagination($page, $this->itemsOnPage, (new OrderService())->count($user->getId())));
+        $start = $pagination->getStart();
+        $orders = (new OrderService())->getByUserId($user->getId(), $start, $this->itemsOnPage);
+        $this->render->render('cabinetTemplate', 'cabinetPage', [(new CategoryService())->getAll(), $orders, $pagination]);
     }
 
     public function getOrder(int $id)
@@ -63,13 +66,16 @@ class CabinetController
     public function viewComments()
     {
         $user = (new Authentication())->getUser();
-        $commentList = (new CommentService())->getCommentsByUserId($user->getId());
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
+        $pagination = (new Pagination($page, $this->itemsOnPage, (new CommentService())->count($user->getId())));
+        $start = $pagination->getStart();
+        $commentList = (new CommentService())->getCommentsByUserId($user->getId(), $start, $this->itemsOnPage);
         $products = (new CommentService())->getProductsInComment($commentList);
         $this->render
             ->render(
                 'cabinetTemplate',
                 'cabinetCommentPage',
-                [(new CategoryService())->getAll(), $commentList, $products]
+                [(new CategoryService())->getAll(), $commentList, $products, $pagination]
             );
     }
 

@@ -24,24 +24,17 @@ class Pagination
 
     public function __toString()
     {
-        return $this->getHtmlPagination();
+        if ($this->countPages > 1) {
+            return $this->getHtmlPagination();
+        } else {
+            return '';
+        }
     }
 
     public function getStart()
     {
         return ($this->currentPage - 1) * $this->itemsOnPage;
     }
-
-//    public function getCurrentPage($page): int
-//    {
-//        if (!$page || $page < 1) {
-//            $page = 1;
-//        }
-//        if ($page > $this->countPages) {
-//            $page = $this->countPages;
-//        }
-//        return $page;
-//    }
 
     public function getCountPages(): int
     {
@@ -64,7 +57,7 @@ class Pagination
 
         if ($this->currentPage > 1) {
             $back = "<li class='page-item'>
-                        <a class='page-link' href='{$this->uri}page=" . ($this->currentPage - 1) . "'>
+                        <a class='page-link' href='{$this->uri}page=" . 1 . "'>
                             <span aria-hidden='true'>&laquo;</span>
                         </a>
                      </li>";
@@ -72,7 +65,7 @@ class Pagination
 
         if ($this->currentPage < $this->countPages) {
             $next = "<li class='page-item'>
-                        <a class='page-link' href='{$this->uri}page=" . ($this->currentPage + 1) . "'>
+                        <a class='page-link' href='{$this->uri}page=" . ($this->getCountPages()) . "'>
                             <span aria-hidden='true'>&raquo;</span>
                         </a>
                      </li>";

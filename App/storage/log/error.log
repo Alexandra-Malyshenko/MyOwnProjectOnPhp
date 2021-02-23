@@ -851,3 +851,4 @@ Message: Error! : <b>You should pass three parametrs in TemplateMaker function
 [2021-02-19T13:54:36.327428+02:00] my-logger.WARNING: Too few arguments to function libs\Pagination::getCurrentPage(), 0 passed in /media/psf/Home/Desktop/Mopop/libs/Pagination.php on line 20 and exactly 1 expected [] []
 [2021-02-19T13:54:49.494548+02:00] my-logger.WARNING: Return value of libs\Pagination::getCurrentPage() must be of the type int, null returned [] []
 [2021-02-19T14:15:52.354712+02:00] my-logger.WARNING: syntax error, unexpected ';' [] []
+[2021-02-23T12:11:44.559618+02:00] my-logger.WARNING: Method libs\Pagination::__toString() must return a string value [] []
