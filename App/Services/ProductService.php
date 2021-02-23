@@ -21,14 +21,18 @@ class ProductService
         return $this->productRepos->getById($id);
     }
 
-    public function getAll(int $start, int $itemsOnPage): array
+    public function getAll(int $start, int $itemsOnPage, array $sort): array
     {
-        return $this->productRepos->getAll($start, $itemsOnPage);
+        $whatOrder = $sort[0];
+        $howOrder = $sort[1];
+        return $this->productRepos->getAll($start, $itemsOnPage, $whatOrder, $howOrder);
     }
 
-    public function getByCategoryId(int $id, int $start, int $itemsOnPage): array
+    public function getByCategoryId(int $id, int $start, int $itemsOnPage, $sort): array
     {
-        return $this->productRepos->getByCategoryId($id, $start, $itemsOnPage);
+        $whatOrder = $sort[0];
+        $howOrder = $sort[1];
+        return $this->productRepos->getByCategoryId($id, $start, $itemsOnPage, $whatOrder, $howOrder);
     }
 
     public function createProduct(int $category_id, string $title, int $price, string $description, string $image): bool

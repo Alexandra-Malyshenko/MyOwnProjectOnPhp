@@ -21,14 +21,21 @@ class ProductRepository
      * @param int $itemsOnPage
      * @return array of Product objects
      */
-    public function getByCategoryId(int $id, int $start, int $itemsOnPage): array
+    public function getByCategoryId(int $id, int $start, int $itemsOnPage, string $whatOrder, string $howOrder): array
     {
         $sql = "SELECT id, category_id, title, price, description, image  
                 FROM products 
                 WHERE category_id = $id
+                ORDER BY $whatOrder $howOrder
                 LIMIT $start, $itemsOnPage";
         $statement = $this->getConnect()->prepare($sql);
-        $statement->execute(['id' => $id, 'start' => $start, 'itemsOnPage' => $itemsOnPage]);
+        $statement->execute([
+            'id' => $id,
+            'start' => $start,
+            'itemsOnPage' => $itemsOnPage,
+            'whatOrder' => $whatOrder,
+            'howOrder' => $howOrder
+        ]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetchAll();
     }
@@ -38,14 +45,21 @@ class ProductRepository
      * @param int $itemsOnPage
      * @return array of Product objects
      */
-    public function getAll(int $start, int $itemsOnPage): array
+    public function getAll(int $start, int $itemsOnPage, string $whatOrder, string $howOrder): array
     {
         $sql = "SELECT id, category_id, title, price, description, image  
                 FROM products
+                ORDER BY $whatOrder $howOrder    
                 LIMIT $start, $itemsOnPage";
         $statement = $this->getConnect()->prepare($sql);
-        $statement->execute(['start' => $start, 'itemsOnPage' => $itemsOnPage]);
+        $statement->execute([
+            'start' => $start,
+            'itemsOnPage' => $itemsOnPage,
+            'whatOrder' => $whatOrder,
+            'howOrder' => $howOrder
+        ]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
+
         return $statement->fetchAll();
     }
 
