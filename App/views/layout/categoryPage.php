@@ -26,6 +26,7 @@ $categoryList = $params[0];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/categoryPage.css">
     <link rel="icon" href="data:,">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -38,6 +39,7 @@ $category = $params[1];
 /** @var array $products */
 $products = $params[2];
 $pagination = $params[3];
+$sort = $params[4];
 ?>
 
     <div class="container mt-5 d-flex justify-content-end">
@@ -56,7 +58,17 @@ $pagination = $params[3];
     </div>
     <hr class="hr-shelf mb-5">
 
-    <div class="container pt-5">
+    <div class="container pt-3">
+        <div class="row pb-5">
+            <div class="col-lg-12 d-flex justify-content-end">
+                <div class="dropdown">
+                    <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownSort' aria-haspopup='true' data-bs-toggle='dropdown' aria-expanded='false'>
+                        Сортировать
+                    </button>
+                    <?php echo $sort;?>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <?php foreach ($products as $product): ?>
                 <div class="col-lg-4 col-md-4 col-sm-12 pb-5">

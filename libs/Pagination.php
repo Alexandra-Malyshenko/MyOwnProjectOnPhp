@@ -45,7 +45,16 @@ class Pagination
     {
         $url = $_SERVER['REQUEST_URI'];
         $url = explode('?', $url);
-        return $url[0] . '?';
+        $uri = $url[0] . '?';
+        if (isset($url[1]) && $url[1] != '') {
+            $params = explode('&', $url[1]);
+            foreach ($params as $param) {
+                if (!preg_match("#page=#", $param)) {
+                    $uri .= "{$param}&amp;";
+                }
+            }
+        }
+        return $uri;
     }
 
     public function getHtmlPagination()
