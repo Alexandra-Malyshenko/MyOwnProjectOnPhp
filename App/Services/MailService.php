@@ -8,10 +8,9 @@ use App\Render\Render;
 
 class MailService
 {
-    /**
-     * @var MailTransport
-     */
     private MailTransport $mailTransport;
+    private OrderService $orderService;
+    private Render $render;
 
     public function __construct()
     {
@@ -22,11 +21,17 @@ class MailService
             getenv('MAILER_USER_PASSWORD'),
             'ssl'
         );
+        $this->orderService = new OrderService();
+        $this->render = new Render();
     }
     public function createMessageForOrder($templateName): ?string
     {
-        $order = (new OrderService())->getById((new OrderService())->getIdOfLastOrder());
-        $productsFromOrder = (new OrderService())->getAllProducts((new OrderService())->getIdOfLastOrder());
+        $idLastOrder = $this->orderService
+            ->getIdOfLastOrder();
+        $order = $this->orderService
+            ->getById($idLastOrder);
+        $productsFromOrder = $this->orderService
+            ->getAllProductsByOrderId($idLastOrder);
         $stringProducts = '';
         foreach ($productsFromOrder as $product) {
             $stringProducts .= "<tr>
@@ -61,15 +66,18 @@ class MailService
                     </tbody>
                 </table>
             </div>";
-        return (new Render())->build_email_template($templateName, $message);
+        return $this->render
+            ->build_email_template($templateName, $message);
     }
 
     public function createMessageForComment($templateName, int $product_id): ?string
     {
-        $product = (new ProductService())->getProductById($product_id);
+        $product = (new ProductService())
+            ->getProductById($product_id);
         $message = 'Вы успешно опубликовали комментарий для этого продукта'
             . $product->getTitle();
-        return (new Render())->build_email_template($templateName, $message);
+        return $this->render
+            ->build_email_template($templateName, $message);
     }
 
     public function createMessageForRegister(string $templateName, array $params): ?string
@@ -79,7 +87,8 @@ class MailService
                     . "<p>Логин : " . $params[0] . "</p>"
                     . "<p>Пароль : " . $params[1] . "</p>"
                     . "</div>";
-        return (new Render())->build_email_template($templateName, $message);
+        return $this->render
+            ->build_email_template($templateName, $message);
     }
 
     public function sendMessage(string $templateName, array $params)
@@ -96,7 +105,8 @@ class MailService
                 $message = $this->createMessageForRegister($templateName, $params);
                 break;
         }
-        $this->mailTransport->send(new Message('Congratulations!', $message, getenv('MAILER_EMAIL_TO')));
+        $this->mailTransport
+            ->send(new Message('Congratulations!', $message, getenv('MAILER_EMAIL_TO')));
     }
 
 }

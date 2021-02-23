@@ -1,13 +1,31 @@
 <?php
 
 use App\Services\CategoryService;
+use App\Services\LoggerService;
 use libs\TemplateMaker;
+use Monolog\Logger;
 
 class SiteController
 {
+    private Logger $logger;
+
+    public function __construct()
+    {
+        $this->logger = (new LoggerService())->getLogger();
+    }
+
     public function index()
     {
-        $render = new TemplateMaker();
-        $render->render('mainTemplate', 'mainPage', (new CategoryService())->getAll());
+        try {
+            (new TemplateMaker())
+                ->render(
+                    'mainTemplate',
+                    'mainPage',
+                    (new CategoryService())
+                        ->getAll()
+                );
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
+        }
     }
 }

@@ -13,6 +13,9 @@ class WishListRepository
         return Database::getInstance()->getConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $sql = "SELECT id, product_id, user_id  
@@ -22,6 +25,10 @@ class WishListRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getByUserId(int $id)
     {
         $sql = "SELECT id, product_id, user_id  
@@ -33,6 +40,10 @@ class WishListRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return WishList|null
+     */
     public function getById(int $id): ?WishList
     {
         $sql = "SELECT id, product_id, user_id  
@@ -44,6 +55,11 @@ class WishListRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param int $product_id
+     * @param int $user_id
+     * @return bool
+     */
     public function create(int $product_id, int $user_id): bool
     {
         $sql = "INSERT INTO wish_list (product_id, user_id) 
@@ -56,6 +72,12 @@ class WishListRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @param int $product_id
+     * @param int $user_id
+     * @return bool
+     */
     public function update(int $id, int $product_id, int $user_id): bool
     {
         $sql = "UPDATE wish_list 
@@ -71,6 +93,10 @@ class WishListRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM wish_list 

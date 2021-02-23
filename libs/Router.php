@@ -84,7 +84,7 @@ class Router
         return false;
     }
 
-    public static function dispatch()
+    public static function run()
     {
         if (self::matchRoute()) {
             $controller = ucfirst(self::$route['controller']) . 'Controller';

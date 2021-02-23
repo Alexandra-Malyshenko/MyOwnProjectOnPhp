@@ -10,13 +10,7 @@ use App\tools\logger\Logger;
 class TemplateMaker
 {
     public $footer;
-    /**
-     * @var mixed
-     */
     private $config;
-    /**
-     * @var Logger
-     */
     private Logger $logger;
 
     public function __construct()
@@ -35,7 +29,8 @@ class TemplateMaker
             throw new TemplateRenderException('You should pass three parametrs in TemplateMaker function
              render(string templateName, string nameLayout, array products )');
         } elseif (empty($params)) {
-            $this->logger->warning('There is no array! You should pass array of products');
+            $this->logger
+                ->warning('There is no array! You should pass array of products');
             throw new ProductsErrorException('There is no array! You should pass array of products');
         }
         $templatePath = dirname(__DIR__) . '/App/views/templates/';

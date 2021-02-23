@@ -7,9 +7,6 @@ use App\Repository\ProductRepository;
 
 class CartService
 {
-    /**
-     * @var Session
-     */
     private Session $session;
     private string $sessionKey;
 
@@ -27,8 +24,12 @@ class CartService
     public function addProduct(int $id): void
     {
         $this->session->start();
-        if ($this->session->contains($this->sessionKey)) {
-            $productsCart = $this->session->get($this->sessionKey);
+        if (
+            $this->session
+            ->contains($this->sessionKey)
+        ) {
+            $productsCart = $this->session
+                ->get($this->sessionKey);
         } else {
             $productsCart = [];
         }
@@ -39,25 +40,34 @@ class CartService
             $productsCart[$id] = 1;
         }
 
-        $this->session->set($this->sessionKey, $productsCart);
+        $this->session
+            ->set($this->sessionKey, $productsCart);
     }
 
     public function deleteProduct(int $id): void
     {
         $this->session->start();
-        if ($this->session->contains($this->sessionKey)) {
-            $productsCart = $this->session->get($this->sessionKey);
+        if (
+            $this->session
+            ->contains($this->sessionKey)
+        ) {
+            $productsCart = $this->session
+                ->get($this->sessionKey);
         } else {
             $productsCart = [];
         }
         unset($productsCart[$id]);
-        $this->session->set($this->sessionKey, $productsCart);
+        $this->session
+            ->set($this->sessionKey, $productsCart);
     }
 
     public function countItems(): int
     {
         $this->session->start();
-        if ($this->session->contains($this->sessionKey)) {
+        if (
+            $this->session
+            ->contains($this->sessionKey)
+        ) {
             $count = 0;
             foreach ($this->session->get($this->sessionKey) as $id => $quantity) {
                 $count += $quantity;
@@ -71,8 +81,12 @@ class CartService
     public function getProductsFromSession(): array
     {
         $this->session->start();
-        if ($this->session->contains($this->sessionKey)) {
-            return $this->session->get($this->sessionKey);
+        if (
+            $this->session
+            ->contains($this->sessionKey)
+        ) {
+            return $this->session
+                ->get($this->sessionKey);
         }
         return [];
     }
@@ -103,7 +117,8 @@ class CartService
     {
         $this->session->start();
         $productsCart = [];
-        $this->session->set($this->sessionKey, $productsCart);
+        $this->session
+            ->set($this->sessionKey, $productsCart);
     }
 
 }

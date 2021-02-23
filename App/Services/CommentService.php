@@ -6,9 +6,6 @@ use App\Repository\CommentRepository;
 
 class CommentService
 {
-    /**
-     * @var CommentRepository
-     */
     private CommentRepository $commentRepos;
 
     public function __construct()

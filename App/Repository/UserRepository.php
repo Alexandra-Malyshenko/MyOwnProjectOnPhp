@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\models\User;
 use libs\Database;
-use App\tools\Errors\ProductsErrorException;
 use PDO;
 
 class UserRepository
@@ -14,6 +13,9 @@ class UserRepository
         return Database::getInstance()->getConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $sql = "SELECT id, name, email, city 
@@ -23,6 +25,10 @@ class UserRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return User|null
+     */
     public function getById(int $id): ?User
     {
         $sql = "SELECT id, name, email, city 
@@ -34,6 +40,10 @@ class UserRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function getByName(string $name)
     {
         $sql = "SELECT id, name, email, city, password 
@@ -45,6 +55,10 @@ class UserRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param string $email
+     * @return mixed
+     */
     public function getByEmail(string $email)
     {
         $sql = "SELECT id, name, email, city, password 
@@ -56,6 +70,13 @@ class UserRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @param string $city
+     * @return bool
+     */
     public function create(string $name, string $email, string $password, string $city): bool
     {
         $sql = "INSERT INTO users (name, email, password, city) 
@@ -65,6 +86,14 @@ class UserRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @param string $city
+     * @return bool
+     */
     public function update(int $id, string $name, string $email, string $password, string $city): bool
     {
         $sql = "UPDATE users 
@@ -74,10 +103,20 @@ class UserRepository
                        city = :city) 
                 WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
-        $statement->execute(['id' => $id, 'name' => $name, 'email' => $email, 'password' => $password, 'city' => $city]);
+        $statement->execute([
+            'id' => $id,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'city' => $city
+        ]);
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM users 

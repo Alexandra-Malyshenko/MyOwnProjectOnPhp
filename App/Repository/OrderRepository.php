@@ -15,9 +15,11 @@ class OrderRepository
         return Database::getInstance()->getConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
-        // get all information about all orders
         $sql = "SELECT id, user_id, address, price_total, contact_phone, comments, created_at 
                 FROM orders";
         $statement = $this->getConnect()->query($sql);
@@ -25,9 +27,14 @@ class OrderRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $user_id
+     * @param $start
+     * @param $itemsOnPage
+     * @return array
+     */
     public function getAllByUserId(int $user_id, $start, $itemsOnPage): array
     {
-        // get all information about all orders where user_id = $id
         $sql = "SELECT id, address, price_total, contact_phone, comments, created_at 
                 FROM orders 
                 WHERE user_id = :user_id
@@ -38,9 +45,12 @@ class OrderRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return Order|null
+     */
     public function getById(int $id): ?Order
     {
-        // get all information about order where id = $id
         $sql = "SELECT id, address, price_total, contact_phone, comments, created_at 
                 FROM orders 
                 WHERE id = :id";
@@ -50,6 +60,16 @@ class OrderRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param int $user_id
+     * @param string $user_name
+     * @param string $user_email
+     * @param string $address
+     * @param int $price_total
+     * @param string $contact_phone
+     * @param string $comments
+     * @return bool
+     */
     public function create(
         int $user_id,
         string $user_name,
@@ -74,8 +94,23 @@ class OrderRepository
         return true;
     }
 
-    public function update(int $id, int $user_id, string $address, int $price_total,  string $contact_phone, string $comments): bool
-    {
+    /**
+     * @param int $id
+     * @param int $user_id
+     * @param string $address
+     * @param int $price_total
+     * @param string $contact_phone
+     * @param string $comments
+     * @return bool
+     */
+    public function update(
+        int $id,
+        int $user_id,
+        string $address,
+        int $price_total,
+        string $contact_phone,
+        string $comments
+    ): bool {
         $sql = "UPDATE users 
                 SET (   user_id = :user_id
                         address = :address, 
@@ -84,16 +119,21 @@ class OrderRepository
                         comments = :comments ) 
                 WHERE id = :id";
         $statement = $this->getConnect()->prepare($sql);
-        $statement->execute([   'id' => $id,
-                                'user_id' => $user_id,
-                                'address' => $address,
-                                'price_total' => $price_total,
-                                'contact_phone' => $contact_phone,
-                                'comments' => $comments
+        $statement->execute([
+            'id' => $id,
+            'user_id' => $user_id,
+            'address' => $address,
+            'price_total' => $price_total,
+            'contact_phone' => $contact_phone,
+            'comments' => $comments
         ]);
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM orders 
@@ -103,9 +143,14 @@ class OrderRepository
         return true;
     }
 
+    /**
+     * @param int $product_id
+     * @param int $order_id
+     * @param int $quantity
+     * @return bool
+     */
     public function createAllProductsByIdOrder(int $product_id, int $order_id, int $quantity): bool
     {
-        // get all products for order where id=$id
         $sql = "INSERT INTO products_order (product_id, order_id, quantity)
                 VALUES (:product_id, :order_id, :quantity)";
         $statement = $this->getConnect()->prepare($sql);
@@ -113,9 +158,12 @@ class OrderRepository
         return true;
     }
 
+    /**
+     * @param int $order_id
+     * @return array
+     */
     public function getAllProductsByIdOrder(int $order_id): array
     {
-        // get all products for order where id=$id
         $sql = "SELECT products.id, products.title, products.price, products_order.quantity
                 FROM products, products_order
                 WHERE products_order.order_id = :order_id and products_order.product_id = products.id;";
@@ -125,6 +173,9 @@ class OrderRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @return int
+     */
     public function getLastId(): int
     {
         $sql = "SELECT id
@@ -135,6 +186,10 @@ class OrderRepository
         return (int) $id[0]['id'];
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function count(int $id)
     {
         $sql = "SELECT COUNT(*) as count FROM orders WHERE user_id = $id";

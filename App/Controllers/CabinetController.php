@@ -2,86 +2,158 @@
 
 use App\Services\CategoryService;
 use App\Services\CommentService;
+use App\Services\LoggerService;
 use App\Services\OrderService;
-use App\Services\ProductService;
 use App\Services\WishListService;
 use libs\Authentication;
 use libs\Pagination;
 use libs\TemplateMaker;
+use Monolog\Logger;
 
 class CabinetController
 {
     private TemplateMaker $render;
     private int $itemsOnPage;
+    private array $categoryList;
+    private Authentication $authentication;
+    private OrderService $orderService;
+    private CommentService $commentService;
+    private WishListService $wishListService;
+    private Logger $logger;
 
     public function __construct()
     {
-        $this->render = new TemplateMaker();
         $this->itemsOnPage = 6;
+        $this->logger = LoggerService::getLogger();
+        $this->render = new TemplateMaker();
+        $this->authentication = new Authentication();
+        $this->orderService = new OrderService();
+        $this->commentService = new CommentService();
+        $this->wishListService = new WishListService();
+        $this->categoryList = (new CategoryService())
+            ->getAll();
     }
 
     public function index()
     {
-        $user = (new Authentication())->getUser();
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
-        $pagination = (new Pagination($page, $this->itemsOnPage, (new OrderService())->count($user->getId())));
-        $start = $pagination->getStart();
-        $orders = (new OrderService())->getByUserId($user->getId(), $start, $this->itemsOnPage);
-        $this->render->render('cabinetTemplate', 'cabinetPage', [(new CategoryService())->getAll(), $orders, $pagination]);
+        try {
+            $userID = $this->authentication
+                ->getUser()
+                ->getId();
+            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
+            $total = $this->orderService
+                ->countOrderByUserId($userID);
+            $pagination = new Pagination($page, $this->itemsOnPage, $total);
+            $start = $pagination
+                ->getStart();
+            $orders = $this->orderService
+                ->getByUserId($userID, $start, $this->itemsOnPage);
+            $this->render
+                ->render(
+                    'cabinetTemplate',
+                    'cabinetPage',
+                    [$this->categoryList, $orders, $pagination]
+                );
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
+        }
     }
 
     public function getOrder(int $id)
     {
-        $order = (new OrderService())->getById($id);
-        $products = (new OrderService())->getAllProducts($id);
-        $this->render
-            ->render('cabinetTemplate', 'cabinetOrderPage', [(new CategoryService())->getAll(), $order, $products]);
+        try {
+            $order = $this->orderService
+                ->getById($id);
+            $products = $this->orderService
+                ->getAllProductsByOrderId($id);
+            $this->render
+                ->render(
+                    'cabinetTemplate',
+                    'cabinetOrderPage',
+                    [$this->categoryList, $order, $products]
+                );
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
+        }
     }
 
     public function viewWishList()
     {
-        $user = (new Authentication())->getUser();
-        $wishList = (new WishListService())->getListByUserId($user->getId());
-        $this->render
-            ->render('cabinetTemplate', 'cabinetWishListPage', [(new CategoryService())->getAll(), $wishList]);
+        try {
+            $userID = $this->authentication
+                ->getUser()
+                ->getId();
+            $wishList = $this->wishListService
+                ->getListByUserId($userID);
+            $this->render
+                ->render(
+                    'cabinetTemplate',
+                    'cabinetWishListPage',
+                    [$this->categoryList, $wishList]
+                );
+        } catch (\Throwable $error) {
+                $this->logger->warning($error->getMessage());
+        }
     }
 
     public function addWish(int $product_id)
     {
-        $user = (new Authentication())->getUser();
-        if ($user) {
-            (new WishListService())->createWish($product_id, $user->getId());
-            $referrer = $_SERVER['HTTP_REFERER'];
-            header("Location: $referrer");
+        try {
+            $userID = $this->authentication
+                ->getUser()
+                ->getId();
+            if ($userID) {
+                $this->wishListService
+                    ->createWish($product_id, $userID);
+                $referrer = $_SERVER['HTTP_REFERER'];
+                header("Location: $referrer");
+            }
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
         }
     }
 
     public function deleteWish(int $id)
     {
-        (new WishListService())->delete($id);
+        $this->wishListService
+             ->delete($id);
         $referrer = $_SERVER['HTTP_REFERER'];
         header("Location: $referrer");
     }
 
     public function viewComments()
     {
-        $user = (new Authentication())->getUser();
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
-        $pagination = (new Pagination($page, $this->itemsOnPage, (new CommentService())->count($user->getId())));
-        $start = $pagination->getStart();
-        $commentList = (new CommentService())->getCommentsByUserId($user->getId(), $start, $this->itemsOnPage);
-        $products = (new CommentService())->getProductsInComment($commentList);
-        $this->render
-            ->render(
-                'cabinetTemplate',
-                'cabinetCommentPage',
-                [(new CategoryService())->getAll(), $commentList, $products, $pagination]
-            );
+        try {
+            $userID = $this->authentication
+                ->getUser()
+                ->getId();
+            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
+            $pagination = (new Pagination(
+                $page,
+                $this->itemsOnPage,
+                $this->commentService->count($userID)
+            ));
+            $start = $pagination
+                ->getStart();
+            $commentList = $this->commentService
+                ->getCommentsByUserId($userID, $start, $this->itemsOnPage);
+            $products = $this->commentService
+                ->getProductsInComment($commentList);
+            $this->render
+                ->render(
+                    'cabinetTemplate',
+                    'cabinetCommentPage',
+                    [$this->categoryList, $commentList, $products, $pagination]
+                );
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
+        }
     }
 
     public function deleteComment(int $id)
     {
-        (new CommentService())->delete($id);
+        $this->commentService
+             ->delete($id);
         $referrer = $_SERVER['HTTP_REFERER'];
         header("Location: $referrer");
     }

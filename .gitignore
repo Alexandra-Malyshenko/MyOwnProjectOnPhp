@@ -1,5 +1,4 @@
 vendor
-App/storage/
 .idea
 .DS_Store
 .php_cs.cache
@@ -7,4 +6,4 @@ composer.lock
 composer.phar
 phpcs.phar
 .env
-App/storage/log/error.log
+App/storage

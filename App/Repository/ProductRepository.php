@@ -19,6 +19,8 @@ class ProductRepository
      * @param int $id
      * @param int $start
      * @param int $itemsOnPage
+     * @param string $whatOrder
+     * @param string $howOrder
      * @return array of Product objects
      */
     public function getByCategoryId(int $id, int $start, int $itemsOnPage, string $whatOrder, string $howOrder): array
@@ -28,7 +30,8 @@ class ProductRepository
                 WHERE category_id = $id
                 ORDER BY $whatOrder $howOrder
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute([
             'id' => $id,
             'start' => $start,
@@ -43,6 +46,8 @@ class ProductRepository
     /**
      * @param int $start
      * @param int $itemsOnPage
+     * @param string $whatOrder
+     * @param string $howOrder
      * @return array of Product objects
      */
     public function getAll(int $start, int $itemsOnPage, string $whatOrder, string $howOrder): array
@@ -51,7 +56,8 @@ class ProductRepository
                 FROM products
                 ORDER BY $whatOrder $howOrder    
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute([
             'start' => $start,
             'itemsOnPage' => $itemsOnPage,
@@ -66,37 +72,65 @@ class ProductRepository
     /**
      * @param int $id
      * @return Product
-     * @throws ProductsErrorException
-     * @throws Exception
      */
     public function getById(int $id): ?Product
     {
         $sql = "SELECT id, category_id, title, price, description, image  
                 FROM products 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetch();
     }
 
-    public function create(int $category_id, string $title, int $price, string $description, string $image): bool
-    {
+    /**
+     * @param int $category_id
+     * @param string $title
+     * @param int $price
+     * @param string $description
+     * @param string $image
+     * @return bool
+     */
+    public function create(
+        int $category_id,
+        string $title,
+        int $price,
+        string $description,
+        string $image
+    ): bool {
         $sql = "INSERT INTO products (category_id, title, price, description, image) 
                 VALUES (:category_id, :title, :price, :description, :image)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute([
-                            'category_id' => $category_id,
-                            'title' => $title,
-                            'price' => $price,
-                            'description' => $description,
-                            'image' => $image
+            'category_id' => $category_id,
+            'title' => $title,
+            'price' => $price,
+            'description' => $description,
+            'image' => $image
         ]);
         return true;
     }
 
-    public function update(int $id, int $category_id, string $title, int $price, string $description, string $image): bool
-    {
+    /**
+     * @param int $id
+     * @param int $category_id
+     * @param string $title
+     * @param int $price
+     * @param string $description
+     * @param string $image
+     * @return bool
+     */
+    public function update(
+        int $id,
+        int $category_id,
+        string $title,
+        int $price,
+        string $description,
+        string $image
+    ): bool {
         $sql = "UPDATE products 
                 SET (   category_id = :category_id, 
                         title = :title,
@@ -116,6 +150,10 @@ class ProductRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM products 
@@ -125,6 +163,9 @@ class ProductRepository
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function count()
     {
         $sql = "SELECT COUNT(*) as count FROM products";

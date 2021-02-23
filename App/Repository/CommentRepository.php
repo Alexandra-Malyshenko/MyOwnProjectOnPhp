@@ -13,6 +13,9 @@ class CommentRepository
         return Database::getInstance()->getConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
@@ -22,6 +25,12 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $user_id
+     * @param int $start
+     * @param int $itemsOnPage
+     * @return array
+     */
     public function getByUserId(int $user_id, int $start, int $itemsOnPage): array
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
@@ -34,6 +43,10 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $product_id
+     * @return array
+     */
     public function getByProductId(int $product_id): array
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
@@ -45,6 +58,10 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return Comment|null
+     */
     public function getById(int $id): ?Comment
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
@@ -56,6 +73,12 @@ class CommentRepository
         return $statement->fetch();
     }
 
+    /**
+     * @param int $product_id
+     * @param int $user_id
+     * @param string $text
+     * @return bool
+     */
     public function create(int $product_id, int $user_id, string $text): bool
     {
         $sql = "INSERT INTO comments (text, user_id, product_id) 
@@ -69,6 +92,13 @@ class CommentRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @param int $product_id
+     * @param int $user_id
+     * @param $text
+     * @return bool
+     */
     public function update(int $id, int $product_id, int $user_id, $text): bool
     {
         $sql = "UPDATE comments 
@@ -86,6 +116,10 @@ class CommentRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM comments 
@@ -95,6 +129,10 @@ class CommentRepository
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function count(int $id)
     {
         $sql = "SELECT COUNT(*) as count FROM comments WHERE user_id = $id";

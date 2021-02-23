@@ -40,7 +40,7 @@ class OrderService
         return $this->orderRepos->getById($id);
     }
 
-    public function getAllProducts(int $id): array
+    public function getAllProductsByOrderId(int $id): array
     {
         return $this->orderRepos->getAllProductsByIdOrder($id);
     }
@@ -95,7 +95,7 @@ class OrderService
         return $this->orderRepos->getLastId();
     }
 
-    public function count(int $id): int
+    public function countOrderByUserId(int $id): int
     {
         return (int) $this->orderRepos->count($id);
     }

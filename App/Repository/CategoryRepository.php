@@ -13,6 +13,9 @@ class CategoryRepository
         return Database::getInstance()->getConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $sql = "SELECT id, title 
@@ -22,41 +25,62 @@ class CategoryRepository
         return $statement->fetchAll();
     }
 
+    /**
+     * @param int $id
+     * @return Category|null
+     */
     public function getById(int $id): ?Category
     {
         $sql = "SELECT id, title 
                 FROM categories 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
         return $statement->fetch();
     }
 
+    /**
+     * @param string $title
+     * @return bool
+     */
     public function create(string $title): bool
     {
         $sql = "INSERT INTO categories title 
                 VALUE :title";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute(['title' => $title]);
         return true;
     }
 
+    /**
+     * @param int $id
+     * @param string $title
+     * @return bool
+     */
     public function update(int $id, string $title): bool
     {
         $sql = "UPDATE categories 
                 SET title = :title 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute(['title' => $title, 'id' => $id]);
         return true;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM categories 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect()
+            ->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }
