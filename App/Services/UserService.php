@@ -24,7 +24,7 @@ class UserService
         $user = $this->userRepos->getByName($name);
         if (!$user) {
             throw new UsersValidationException('Wrong name or password! Try again');
-        } elseif ($user->getPassword() !== $password) {
+        } elseif (!password_verify($password, $user->getPassword())) {
             throw new UsersValidationException('Wrong name or password! Try again');
         }
         return $user->getId();
@@ -59,7 +59,8 @@ class UserService
 
     public function register(string $name, string $email, string $password, string $city): bool
     {
-        return ($this->userRepos->create($name, $email, $password, $city));
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        return ($this->userRepos->create($name, $email, $hash, $city));
     }
 
     public function update(int $id, string $name, string $email, string $password, string $city): bool
