@@ -56,7 +56,7 @@ class CartController
         if (!empty($_POST)) {
             $result = $this->post($productsFromSession, $products, $user, $total);
             if ($result) {
-                (new MailService())->sendMessage('order');
+                (new MailService())->sendMessage('order', []);
                 $this->cartService->clear();
             }
         }

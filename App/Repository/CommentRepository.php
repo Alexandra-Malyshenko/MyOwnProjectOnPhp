@@ -22,11 +22,12 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
-    public function getByUserId(int $user_id): array
+    public function getByUserId(int $user_id, int $start, int $itemsOnPage): array
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
                 FROM comments 
-                WHERE user_id = :user_id";
+                WHERE user_id = :user_id
+                LIMIT $start, $itemsOnPage";
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Comment');
@@ -92,5 +93,14 @@ class CommentRepository
         $statement = $this->getConnect()->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
+    }
+
+    public function count(int $id)
+    {
+        $sql = "SELECT COUNT(*) as count FROM comments WHERE user_id = $id";
+        $statement = $this->getConnect()->query($sql);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $statement->fetch();
+        return $row['count'];
     }
 }

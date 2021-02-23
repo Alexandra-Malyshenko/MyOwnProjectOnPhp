@@ -16,6 +16,7 @@ $wish = new WishListService();
  */
 $categoryList = $params[0];
 $orders = $params[1];
+$pagination = $params[2];
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +72,13 @@ $orders = $params[1];
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
+
                 </table>
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <?php echo $pagination;?>
+                        </nav>
+                    </div>
                 <?php else: ?>
                     <h5 class="pb-3" align="center">У вас пока нет заказов :) </h5>
                 <?php endif;?>

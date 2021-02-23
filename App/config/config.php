@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'header' => '/views/templates/headerTemplate.php',
-    'footer' => '/views/templates/footerTemplate.html'
+    'footer' => '/App/views/templates/footerTemplate.html'
 ];
