@@ -19,6 +19,7 @@
         "ext-curl": "*",
         "vlucas/phpdotenv": "^5.3",
         "ext-pdo": "*",
-        "swarletta/swiftmailer": "^1.0"
+        "swarletta/swiftmailer": "^1.0",
+        "ext-json": "^7.4"
     }
 }

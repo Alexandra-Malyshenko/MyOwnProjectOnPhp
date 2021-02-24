@@ -69,4 +69,21 @@ class ProductService
         return (int) $this->productRepos
             ->count();
     }
+
+    public function getProductsJSON(int $start, int $itemsOnPage, array $sort): string
+    {
+        $products = $this->getAll($start, $itemsOnPage, $sort);
+        $productsJSON = [];
+        foreach ($products as $product) {
+            $productJSON = [];
+            $productJSON['id'] = $product->getId();
+            $productJSON['category_id'] = $product->getCategoryId();
+            $productJSON['title'] = $product->getTitle();
+            $productJSON['price'] = $product->getPrice();
+            $productJSON['description'] = $product->getDescription();
+            $productJSON['image'] = $product->getImage();
+            array_push($productsJSON, $productJSON);
+        }
+        return json_encode($productsJSON, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+    }
 }

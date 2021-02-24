@@ -16,6 +16,8 @@ class CategoryController
     private ProductService $productService;
     private CategoryService $categoryService;
     private Logger $logger;
+    private $sort;
+    private int $page;
 
     public function __construct()
     {
@@ -25,28 +27,24 @@ class CategoryController
         $this->categoryService = new CategoryService();
         $this->render = new TemplateMaker();
         $this->productService = new ProductService();
+        $this->page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
+        $this->sort = isset($_GET['sort']) ? $_GET['sort'] : 'title-ASC';
     }
 
     public function index()
     {
         try {
-            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
-            $sort = isset($_GET['sort']) ? $_GET['sort'] : 'title-ASC';
-            $sort = explode('-', $sort);
             $pagination = (new Pagination(
-                $page,
+                $this->page,
                 $this->itemsOnPageCatalog,
                 $this->productService
                     ->count()
             ));
-            $start = $pagination->getStart();
-            $products = $this->productService
-                ->getAll($start, $this->itemsOnPageCatalog, $sort);
             $this->render
                 ->render(
                     '',
                     'categoryPage',
-                    [$this->categoryService->getAll(), [], $products, $pagination, new Sorting()]
+                    [$this->categoryService->getAll(), [], $pagination, new Sorting()]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -56,11 +54,9 @@ class CategoryController
     public function getCategory(int $id)
     {
         try {
-            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
-            $sort = isset($_GET['sort']) ? $_GET['sort'] : 'title-ASC';
-            $sort = explode('-', $sort);
+            $sort = explode('-', $this->sort);
             $pagination = (new Pagination(
-                $page,
+                $this->page,
                 $this->itemsOnPageCategory,
                 6
             ));
@@ -77,7 +73,7 @@ class CategoryController
             $this->render
                 ->render(
                     '',
-                    'categoryPage',
+                    'categoryByIdPage',
                     [
                         $this->categoryService->getAll(),
                         $category,
@@ -85,6 +81,24 @@ class CategoryController
                         new Sorting()
                     ]
                 );
+        } catch (\Throwable $error) {
+            $this->logger->warning($error->getMessage());
+        }
+    }
+
+    public function getProductsJSON()
+    {
+        try {
+            $sort = explode('-', $this->sort);
+            $pagination = (new Pagination(
+                $this->page,
+                $this->itemsOnPageCatalog,
+                $this->productService->count()
+            ));
+            $start = $pagination->getStart();
+            echo $this->productService
+                ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort);
+
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
         }
