@@ -59,7 +59,13 @@
                         <img src="/images/logo/shopping-cart.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search">
+                        <img src="/images/logo/lupa.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+                    </a>
+                </li>
             </ul>
+
         </div>
     </nav>
 </header>

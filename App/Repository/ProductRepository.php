@@ -174,4 +174,19 @@ class ProductRepository
         $row = $statement->fetch();
         return $row['count'];
     }
+
+    public function search(string $keyword)
+    {
+        $sql = "SELECT id, category_id, title, price, description, image  
+                FROM products
+                WHERE title LIKE '%$keyword%'
+                or description LIKE '%$keyword%' ";
+        $statement = $this->getConnect()
+            ->prepare($sql);
+        $statement->execute([
+            "keyword" => $keyword
+        ]);
+        $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
+        return $statement->fetchAll();
+    }
 }

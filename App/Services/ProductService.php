@@ -71,6 +71,12 @@ class ProductService
             ->count();
     }
 
+    public function searchProducts(string $keyword): array
+    {
+        return $this->productRepos
+            ->search($keyword);
+    }
+
     public function getProductsJSON(int $start, int $itemsOnPage, array $sort): array
     {
         $products = $this->getAll($start, $itemsOnPage, $sort);
