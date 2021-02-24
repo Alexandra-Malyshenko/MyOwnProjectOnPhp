@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\ProductRepository;
+use App\Resources\ProductResource;
 
 class ProductService
 {
@@ -68,5 +69,11 @@ class ProductService
     {
         return (int) $this->productRepos
             ->count();
+    }
+
+    public function getProductsJSON(int $start, int $itemsOnPage, array $sort): array
+    {
+        $products = $this->getAll($start, $itemsOnPage, $sort);
+        return (new ProductResource())->toArrayCollection($products);
     }
 }
