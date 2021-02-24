@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\ProductRepository;
+use App\Resources\ProductResource;
 
 class ProductService
 {
@@ -70,20 +71,9 @@ class ProductService
             ->count();
     }
 
-    public function getProductsJSON(int $start, int $itemsOnPage, array $sort): string
+    public function getProductsJSON(int $start, int $itemsOnPage, array $sort): array
     {
         $products = $this->getAll($start, $itemsOnPage, $sort);
-        $productsJSON = [];
-        foreach ($products as $product) {
-            $productJSON = [];
-            $productJSON['id'] = $product->getId();
-            $productJSON['category_id'] = $product->getCategoryId();
-            $productJSON['title'] = $product->getTitle();
-            $productJSON['price'] = $product->getPrice();
-            $productJSON['description'] = $product->getDescription();
-            $productJSON['image'] = $product->getImage();
-            array_push($productsJSON, $productJSON);
-        }
-        return json_encode($productsJSON, JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
+        return (new ProductResource())->toArrayCollection($products);
     }
 }

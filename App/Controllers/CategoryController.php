@@ -86,7 +86,7 @@ class CategoryController
         }
     }
 
-    public function getProductsJSON()
+    public function getProductsAPI()
     {
         try {
             $sort = explode('-', $this->sort);
@@ -96,8 +96,11 @@ class CategoryController
                 $this->productService->count()
             ));
             $start = $pagination->getStart();
-            echo $this->productService
-                ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort);
+            echo json_encode(
+                $this->productService
+                ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort),
+                JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
+            );
 
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());

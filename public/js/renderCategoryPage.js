@@ -3,7 +3,7 @@ async function getData() {
         let searchParams = new URLSearchParams(document.location.search);
         let page = searchParams.get("page") ? searchParams.get("page") : 1 ;
         let sort = searchParams.get("sort") ? searchParams.get("sort") : 'title-ASC';
-        const result = await fetch(`http://lovelybakery.loc/category/getProductsJSON?page=${page}&sort=${sort}`, {
+        const result = await fetch(`http://lovelybakery.loc/category/getProductsAPI?page=${page}&sort=${sort}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
