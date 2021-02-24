@@ -77,7 +77,8 @@ class CategoryController
                     [
                         $this->categoryService->getAll(),
                         $category,
-                        $products, $pagination,
+                        $products,
+                        $pagination,
                         new Sorting()
                     ]
                 );
