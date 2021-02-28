@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use libs\Database;
 use App\models\WishList;
 use PDO;
 
 class WishListRepository
 {
-    public function getConnect(): PDO
-    {
-        return Database::getInstance()->getConnection();
-    }
+    private PDO $getConnect;
 
+    public function __construct(PDO $PDO)
+    {
+        $this->getConnect = $PDO;
+    }
     /**
      * @return array
      */
@@ -20,7 +20,7 @@ class WishListRepository
     {
         $sql = "SELECT id, product_id, user_id  
                 FROM wish_list";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\WishList');
         return $statement->fetchAll();
     }
@@ -34,7 +34,7 @@ class WishListRepository
         $sql = "SELECT id, product_id, user_id  
                 FROM wish_list 
                 WHERE user_id = :user_id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['user_id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\WishList');
         return $statement->fetchAll();
@@ -49,7 +49,7 @@ class WishListRepository
         $sql = "SELECT id, product_id, user_id  
                 FROM wish_list 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\WishList');
         return $statement->fetch();
@@ -64,7 +64,7 @@ class WishListRepository
     {
         $sql = "INSERT INTO wish_list (product_id, user_id) 
                 VALUES (:product_id, :user_id)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'product_id' => $product_id,
             'user_id' => $user_id
@@ -84,7 +84,7 @@ class WishListRepository
                 SET (   product_id = :product_id, 
                         user_id = :user_id) 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'id' => $id,
             'product_id' => $product_id,
@@ -101,7 +101,7 @@ class WishListRepository
     {
         $sql = "DELETE FROM wish_list 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }

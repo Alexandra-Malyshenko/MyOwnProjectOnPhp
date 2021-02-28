@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Repository\WishListRepository;
-use App\Services\ProductService;
 
 class WishListService
 {
     private WishListRepository $wishListRepos;
+    private ProductService $prodService;
 
-    public function __construct()
+    public function __construct($wishListRepos, $prodService)
     {
-        $this->wishListRepos = new WishListRepository();
+        $this->wishListRepos = $wishListRepos;
+        $this->prodService = $prodService;
     }
 
     public function getListByUserId(int $user_id): array
@@ -20,7 +21,7 @@ class WishListService
             ->getByUserId($user_id);
         $productsList = [];
         foreach ($wishList as $item) {
-            $product = (new ProductService())
+            $product = $this->prodService
                 ->getProductById($item->getProductId());
             $productsList[$item->getId()] = $product;
         }

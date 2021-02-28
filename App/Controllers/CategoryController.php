@@ -1,32 +1,21 @@
 <?php
 
-use App\Services\CategoryService;
-use App\Services\LoggerService;
-use App\Services\ProductService;
-use libs\TemplateMaker;
+use App\Controllers\BaseController;
 use libs\Pagination;
 use libs\Sorting;
-use Monolog\Logger;
 
-class CategoryController
+class CategoryController extends BaseController
 {
     private int $itemsOnPageCategory;
     private int $itemsOnPageCatalog;
-    private TemplateMaker $render;
-    private ProductService $productService;
-    private CategoryService $categoryService;
-    private Logger $logger;
-    private $sort;
     private int $page;
+    private $sort;
 
     public function __construct()
     {
+        parent::__construct();
         $this->itemsOnPageCatalog = 6;
         $this->itemsOnPageCategory = 3;
-        $this->logger = (new LoggerService())->getLogger();
-        $this->categoryService = new CategoryService();
-        $this->render = new TemplateMaker();
-        $this->productService = new ProductService();
         $this->page = isset($_GET['page']) ? (int) $_GET['page'] : 1 ;
         $this->sort = isset($_GET['sort']) ? $_GET['sort'] : 'title-ASC';
     }
@@ -37,14 +26,22 @@ class CategoryController
             $pagination = (new Pagination(
                 $this->page,
                 $this->itemsOnPageCatalog,
-                $this->productService
+                $this->prodService
                     ->count()
             ));
             $this->render
                 ->render(
                     '',
                     'categoryPage',
-                    [$this->categoryService->getAll(), [], $pagination, new Sorting()]
+                    [
+                        $this->categoryService->getAll(),
+                        [],
+                        $pagination,
+                        new Sorting(),
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -63,7 +60,7 @@ class CategoryController
             $start = $pagination->getStart();
             $category = $this->categoryService
                 ->getCategoryById($id);
-            $products = $this->productService
+            $products = $this->prodService
                 ->getByCategoryId(
                     $category->getId(),
                     $start,
@@ -79,7 +76,10 @@ class CategoryController
                         $category,
                         $products,
                         $pagination,
-                        new Sorting()
+                        new Sorting(),
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
                     ]
                 );
         } catch (\Throwable $error) {
@@ -94,11 +94,11 @@ class CategoryController
             $pagination = (new Pagination(
                 $this->page,
                 $this->itemsOnPageCatalog,
-                $this->productService->count()
+                $this->prodService->count()
             ));
             $start = $pagination->getStart();
             echo json_encode(
-                $this->productService
+                $this->prodService
                 ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort),
                 JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
             );

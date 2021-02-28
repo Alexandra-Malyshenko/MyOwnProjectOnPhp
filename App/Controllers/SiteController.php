@@ -1,28 +1,28 @@
 <?php
 
-use App\Services\CategoryService;
-use App\Services\LoggerService;
-use libs\TemplateMaker;
-use Monolog\Logger;
+use App\Controllers\BaseController;
 
-class SiteController
+class SiteController extends BaseController
 {
-    private Logger $logger;
 
     public function __construct()
     {
-        $this->logger = (new LoggerService())->getLogger();
+        parent::__construct();
     }
 
     public function index()
     {
         try {
-            (new TemplateMaker())
+            $this->render
                 ->render(
                     'mainTemplate',
                     'mainPage',
-                    (new CategoryService())
-                        ->getAll()
+                    [
+                        $this->categoryService->getAll(),
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());

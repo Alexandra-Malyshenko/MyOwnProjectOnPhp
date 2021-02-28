@@ -1,35 +1,25 @@
 <?php
 
-use App\Services\CategoryService;
-use App\Services\LoggerService;
+use App\Controllers\BaseController;
 use App\Services\SearchService;
-use libs\Pagination;
-use libs\Sorting;
-use libs\TemplateMaker;
 
-class SearchController
+class SearchController extends BaseController
 {
     private int $itemsOnPage;
-    private $logger;
-    private CategoryService $categoryService;
-    private TemplateMaker $render;
-    private int $page;
-    private $sort;
 
     public function __construct()
     {
         $this->itemsOnPage = 6;
-        $this->logger = (new LoggerService())->getLogger();
-        $this->categoryService = new CategoryService();
-        $this->render = new TemplateMaker();
+        parent::__construct();
     }
 
     public function index()
     {
         try {
+            $products = [];
             if (!empty($_POST)) {
                 $searchText = $_POST['searchMe'];
-                $products = (new SearchService())->search($searchText);
+                $products = (new SearchService($this->prodService))->search($searchText);
             }
             $this->render
                 ->render(
@@ -38,7 +28,10 @@ class SearchController
                     [
                         $this->categoryService->getAll(),
                         [],
-                        $products
+                        $products,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
                     ]
                 );
         } catch (\Throwable $error) {

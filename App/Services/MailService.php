@@ -12,7 +12,7 @@ class MailService
     private OrderService $orderService;
     private Render $render;
 
-    public function __construct()
+    public function __construct($orderService)
     {
         $this->mailTransport = new MailTransport(
             getenv('MAILER_HOST'),
@@ -21,7 +21,7 @@ class MailService
             getenv('MAILER_USER_PASSWORD'),
             'ssl'
         );
-        $this->orderService = new OrderService();
+        $this->orderService = $orderService;
         $this->render = new Render();
     }
     public function createMessageForOrder($templateName): ?string

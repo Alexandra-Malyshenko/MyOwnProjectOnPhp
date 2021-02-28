@@ -3,14 +3,15 @@
 namespace App\Repository;
 
 use App\models\User;
-use libs\Database;
 use PDO;
 
 class UserRepository
 {
-    public function getConnect(): PDO
+    private PDO $getConnect;
+
+    public function __construct(PDO $PDO)
     {
-        return Database::getInstance()->getConnection();
+        $this->getConnect = $PDO;
     }
 
     /**
@@ -20,7 +21,7 @@ class UserRepository
     {
         $sql = "SELECT id, name, email, city 
                 FROM users";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\User');
         return $statement->fetchAll();
     }
@@ -34,7 +35,7 @@ class UserRepository
         $sql = "SELECT id, name, email, city 
                 FROM users 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\User');
         return $statement->fetch();
@@ -49,7 +50,7 @@ class UserRepository
         $sql = "SELECT id, name, email, city, password 
                 FROM users 
                 WHERE name = :name";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['name' => $name]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\User');
         return $statement->fetch();
@@ -64,7 +65,7 @@ class UserRepository
         $sql = "SELECT id, name, email, city, password 
                 FROM users 
                 WHERE email = :email";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['email' => $email]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\User');
         return $statement->fetch();
@@ -81,7 +82,7 @@ class UserRepository
     {
         $sql = "INSERT INTO users (name, email, password, city) 
                 VALUE (:name, :email, :password, :city)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['name' => $name, 'email' => $email, 'password' => $password, 'city' => $city]);
         return true;
     }
@@ -102,7 +103,7 @@ class UserRepository
                        password = :password, 
                        city = :city) 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'id' => $id,
             'name' => $name,
@@ -121,7 +122,7 @@ class UserRepository
     {
         $sql = "DELETE FROM users 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }

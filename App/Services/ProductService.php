@@ -9,9 +9,9 @@ class ProductService
 {
     private ProductRepository $productRepos;
 
-    public function __construct()
+    public function __construct($productRepos)
     {
-        $this->productRepos = new ProductRepository();
+        $this->productRepos = $productRepos;
     }
 
     public function getProductById(int $id)

@@ -3,14 +3,15 @@
 namespace App\Repository;
 
 use App\models\Category;
-use libs\Database;
 use PDO;
 
 class CategoryRepository
 {
-    public function getConnect(): PDO
+    private PDO $getConnect;
+
+    public function __construct(PDO $PDO)
     {
-        return Database::getInstance()->getConnection();
+        $this->getConnect = $PDO;
     }
 
     /**
@@ -20,7 +21,7 @@ class CategoryRepository
     {
         $sql = "SELECT id, title 
                 FROM categories";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
         return $statement->fetchAll();
     }
@@ -34,7 +35,7 @@ class CategoryRepository
         $sql = "SELECT id, title 
                 FROM categories 
                 WHERE id = :id";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Category');
@@ -49,7 +50,7 @@ class CategoryRepository
     {
         $sql = "INSERT INTO categories title 
                 VALUE :title";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute(['title' => $title]);
         return true;
@@ -65,7 +66,7 @@ class CategoryRepository
         $sql = "UPDATE categories 
                 SET title = :title 
                 WHERE id = :id";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute(['title' => $title, 'id' => $id]);
         return true;
@@ -79,7 +80,7 @@ class CategoryRepository
     {
         $sql = "DELETE FROM categories 
                 WHERE id = :id";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;

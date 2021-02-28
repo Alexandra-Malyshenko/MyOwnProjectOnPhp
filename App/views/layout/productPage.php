@@ -1,13 +1,5 @@
 <?php
 
-use App\Services\CartService;
-use App\Services\WishListService;
-use libs\Authentication;
-
-$auth = new Authentication();
-$cart = new CartService(__DIR__ . '/../../storage/php-session/');
-$wish = new WishListService();
-
 /**
  * @var $params array of Product object and Category object
  * @var $header string
@@ -16,6 +8,15 @@ $wish = new WishListService();
  */
 /** @var \App\Repository\CategoryRepository $categoryList */
 $categoryList = $params[0];
+/** @var \App\models\Category $category */
+$category = $params[1];
+/** @var \App\models\Product $product */
+$product = $params[2];
+$comments = $params[3];
+$users = $params[4];
+$auth = $params[5];
+$cart = $params[6];
+$wish = $params[7];
 ?>
 
 <!DOCTYPE html>
@@ -32,12 +33,6 @@ $categoryList = $params[0];
 <div class="container-fluid">
 <?php
 include dirname(__DIR__) . '/templates/headerTemplate.php';
-/** @var \App\models\Category $category */
-$category = $params[1];
-/** @var \App\models\Product $product */
-$product = $params[2];
-$comments = $params[3];
-$users = $params[4];
 ?>
 <div class="container mt-5 d-flex justify-content-end">
     <div class="row">

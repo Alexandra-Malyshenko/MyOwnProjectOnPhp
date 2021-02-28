@@ -7,10 +7,12 @@ use App\Repository\CommentRepository;
 class CommentService
 {
     private CommentRepository $commentRepos;
+    private ProductService $prodService;
 
-    public function __construct()
+    public function __construct($commentRepos, $prodService)
     {
-        $this->commentRepos = new CommentRepository();
+        $this->commentRepos = $commentRepos;
+        $this->prodService = $prodService;
     }
 
     public function getCommentsByUserId(int $user_id, int $start, int $itemsOnPage): array
@@ -47,7 +49,7 @@ class CommentService
     {
         $products = [];
         foreach ($comments as $comment) {
-            $product = (new ProductService())->getProductById($comment->getProductId());
+            $product = $this->prodService->getProductById($comment->getProductId());
             array_push($products, $product);
         }
         return $products;

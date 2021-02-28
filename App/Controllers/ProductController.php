@@ -1,46 +1,30 @@
 <?php
 
-use App\Services\CategoryService;
-use App\Services\CommentService;
-use App\Services\LoggerService;
+use App\Controllers\BaseController;
 use App\Services\MailService;
-use App\Services\ProductService;
-use App\Services\UserService;
-use libs\Authentication;
-use libs\TemplateMaker;
-use Monolog\Logger;
 
-class ProductController
+class ProductController extends BaseController
 {
-    private ProductService $productService;
-    private CategoryService $categoryService;
-    private TemplateMaker $render;
-    private CommentService $commentService;
-    private Logger $logger;
 
     public function __construct()
     {
-        $this->logger = (new LoggerService())->getLogger();
-        $this->productService = new ProductService();
-        $this->categoryService = new CategoryService();
-        $this->render = new TemplateMaker();
-        $this->commentService = new CommentService();
+        parent::__construct();
     }
 
     public function view(int $id)
     {
         try {
-            $product = $this->productService
+            $product = $this->prodService
                 ->getProductById($id);
             $category = $this->categoryService
                 ->getCategoryById($product->getCategoryId());
             $comments = $this->commentService
                 ->getCommentsByProductId($product->getId());
-            $users = (new UserService())
+            $users = $this->userService
                 ->getUserByComments($comments);
 
             if (!empty($_POST)) {
-                $user = (new Authentication())
+                $user = $this->authentication
                     ->getUser();
                 if ($this->post($user, $product->getId())) {
                     $referrer = $_SERVER['HTTP_REFERER'];
@@ -56,7 +40,10 @@ class ProductController
                         $category,
                         $product,
                         $comments,
-                        $users
+                        $users,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
                     ]
                 );
         } catch (\Throwable $error) {
@@ -75,7 +62,7 @@ class ProductController
                     $this->commentService
                     ->createComment($product_id, $user->getId(), $text)
                 ) {
-                    (new MailService())
+                    (new MailService($this->orderService))
                         ->sendMessage('auth', [$product_id]);
                     return true;
                 }

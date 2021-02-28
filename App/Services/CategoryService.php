@@ -9,9 +9,9 @@ class CategoryService
 {
     private CategoryRepository $categoryRepos;
 
-    public function __construct()
+    public function __construct($categoryRepos)
     {
-        $this->categoryRepos = new CategoryRepository();
+        $this->categoryRepos = $categoryRepos;
     }
 
     public function getAll(): array

@@ -4,9 +4,6 @@ use App\Services\CartService;
 use App\Services\WishListService;
 use libs\Authentication;
 
-$auth = new Authentication();
-$cart = new CartService(__DIR__ . '/../../storage/php-session/');
-$wish = new WishListService();
 /**
  * @var $params array
  * @var $header string
@@ -15,6 +12,11 @@ $wish = new WishListService();
  */
 
 $categoryList = $params[0];
+$category = $params[1];
+$products = $params[2];
+$auth = $params[3];
+$cart = $params[4];
+$wish = $params[5];
 ?>
 
 <!DOCTYPE html>
@@ -33,11 +35,6 @@ $categoryList = $params[0];
     <?php
     include dirname(__DIR__) . '/templates/headerTemplate.php';
     header('Access-Control-Allow-Origin: *');
-    /** @var \App\models\Category $category */
-    $category = $params[1];
-
-    /** @var array $products */
-    $products = $params[2];
     ?>
 
     <div class="container mt-5 d-flex justify-content-end">

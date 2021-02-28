@@ -1,12 +1,5 @@
 <?php
 
-use App\Services\CartService;
-use App\Services\WishListService;
-use libs\Authentication;
-
-$auth = new Authentication();
-$cart = new CartService(__DIR__ . '/../../storage/php-session/');
-$wish = new WishListService();
 /**
  * @var $params array
  * @var $header string
@@ -15,6 +8,12 @@ $wish = new WishListService();
  */
 
 $categoryList = $params[0];
+$category = $params[1];
+$pagination = $params[2];
+$sort = $params[3];
+$auth = $params[4];
+$cart = $params[5];
+$wish = $params[6];
 ?>
 
 <!DOCTYPE html>
@@ -32,9 +31,6 @@ $categoryList = $params[0];
 <?php
 include dirname(__DIR__) . '/templates/headerTemplate.php';
 header('Access-Control-Allow-Origin: *');
-$category = $params[1];
-$pagination = $params[2];
-$sort = $params[3];
 ?>
     <div class="container mt-5 d-flex justify-content-end">
         <div class="row">

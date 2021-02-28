@@ -1,12 +1,5 @@
 <?php
 
-use App\Services\CartService;
-use App\Services\WishListService;
-use libs\Authentication;
-
-$auth = new Authentication();
-$cart = new CartService(__DIR__ . '/../../storage/php-session/');
-$wish = new WishListService();
 /**
  * @var $params array
  * @var $header string
@@ -15,6 +8,15 @@ $wish = new WishListService();
  */
 
 $categoryList = $params[0];
+/** @var \App\models\Category $category */
+$category = $params[1];
+/** @var array $products */
+$products = $params[2];
+$pagination = $params[3];
+$sort = $params[4];
+$auth = $params[5];
+$cart = $params[6];
+$wish = $params[7];
 ?>
 
 <!DOCTYPE html>
@@ -33,13 +35,6 @@ $categoryList = $params[0];
     <?php
     include dirname(__DIR__) . '/templates/headerTemplate.php';
     header('Access-Control-Allow-Origin: *');
-    /** @var \App\models\Category $category */
-    $category = $params[1];
-
-    /** @var array $products */
-    $products = $params[2];
-    $pagination = $params[3];
-    $sort = $params[4];
     ?>
 
     <div class="container mt-5 d-flex justify-content-end">
@@ -87,7 +82,7 @@ $categoryList = $params[0];
                                 <button class="btn btn-info">Подробнее</button>
                             </a>
                             <?php if($auth->isAuth()): ?>
-                                <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/viewWishList<?php echo $product->getId(); ?>">
+                                <a class="add-to-cart" data-id="<?php echo $product->getId(); ?>" href="/cabinet/addWish/<?php echo $product->getId(); ?>">
                                     <img src="/images/logo/wish-list.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
                                 </a>
                             <?php endif;?>

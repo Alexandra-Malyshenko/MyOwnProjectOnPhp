@@ -1,30 +1,14 @@
 <?php
 
-use App\Services\CartService;
-use App\Services\CategoryService;
-use App\Services\LoggerService;
+use App\Controllers\BaseController;
 use App\Services\MailService;
-use App\Services\OrderService;
-use libs\TemplateMaker;
-use libs\Authentication;
-use Monolog\Logger;
 
-class CartController
+class CartController extends BaseController
 {
-    private CartService $cartService;
-    private OrderService $orderService;
-    private TemplateMaker $render;
-    private array $categoryList;
-    private Logger $logger;
 
     public function __construct()
     {
-        $this->cartService = new CartService('');
-        $this->orderService = new OrderService();
-        $this->render = new TemplateMaker();
-        $this->logger = LoggerService::getLogger();
-        $this->categoryList = (new CategoryService())
-                                ->getAll();
+        parent::__construct();
     }
 
     public function add(int $id): bool
@@ -46,7 +30,15 @@ class CartController
                 ->render(
                     'cabinetTemplate',
                     'cartPage',
-                    [$this->categoryList, $products, $total]
+                    [
+                        $this->categoryService->getAll(),
+                        $products,
+                        $total,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService,
+                        $this->cartService->getProductsFromSession()
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -65,17 +57,17 @@ class CartController
     {
         $productsFromSession = $this->cartService
             ->getProductsFromSession();
-        $products = $this->cartService
+        $productsFromCart = $this->cartService
             ->getProducts();
         $total = $this->cartService
-            ->getTotalPrice($products);
-        $user = (new Authentication())
+            ->getTotalPrice($productsFromCart);
+        $user = $this->authentication
             ->getUser();
         $result = false;
         if (!empty($_POST)) {
-            $result = $this->post($productsFromSession, $products, $user, $total);
+            $result = $this->post($productsFromSession, $productsFromCart, $user, $total);
             if ($result) {
-                (new MailService())
+                (new MailService($this->orderService))
                     ->sendMessage('order', []);
                 $this->cartService
                     ->clear();
@@ -85,11 +77,21 @@ class CartController
             ->render(
                 'cabinetTemplate',
                 'checkoutPage',
-                [$this->categoryList, $products, $total, $user, $result]
+                [
+                    $this->categoryService->getAll(),
+                    $products,
+                    $total,
+                    $user,
+                    $result,
+                    $this->authentication,
+                    $this->cartService,
+                    $this->wishListService,
+                    $this->cartService->getProductsFromSession()
+                ]
             );
     }
 
-    public function post($productsFromSession, $products, $user, $totalPrice)
+    public function post($productsFromSession, $productsFromCart, $user, $totalPrice)
     {
         try {
             $name = $_POST['name'];
@@ -104,7 +106,7 @@ class CartController
                     $phone,
                     $comments,
                     $productsFromSession,
-                    $products,
+                    $productsFromCart,
                     $user->getId(),
                     $name,
                     $email

@@ -3,21 +3,18 @@
 namespace App\Services;
 
 use libs\Session;
-use App\Repository\ProductRepository;
 
 class CartService
 {
     private Session $session;
     private string $sessionKey;
+    private ProductService $prodService;
 
-    public function __construct(string $path)
+    public function __construct($session, $prodService)
     {
-        $this->session = new Session();
-        if ($path == null) {
-            $this->session->setSavePath(__DIR__ . '/../storage/php-session/');
-        } else {
-            $this->session->setSavePath($path);
-        }
+        $this->session = $session;
+        $this->prodService = $prodService;
+        $this->session->setSavePath(__DIR__ . '/../storage/php-session/');
         $this->sessionKey = 'products';
     }
 
@@ -106,9 +103,8 @@ class CartService
     {
         $productsID = array_keys($this->getProductsFromSession());
         $productsList = [];
-        $productRepos = new ProductRepository();
         foreach ($productsID as $id) {
-            array_push($productsList, $productRepos->getById($id));
+            array_push($productsList, $this->prodService->getProductById($id));
         }
         return $productsList;
     }

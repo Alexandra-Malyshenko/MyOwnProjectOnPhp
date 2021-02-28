@@ -1,13 +1,5 @@
 <?php
 
-use App\Services\CartService;
-use App\Services\WishListService;
-use libs\Authentication;
-
-$auth = new Authentication();
-$cart = new CartService(__DIR__ . '/../../storage/php-session/');
-$wish = new WishListService();
-
 /**
  * @var $header string
  * @var $main string
@@ -18,6 +10,10 @@ $categoryList = $params[0];
 $commentList = $params[1];
 $products = $params[2];
 $pagination = $params[3];
+$auth = $params[4];
+$cart = $params[5];
+$wish = $params[6];
+
 ?>
 
 <!DOCTYPE html>

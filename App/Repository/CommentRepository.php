@@ -3,16 +3,16 @@
 namespace App\Repository;
 
 use App\models\Comment;
-use libs\Database;
 use PDO;
 
 class CommentRepository
 {
-    public function getConnect(): PDO
-    {
-        return Database::getInstance()->getConnection();
-    }
+    private PDO $getConnect;
 
+    public function __construct(PDO $PDO)
+    {
+        $this->getConnect = $PDO;
+    }
     /**
      * @return array
      */
@@ -20,7 +20,7 @@ class CommentRepository
     {
         $sql = "SELECT id, product_id, user_id, text, created_at  
                 FROM comments";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Comment');
         return $statement->fetchAll();
     }
@@ -37,7 +37,7 @@ class CommentRepository
                 FROM comments 
                 WHERE user_id = :user_id
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Comment');
         return $statement->fetchAll();
@@ -52,7 +52,7 @@ class CommentRepository
         $sql = "SELECT id, product_id, user_id, text, created_at  
                 FROM comments 
                 WHERE product_id = :product_id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['product_id' => $product_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Comment');
         return $statement->fetchAll();
@@ -67,7 +67,7 @@ class CommentRepository
         $sql = "SELECT id, product_id, user_id, text, created_at  
                 FROM comments 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Comment');
         return $statement->fetch();
@@ -83,7 +83,7 @@ class CommentRepository
     {
         $sql = "INSERT INTO comments (text, user_id, product_id) 
                 VALUES (:text, :user_id, :product_id)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'product_id' => $product_id,
             'user_id' => $user_id,
@@ -106,7 +106,7 @@ class CommentRepository
                         user_id = :user_id,
                         text = :text) 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'id' => $id,
             'product_id' => $product_id,
@@ -124,7 +124,7 @@ class CommentRepository
     {
         $sql = "DELETE FROM comments 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }
@@ -136,7 +136,7 @@ class CommentRepository
     public function count(int $id)
     {
         $sql = "SELECT COUNT(*) as count FROM comments WHERE user_id = $id";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $row = $statement->fetch();
         return $row['count'];

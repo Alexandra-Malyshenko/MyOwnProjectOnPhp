@@ -1,37 +1,16 @@
 <?php
 
-use App\Services\CategoryService;
-use App\Services\CommentService;
-use App\Services\LoggerService;
-use App\Services\OrderService;
-use App\Services\WishListService;
-use libs\Authentication;
+use App\Controllers\BaseController;
 use libs\Pagination;
-use libs\TemplateMaker;
-use Monolog\Logger;
 
-class CabinetController
+class CabinetController extends BaseController
 {
-    private TemplateMaker $render;
     private int $itemsOnPage;
-    private array $categoryList;
-    private Authentication $authentication;
-    private OrderService $orderService;
-    private CommentService $commentService;
-    private WishListService $wishListService;
-    private Logger $logger;
 
     public function __construct()
     {
+        parent::__construct();
         $this->itemsOnPage = 6;
-        $this->logger = LoggerService::getLogger();
-        $this->render = new TemplateMaker();
-        $this->authentication = new Authentication();
-        $this->orderService = new OrderService();
-        $this->commentService = new CommentService();
-        $this->wishListService = new WishListService();
-        $this->categoryList = (new CategoryService())
-            ->getAll();
     }
 
     public function index()
@@ -52,7 +31,14 @@ class CabinetController
                 ->render(
                     'cabinetTemplate',
                     'cabinetPage',
-                    [$this->categoryList, $orders, $pagination]
+                    [
+                        $this->categoryService->getAll(),
+                        $orders,
+                        $pagination,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -70,7 +56,14 @@ class CabinetController
                 ->render(
                     'cabinetTemplate',
                     'cabinetOrderPage',
-                    [$this->categoryList, $order, $products]
+                    [
+                        $this->categoryService->getAll(),
+                        $order,
+                        $products,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -89,7 +82,13 @@ class CabinetController
                 ->render(
                     'cabinetTemplate',
                     'cabinetWishListPage',
-                    [$this->categoryList, $wishList]
+                    [
+                        $this->categoryService->getAll(),
+                        $wishList,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
                 $this->logger->warning($error->getMessage());
@@ -143,7 +142,15 @@ class CabinetController
                 ->render(
                     'cabinetTemplate',
                     'cabinetCommentPage',
-                    [$this->categoryList, $commentList, $products, $pagination]
+                    [
+                        $this->categoryService->getAll(),
+                        $commentList,
+                        $products,
+                        $pagination,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
