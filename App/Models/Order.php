@@ -4,15 +4,15 @@ namespace App\models;
 
 class Order
 {
-    private int $id;
-    private int $user_id;
-    private string $address;
-    private string $price_total;
+    private ?int $id;
+    private ?int $user_id;
+    private ?string $address;
+    private ?string $price_total;
     private $comments;
-    private string $contact_phone;
-    private string $user_name;
-    private string $user_email;
-    private string $created_at;
+    private ?string $contact_phone;
+    private ?string $user_name;
+    private ?string $user_email;
+    private ?string $created_at;
 
     public function getId(): int
     {

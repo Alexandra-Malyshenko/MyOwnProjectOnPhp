@@ -4,20 +4,20 @@ namespace App\models;
 
 class Product
 {
-    private int $id;
-    private int $category_id;
-    private string $title;
-    private int $price;
-    private int $quantity;
-    private string $description;
-    private string $image;
+    private ?int $id;
+    private ?int $category_id = null;
+    private ?string $title;
+    private ?int $price;
+    private ?int $quantity;
+    private ?string $description = null;
+    private ?string $image = null;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCategoryId(): int
+    public function getCategoryId(): ?int
     {
         return $this->category_id;
     }
@@ -37,12 +37,12 @@ class Product
         return $this->quantity;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->image;
     }

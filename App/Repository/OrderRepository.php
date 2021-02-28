@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\models\Order;
 use App\models\Product;
-use libs\Database;
-use App\tools\Errors\ProductsErrorException;
 use PDO;
 
 class OrderRepository

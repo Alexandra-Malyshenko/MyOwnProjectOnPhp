@@ -1,39 +1,13 @@
 <?php
 
-use App\Repository\CategoryRepository;
-use App\Repository\UserRepository;
-use App\Services\CategoryService;
-use App\Services\LoggerService;
+use App\Controllers\BaseController;
 use App\Services\MailService;
-use App\Services\UserService;
-use libs\Authentication;
-use libs\Database;
-use libs\Session;
-use libs\TemplateMaker;
-use App\tools\Errors\UsersValidationException;
-use Monolog\Logger;
 
-class UserController
+class UserController extends BaseController
 {
-    private Authentication $authentication;
-    private TemplateMaker $render;
-    private array $categoryList;
-    private Logger $logger;
-    /**
-     * @var UserService
-     */
-    private UserService $userService;
-
     public function __construct()
     {
-        $db = Database::getInstance()->getConnection();
-        $session = new Session();
-        $this->userService = new UserService(new UserRepository($db));
-        $this->authentication = new Authentication($session, $this->userService);
-        $this->render = new TemplateMaker();
-        $this->logger = LoggerService::getLogger();
-        $this->categoryList = (new CategoryService(new CategoryRepository($db)))
-            ->getAll();
+        parent::__construct();
     }
 
     public function register()
@@ -46,7 +20,7 @@ class UserController
                 ->render(
                     'registerTemplate',
                     'mainPage',
-                    $this->categoryList
+                    $this->categoryService->getAll()
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -63,7 +37,7 @@ class UserController
                 ->render(
                     'loginTemplate',
                     'mainPage',
-                    $this->categoryList
+                    $this->categoryService->getAll()
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -100,7 +74,7 @@ class UserController
             $city = $_POST['city'];
             $params = $this->authentication
                 ->register($name, $email, $password, $password_again, $city);
-            (new MailService())
+            (new MailService($this->orderService))
                 ->sendMessage('register', $params);
             $this->authentication
                 ->auth($params[0], $params[1]);

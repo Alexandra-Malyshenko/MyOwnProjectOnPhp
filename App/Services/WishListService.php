@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Repository\WishListRepository;
-use App\Services\ProductService;
 
 class WishListService
 {
     private WishListRepository $wishListRepos;
-    private $prodService;
+    private ProductService $prodService;
 
     public function __construct($wishListRepos, $prodService)
     {

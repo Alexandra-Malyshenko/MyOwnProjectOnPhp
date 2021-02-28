@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\models\Category;
-use libs\Database;
 use PDO;
 
 class CategoryRepository

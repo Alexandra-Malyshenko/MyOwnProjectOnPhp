@@ -3,22 +3,18 @@
 namespace App\Services;
 
 use libs\Session;
-use App\Repository\ProductRepository;
 
 class CartService
 {
     private Session $session;
     private string $sessionKey;
+    private ProductService $prodService;
 
-    public function __construct(string $path, $session, $prodService)
+    public function __construct($session, $prodService)
     {
         $this->session = $session;
         $this->prodService = $prodService;
-        if ($path == null) {
-            $this->session->setSavePath(__DIR__ . '/../storage/php-session/');
-        } else {
-            $this->session->setSavePath($path);
-        }
+        $this->session->setSavePath(__DIR__ . '/../storage/php-session/');
         $this->sessionKey = 'products';
     }
 

@@ -6,7 +6,7 @@ use App\Services\ProductService;
 
 class SearchService
 {
-    private $prodService;
+    private ProductService $prodService;
 
     public function __construct($prodService)
     {

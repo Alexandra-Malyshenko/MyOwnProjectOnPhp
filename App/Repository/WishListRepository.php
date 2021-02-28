@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use libs\Database;
 use App\models\WishList;
 use PDO;
 

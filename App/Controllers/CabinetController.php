@@ -1,56 +1,16 @@
 <?php
 
-use App\Repository\CategoryRepository;
-use App\Repository\CommentRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
-use App\Repository\WishListRepository;
-use App\Services\CartService;
-use App\Services\CategoryService;
-use App\Services\CommentService;
-use App\Services\LoggerService;
-use App\Services\OrderService;
-use App\Services\ProductService;
-use App\Services\UserService;
-use App\Services\WishListService;
-use libs\Authentication;
-use libs\Database;
+use App\Controllers\BaseController;
 use libs\Pagination;
-use libs\Session;
-use libs\TemplateMaker;
-use Monolog\Logger;
 
-class CabinetController
+class CabinetController extends BaseController
 {
-    private TemplateMaker $render;
     private int $itemsOnPage;
-    private array $categoryList;
-    private Authentication $authentication;
-    private OrderService $orderService;
-    private CommentService $commentService;
-    private WishListService $wishListService;
-    private Logger $logger;
-    private ProductService $prodService;
-    private UserService $userService;
-    private CartService $cartService;
 
     public function __construct()
     {
-        $db = Database::getInstance()->getConnection();
-        $session = new Session();
+        parent::__construct();
         $this->itemsOnPage = 6;
-        $this->logger = LoggerService::getLogger();
-        $this->render = new TemplateMaker();
-        $this->prodService = new ProductService(new ProductRepository($db));
-        $this->userService = new UserService(new UserRepository($db));
-        $this->orderService = new OrderService(new OrderRepository($db), $this->userService);
-        $this->commentService = new CommentService(new CommentRepository($db), $this->prodService);
-        $this->wishListService = new WishListService(new WishListRepository($db), $this->prodService);
-        $this->authentication = new Authentication($session, $this->userService);
-        $this->cartService = new CartService('', $session, $this->prodService);
-        $this->categoryList = (new CategoryService(new CategoryRepository($db)))
-            ->getAll();
     }
 
     public function index()
@@ -72,7 +32,7 @@ class CabinetController
                     'cabinetTemplate',
                     'cabinetPage',
                     [
-                        $this->categoryList,
+                        $this->categoryService->getAll(),
                         $orders,
                         $pagination,
                         $this->authentication,
@@ -97,7 +57,7 @@ class CabinetController
                     'cabinetTemplate',
                     'cabinetOrderPage',
                     [
-                        $this->categoryList,
+                        $this->categoryService->getAll(),
                         $order,
                         $products,
                         $this->authentication,
@@ -123,7 +83,7 @@ class CabinetController
                     'cabinetTemplate',
                     'cabinetWishListPage',
                     [
-                        $this->categoryList,
+                        $this->categoryService->getAll(),
                         $wishList,
                         $this->authentication,
                         $this->cartService,
@@ -183,7 +143,7 @@ class CabinetController
                     'cabinetTemplate',
                     'cabinetCommentPage',
                     [
-                        $this->categoryList,
+                        $this->categoryService->getAll(),
                         $commentList,
                         $products,
                         $pagination,

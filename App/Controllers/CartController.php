@@ -1,50 +1,14 @@
 <?php
 
-use App\Repository\CategoryRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
-use App\Repository\WishListRepository;
-use App\Services\CartService;
-use App\Services\CategoryService;
-use App\Services\LoggerService;
+use App\Controllers\BaseController;
 use App\Services\MailService;
-use App\Services\OrderService;
-use App\Services\ProductService;
-use App\Services\UserService;
-use App\Services\WishListService;
-use libs\Database;
-use libs\Session;
-use libs\TemplateMaker;
-use libs\Authentication;
-use Monolog\Logger;
 
-class CartController
+class CartController extends BaseController
 {
-    private CartService $cartService;
-    private OrderService $orderService;
-    private TemplateMaker $render;
-    private array $categoryList;
-    private Logger $logger;
-    private UserService $userService;
-    private ProductService $prodService;
-    private Authentication $authentication;
-    private WishListService $wishListService;
 
     public function __construct()
     {
-        $db = Database::getInstance()->getConnection();
-        $session = new Session();
-        $this->prodService = new ProductService(new ProductRepository($db));
-        $this->userService = new UserService(new UserRepository($db));
-        $this->cartService = new CartService('', $session, $this->prodService);
-        $this->orderService = new OrderService(new OrderRepository($db), $this->userService);
-        $this->render = new TemplateMaker();
-        $this->logger = LoggerService::getLogger();
-        $this->authentication = new Authentication($session, $this->userService);
-        $this->wishListService = new WishListService(new WishListRepository($db), $this->prodService);
-        $this->categoryList = (new CategoryService(new CategoryRepository($db)))
-                                ->getAll();
+        parent::__construct();
     }
 
     public function add(int $id): bool
@@ -67,7 +31,7 @@ class CartController
                     'cabinetTemplate',
                     'cartPage',
                     [
-                        $this->categoryList,
+                        $this->categoryService->getAll(),
                         $products,
                         $total,
                         $this->authentication,
@@ -93,15 +57,15 @@ class CartController
     {
         $productsFromSession = $this->cartService
             ->getProductsFromSession();
-        $products = $this->cartService
+        $productsFromCart = $this->cartService
             ->getProducts();
         $total = $this->cartService
-            ->getTotalPrice($products);
+            ->getTotalPrice($productsFromCart);
         $user = $this->authentication
             ->getUser();
         $result = false;
         if (!empty($_POST)) {
-            $result = $this->post($productsFromSession, $products, $user, $total);
+            $result = $this->post($productsFromSession, $productsFromCart, $user, $total);
             if ($result) {
                 (new MailService($this->orderService))
                     ->sendMessage('order', []);
@@ -114,7 +78,7 @@ class CartController
                 'cabinetTemplate',
                 'checkoutPage',
                 [
-                    $this->categoryList,
+                    $this->categoryService->getAll(),
                     $products,
                     $total,
                     $user,
@@ -127,7 +91,7 @@ class CartController
             );
     }
 
-    public function post($productsFromSession, $products, $user, $totalPrice)
+    public function post($productsFromSession, $productsFromCart, $user, $totalPrice)
     {
         try {
             $name = $_POST['name'];
@@ -142,7 +106,7 @@ class CartController
                     $phone,
                     $comments,
                     $productsFromSession,
-                    $products,
+                    $productsFromCart,
                     $user->getId(),
                     $name,
                     $email

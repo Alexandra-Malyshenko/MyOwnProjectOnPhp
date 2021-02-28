@@ -3,19 +3,11 @@
 namespace App\Services;
 
 use App\Repository\OrderRepository;
-use App\Services\UserService;
-use App\models\Order;
 use App\tools\Errors\ProductsErrorException;
 
 class OrderService
 {
-    /**
-     * @var OrderRepository
-     */
     private OrderRepository $orderRepos;
-    /**
-     * @var UserService
-     */
     private UserService $userService;
 
     public function __construct($orderRepos, $userService)
@@ -32,7 +24,7 @@ class OrderService
         return $this->orderRepos->getAllByUserId($id, $start, $itemsOnPage);
     }
 
-    public function getById(int $id): ?Order
+    public function getById(int $id)
     {
         if (empty($id)) {
             throw new ProductsErrorException('Must be enter an id for category');
@@ -45,9 +37,9 @@ class OrderService
         return $this->orderRepos->getAllProductsByIdOrder($id);
     }
 
-    public function createOrderProducts($productsFromSession, $products, $order_id): bool
+    public function createOrderProducts($productsFromSession, $productsFromCart, $order_id): bool
     {
-        foreach ($products as $product) {
+        foreach ($productsFromCart as $product) {
             $this->orderRepos->createAllProductsByIdOrder($product->getId(), $order_id, $productsFromSession[$product->getId()]);
         }
         return true;
@@ -59,7 +51,7 @@ class OrderService
         string $contact_phone,
         string $comments,
         array $productsFromSession,
-        array $products,
+        array $productsFromCart,
         int $user_id = null,
         string $user_name = null,
         string $user_email = null
@@ -67,7 +59,7 @@ class OrderService
         $this->orderRepos
             ->create($user_id, $user_name, $user_email, $address, $price_total, $contact_phone, $comments);
         $orderId = $this->orderRepos->getLastId();
-        return $this->createOrderProducts($productsFromSession, $products, $orderId);
+        return $this->createOrderProducts($productsFromSession, $productsFromCart, $orderId);
     }
 
     public function update(

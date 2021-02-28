@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\models\User;
+use App\Repository\UserRepository;
 use App\tools\Errors\ProductsErrorException;
 use App\tools\Errors\UsersValidationException;
 
 class UserService
 {
 
-    private $userRepos;
+    private UserRepository $userRepos;
 
     public function __construct($userRepository)
     {
