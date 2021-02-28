@@ -18,10 +18,10 @@ class OrderService
      */
     private UserService $userService;
 
-    public function __construct()
+    public function __construct($orderRepos, $userService)
     {
-        $this->orderRepos = new OrderRepository();
-        $this->userService = new UserService();
+        $this->orderRepos = $orderRepos;
+        $this->userService = $userService;
     }
 
     public function getByUserId(int $id, int $start, int $itemsOnPage): array

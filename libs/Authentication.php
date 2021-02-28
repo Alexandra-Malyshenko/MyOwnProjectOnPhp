@@ -3,6 +3,7 @@
 namespace libs;
 
 use App\models\User;
+use App\Repository\UserRepository;
 use libs\Session;
 use App\tools\Errors\UsersValidationException;
 use App\Services\UserService;
@@ -13,10 +14,10 @@ class Authentication
     private UserService $userService;
     private string $sessionKey;
 
-    public function __construct()
+    public function __construct($session, $userService)
     {
-        $this->sessionObject = new Session();
-        $this->userService = new UserService();
+        $this->sessionObject = $session;
+        $this->userService = $userService;
         $this->sessionKey = 'userID';
         $this->sessionObject->setSavePath(__DIR__ . '/../App/storage/php-session/');
     }
@@ -64,27 +65,27 @@ class Authentication
             ->cookieExists()
         ) {
             setcookie("PHPSESSID", 'false', time() - 1);
-            $this->sessionObject
-                ->delete($this->sessionKey);
-            $this->sessionObject
-                ->destroy();
+            $this->sessionObject->delete($this->sessionKey);
+            $this->sessionObject->destroy();
         }
     }
 
-    public function register(string $name, string $email, string $password, string $city): array
+    public function register(string $name, string $email, string $password, string $password_again, string $city): array
     {
-        if (
-            $this->userService
-            ->checkUserName($name)
-        ) {
+        if (!$this->userService->validationPasswordMatch($password, $password_again)) {
+            throw new UsersValidationException('Passwords does not match!');
+        } elseif (!$this->userService->validationUserName($name)) {
+            throw new UsersValidationException('Not valid user name!');
+        } elseif (!!$this->userService->validationUserPassword($password)) {
+            throw new UsersValidationException('Password must have more then 8 chars!');
+        }
+        if ($this->userService->checkUserName($name)) {
             throw new UsersValidationException('This name is already use!');
         } elseif ($this->userService->checkUserEmail($email)) {
             throw new UsersValidationException('This email is already use!');
         }
-        if (
-            $this->userService
-            ->register($name, $email, $password, $city)
-        ) {
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        if ($this->userService->register($name, $email, $hash, $city)) {
             return [$name, $password];
         }
     }

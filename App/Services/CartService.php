@@ -10,9 +10,10 @@ class CartService
     private Session $session;
     private string $sessionKey;
 
-    public function __construct(string $path)
+    public function __construct(string $path, $session, $prodService)
     {
-        $this->session = new Session();
+        $this->session = $session;
+        $this->prodService = $prodService;
         if ($path == null) {
             $this->session->setSavePath(__DIR__ . '/../storage/php-session/');
         } else {
@@ -106,9 +107,8 @@ class CartService
     {
         $productsID = array_keys($this->getProductsFromSession());
         $productsList = [];
-        $productRepos = new ProductRepository();
         foreach ($productsID as $id) {
-            array_push($productsList, $productRepos->getById($id));
+            array_push($productsList, $this->prodService->getProductById($id));
         }
         return $productsList;
     }

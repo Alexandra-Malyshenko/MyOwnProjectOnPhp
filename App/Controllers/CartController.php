@@ -1,10 +1,20 @@
 <?php
 
+use App\Repository\CategoryRepository;
+use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
+use App\Repository\WishListRepository;
 use App\Services\CartService;
 use App\Services\CategoryService;
 use App\Services\LoggerService;
 use App\Services\MailService;
 use App\Services\OrderService;
+use App\Services\ProductService;
+use App\Services\UserService;
+use App\Services\WishListService;
+use libs\Database;
+use libs\Session;
 use libs\TemplateMaker;
 use libs\Authentication;
 use Monolog\Logger;
@@ -16,14 +26,24 @@ class CartController
     private TemplateMaker $render;
     private array $categoryList;
     private Logger $logger;
+    private UserService $userService;
+    private ProductService $prodService;
+    private Authentication $authentication;
+    private WishListService $wishListService;
 
     public function __construct()
     {
-        $this->cartService = new CartService('');
-        $this->orderService = new OrderService();
+        $db = Database::getInstance()->getConnection();
+        $session = new Session();
+        $this->prodService = new ProductService(new ProductRepository($db));
+        $this->userService = new UserService(new UserRepository($db));
+        $this->cartService = new CartService('', $session, $this->prodService);
+        $this->orderService = new OrderService(new OrderRepository($db), $this->userService);
         $this->render = new TemplateMaker();
         $this->logger = LoggerService::getLogger();
-        $this->categoryList = (new CategoryService())
+        $this->authentication = new Authentication($session, $this->userService);
+        $this->wishListService = new WishListService(new WishListRepository($db), $this->prodService);
+        $this->categoryList = (new CategoryService(new CategoryRepository($db)))
                                 ->getAll();
     }
 
@@ -46,7 +66,15 @@ class CartController
                 ->render(
                     'cabinetTemplate',
                     'cartPage',
-                    [$this->categoryList, $products, $total]
+                    [
+                        $this->categoryList,
+                        $products,
+                        $total,
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService,
+                        $this->cartService->getProductsFromSession()
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -69,13 +97,13 @@ class CartController
             ->getProducts();
         $total = $this->cartService
             ->getTotalPrice($products);
-        $user = (new Authentication())
+        $user = $this->authentication
             ->getUser();
         $result = false;
         if (!empty($_POST)) {
             $result = $this->post($productsFromSession, $products, $user, $total);
             if ($result) {
-                (new MailService())
+                (new MailService($this->orderService))
                     ->sendMessage('order', []);
                 $this->cartService
                     ->clear();
@@ -85,7 +113,17 @@ class CartController
             ->render(
                 'cabinetTemplate',
                 'checkoutPage',
-                [$this->categoryList, $products, $total, $user, $result]
+                [
+                    $this->categoryList,
+                    $products,
+                    $total,
+                    $user,
+                    $result,
+                    $this->authentication,
+                    $this->cartService,
+                    $this->wishListService,
+                    $this->cartService->getProductsFromSession()
+                ]
             );
     }
 

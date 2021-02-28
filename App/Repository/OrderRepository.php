@@ -10,9 +10,11 @@ use PDO;
 
 class OrderRepository
 {
-    public function getConnect(): PDO
+    private PDO $getConnect;
+
+    public function __construct(PDO $PDO)
     {
-        return Database::getInstance()->getConnection();
+        $this->getConnect = $PDO;
     }
 
     /**
@@ -22,7 +24,7 @@ class OrderRepository
     {
         $sql = "SELECT id, user_id, address, price_total, contact_phone, comments, created_at 
                 FROM orders";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Order');
         return $statement->fetchAll();
     }
@@ -39,7 +41,7 @@ class OrderRepository
                 FROM orders 
                 WHERE user_id = :user_id
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['user_id' => $user_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Order');
         return $statement->fetchAll();
@@ -54,7 +56,7 @@ class OrderRepository
         $sql = "SELECT id, address, price_total, contact_phone, comments, created_at 
                 FROM orders 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Order');
         return $statement->fetch();
@@ -81,7 +83,7 @@ class OrderRepository
     ): bool {
         $sql = "INSERT INTO orders (user_id, user_name, user_email, address, price_total, contact_phone, comments) 
                 VALUE (:user_id, :user_name, :user_email, :address, :price_total, :contact_phone, :comments)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'user_id' => $user_id,
             'address' => $address,
@@ -118,7 +120,7 @@ class OrderRepository
                         contact_phone = :contact_phone
                         comments = :comments ) 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'id' => $id,
             'user_id' => $user_id,
@@ -138,7 +140,7 @@ class OrderRepository
     {
         $sql = "DELETE FROM orders 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }
@@ -153,7 +155,7 @@ class OrderRepository
     {
         $sql = "INSERT INTO products_order (product_id, order_id, quantity)
                 VALUES (:product_id, :order_id, :quantity)";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['product_id' => $product_id, 'order_id' => $order_id, 'quantity' => $quantity]);
         return true;
     }
@@ -167,7 +169,7 @@ class OrderRepository
         $sql = "SELECT products.id, products.title, products.price, products_order.quantity
                 FROM products, products_order
                 WHERE products_order.order_id = :order_id and products_order.product_id = products.id;";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['order_id' => $order_id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
         return $statement->fetchAll();
@@ -181,7 +183,7 @@ class OrderRepository
         $sql = "SELECT id
                 FROM orders 
                 ORDER BY id DESC LIMIT 1";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $id = $statement->fetchAll();
         return (int) $id[0]['id'];
     }
@@ -193,7 +195,7 @@ class OrderRepository
     public function count(int $id)
     {
         $sql = "SELECT COUNT(*) as count FROM orders WHERE user_id = $id";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $row = $statement->fetch();
         return $row['count'];

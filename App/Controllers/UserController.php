@@ -1,9 +1,14 @@
 <?php
 
+use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use App\Services\CategoryService;
 use App\Services\LoggerService;
 use App\Services\MailService;
+use App\Services\UserService;
 use libs\Authentication;
+use libs\Database;
+use libs\Session;
 use libs\TemplateMaker;
 use App\tools\Errors\UsersValidationException;
 use Monolog\Logger;
@@ -14,13 +19,20 @@ class UserController
     private TemplateMaker $render;
     private array $categoryList;
     private Logger $logger;
+    /**
+     * @var UserService
+     */
+    private UserService $userService;
 
     public function __construct()
     {
-        $this->authentication = new Authentication();
+        $db = Database::getInstance()->getConnection();
+        $session = new Session();
+        $this->userService = new UserService(new UserRepository($db));
+        $this->authentication = new Authentication($session, $this->userService);
         $this->render = new TemplateMaker();
         $this->logger = LoggerService::getLogger();
-        $this->categoryList = (new CategoryService())
+        $this->categoryList = (new CategoryService(new CategoryRepository($db)))
             ->getAll();
     }
 
@@ -86,17 +98,13 @@ class UserController
             $password = $_POST['password'];
             $password_again = $_POST['password_again'];
             $city = $_POST['city'];
-            if ($password == $password_again) {
-                $params = $this->authentication
-                    ->register($name, $email, $password, $city);
-                (new MailService())
-                    ->sendMessage('register', $params);
-                $this->authentication
-                    ->auth($params[0], $params[1]);
-                header("Location: /");
-            } else {
-                throw new UsersValidationException('Your password does not match');
-            }
+            $params = $this->authentication
+                ->register($name, $email, $password, $password_again, $city);
+            (new MailService())
+                ->sendMessage('register', $params);
+            $this->authentication
+                ->auth($params[0], $params[1]);
+            header("Location: /");
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
         }

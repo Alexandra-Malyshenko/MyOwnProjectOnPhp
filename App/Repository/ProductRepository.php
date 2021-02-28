@@ -10,9 +10,11 @@ use PDO;
 
 class ProductRepository
 {
-    public function getConnect(): PDO
+    private PDO $getConnect;
+
+    public function __construct(PDO $PDO)
     {
-        return Database::getInstance()->getConnection();
+        $this->getConnect = $PDO;
     }
 
     /**
@@ -30,7 +32,7 @@ class ProductRepository
                 WHERE category_id = $id
                 ORDER BY $whatOrder $howOrder
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute([
             'id' => $id,
@@ -56,7 +58,7 @@ class ProductRepository
                 FROM products
                 ORDER BY $whatOrder $howOrder    
                 LIMIT $start, $itemsOnPage";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute([
             'start' => $start,
@@ -78,7 +80,7 @@ class ProductRepository
         $sql = "SELECT id, category_id, title, price, description, image  
                 FROM products 
                 WHERE id = :id";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute(['id' => $id]);
         $statement->setFetchMode(PDO::FETCH_CLASS, 'App\models\Product');
@@ -102,7 +104,7 @@ class ProductRepository
     ): bool {
         $sql = "INSERT INTO products (category_id, title, price, description, image) 
                 VALUES (:category_id, :title, :price, :description, :image)";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute([
             'category_id' => $category_id,
@@ -138,7 +140,7 @@ class ProductRepository
                         description = :description,
                         image = :image) 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute([
             'id' => $id,
             'category_id' => $category_id,
@@ -158,7 +160,7 @@ class ProductRepository
     {
         $sql = "DELETE FROM products 
                 WHERE id = :id";
-        $statement = $this->getConnect()->prepare($sql);
+        $statement = $this->getConnect->prepare($sql);
         $statement->execute(['id' => $id]);
         return true;
     }
@@ -169,7 +171,7 @@ class ProductRepository
     public function count()
     {
         $sql = "SELECT COUNT(*) as count FROM products";
-        $statement = $this->getConnect()->query($sql);
+        $statement = $this->getConnect->query($sql);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $row = $statement->fetch();
         return $row['count'];
@@ -181,7 +183,7 @@ class ProductRepository
                 FROM products
                 WHERE title LIKE '%$keyword%'
                 or description LIKE '%$keyword%' ";
-        $statement = $this->getConnect()
+        $statement = $this->getConnect
             ->prepare($sql);
         $statement->execute([
             "keyword" => $keyword

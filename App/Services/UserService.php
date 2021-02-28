@@ -3,17 +3,17 @@
 namespace App\Services;
 
 use App\models\User;
-use App\Repository\UserRepository;
 use App\tools\Errors\ProductsErrorException;
 use App\tools\Errors\UsersValidationException;
 
 class UserService
 {
-    private UserRepository $userRepos;
 
-    public function __construct()
+    private $userRepos;
+
+    public function __construct($userRepository)
     {
-        $this->userRepos = new UserRepository();
+        $this->userRepos = $userRepository;
     }
 
     public function checkUserData(string $name, string $password): ?int
@@ -32,6 +32,21 @@ class UserService
     {
         return $this->userRepos
             ->getByName($name) ? true : false;
+    }
+
+    public function validationUserName(string $name): bool
+    {
+        return preg_match('~^[a-zA-z]+$~', $name) ? true : false;
+    }
+
+    public function validationUserPassword(string $password): bool
+    {
+        return strlen($password) >= 8;
+    }
+
+    public function validationPasswordMatch(string $password, string $passwordAgain): bool
+    {
+        return $password == $passwordAgain;
     }
 
     public function checkUserEmail(string $email): bool
@@ -59,10 +74,9 @@ class UserService
             ->getById($id);
     }
 
-    public function register(string $name, string $email, string $password, string $city): bool
+    public function register(string $name, string $email, string $passwordHash, string $city): bool
     {
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        return ($this->userRepos->create($name, $email, $hash, $city));
+        return ($this->userRepos->create($name, $email, $passwordHash, $city));
     }
 
     public function update(int $id, string $name, string $email, string $password, string $city): bool
