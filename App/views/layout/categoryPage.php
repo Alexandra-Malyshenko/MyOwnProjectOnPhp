@@ -25,6 +25,7 @@ $wish = $params[6];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/categoryPage.css">
     <link rel="icon" href="data:,">
+    <script src="js/app.js" defer></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -47,25 +48,8 @@ header('Access-Control-Allow-Origin: *');
         </div>
     </div>
     <hr class="hr-shelf mb-5">
-
-    <div class="container pt-3">
-        <div class="row pb-5">
-            <div class="col-lg-12 d-flex justify-content-end">
-                <div class="dropdown">
-                    <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownSort' aria-haspopup='true' data-bs-toggle='dropdown' aria-expanded='false'>
-                        Сортировать
-                    </button>
-                    <?php echo $sort;?>
-                </div>
-            </div>
-        </div>
-        <div class="row" id="productContainer"></div>
-        <div class="row">
-            <div class="col-lg-12 d-flex justify-content-center">
-                <nav aria-label="Page navigation">
-                    <?php echo $pagination;?>
-                </nav>
-            </div>
+        <div class="container pt-3" id="app">
+            <products></products>
         </div>
     </div>
     <hr class="hr-shelf mt-5 mb-5">

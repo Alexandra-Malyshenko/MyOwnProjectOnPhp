@@ -97,9 +97,11 @@ class CategoryController extends BaseController
                 $this->prodService->count()
             ));
             $start = $pagination->getStart();
+            $arrayResult = [];
+            array_push($arrayResult, $this->prodService->getProductsJSON($start, $this->itemsOnPageCatalog, $sort));
+            $arrayResult['count'] = $this->prodService->count();
             echo json_encode(
-                $this->prodService
-                ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort),
+                $arrayResult,
                 JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
             );
 
