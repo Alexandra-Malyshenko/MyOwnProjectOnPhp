@@ -17,6 +17,7 @@ use App\Services\ProductService;
 use App\Services\UserService;
 use App\Services\WishListService;
 use libs\Authentication;
+use libs\ContainerDI;
 use libs\Database;
 use libs\Session;
 use libs\TemplateMaker;
@@ -64,17 +65,16 @@ class BaseController
 
     public function __construct()
     {
-        $db = Database::getInstance()->getConnection();
-        $session = new Session();
-        $this->logger = LoggerService::getLogger();
-        $this->render = new TemplateMaker();
-        $this->prodService = new ProductService(new ProductRepository($db));
-        $this->userService = new UserService(new UserRepository($db));
-        $this->orderService = new OrderService(new OrderRepository($db), $this->userService);
-        $this->commentService = new CommentService(new CommentRepository($db), $this->prodService);
-        $this->wishListService = new WishListService(new WishListRepository($db), $this->prodService);
-        $this->cartService = new CartService($session, $this->prodService);
-        $this->categoryService = new CategoryService(new CategoryRepository($db));
-        $this->authentication = new Authentication($session, $this->userService);
+        $builder = (new ContainerDI())->getContainer();
+        $this->logger = $builder->get('Logger');
+        $this->render = $builder->get('Render');
+        $this->prodService = $builder->get('ProductService');
+        $this->userService = $builder->get('UserService');
+        $this->orderService = $builder->get('OrderService');
+        $this->commentService = $builder->get('CommentService');
+        $this->wishListService = $builder->get('WishListService');
+        $this->cartService = $builder->get('CartService');
+        $this->categoryService = $builder->get('CategoryService');
+        $this->authentication = $builder->get('Authentication');
     }
 }
