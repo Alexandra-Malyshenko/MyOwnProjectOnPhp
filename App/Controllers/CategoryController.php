@@ -23,26 +23,17 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $pagination = (new Pagination(
-                $this->page,
-                $this->itemsOnPageCatalog,
-                $this->prodService
-                    ->count()
-            ));
-            $this->render
-                ->render(
-                    '',
-                    'categoryPage',
-                    [
-                        $this->categoryService->getAll(),
-                        [],
-                        $pagination,
-                        new Sorting(),
-                        $this->authentication,
-                        $this->cartService,
-                        $this->wishListService
-                    ]
-                );
+            $this->render->render(
+                '',
+                'categoryPage',
+                [
+                    $this->categoryService->getAll(),
+                    [],
+                    $this->authentication,
+                    $this->cartService,
+                    $this->wishListService
+                ]
+            );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
         }
@@ -97,9 +88,11 @@ class CategoryController extends BaseController
                 $this->prodService->count()
             ));
             $start = $pagination->getStart();
+            $arrayResult = [];
+            array_push($arrayResult, $this->prodService->getProductsJSON($start, $this->itemsOnPageCatalog, $sort));
+            $arrayResult['count'] = $this->prodService->count();
             echo json_encode(
-                $this->prodService
-                ->getProductsJSON($start, $this->itemsOnPageCatalog, $sort),
+                $arrayResult,
                 JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
             );
 
