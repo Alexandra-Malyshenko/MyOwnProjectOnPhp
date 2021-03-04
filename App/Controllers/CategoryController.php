@@ -23,26 +23,17 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $pagination = (new Pagination(
-                $this->page,
-                $this->itemsOnPageCatalog,
-                $this->prodService
-                    ->count()
-            ));
-            $this->render
-                ->render(
-                    '',
-                    'categoryPage',
-                    [
-                        $this->categoryService->getAll(),
-                        [],
-                        $pagination,
-                        new Sorting(),
-                        $this->authentication,
-                        $this->cartService,
-                        $this->wishListService
-                    ]
-                );
+            $this->render->render(
+                '',
+                'categoryPage',
+                [
+                    $this->categoryService->getAll(),
+                    [],
+                    $this->authentication,
+                    $this->cartService,
+                    $this->wishListService
+                ]
+            );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
         }
