@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use libs\Session;
+use App\Services\ProductService;
 
 class CartService
 {
@@ -10,7 +11,7 @@ class CartService
     private string $sessionKey;
     private ProductService $prodService;
 
-    public function __construct($session, $prodService)
+    public function __construct(Session $session, ProductService $prodService)
     {
         $this->session = $session;
         $this->prodService = $prodService;

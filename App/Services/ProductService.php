@@ -9,7 +9,7 @@ class ProductService
 {
     private ProductRepository $productRepos;
 
-    public function __construct($productRepos)
+    public function __construct(ProductRepository $productRepos)
     {
         $this->productRepos = $productRepos;
     }

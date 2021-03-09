@@ -12,7 +12,7 @@ class UserService
 
     private UserRepository $userRepos;
 
-    public function __construct($userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepos = $userRepository;
     }

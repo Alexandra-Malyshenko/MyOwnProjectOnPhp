@@ -7,34 +7,19 @@ use PDO;
 class Database
 {
     private static $instance = null;
-    /**
-     * @var array|false|string
-     */
-    private $host;
-    /**
-     * @var array|false|string
-     */
-    private $db_name;
-    /**
-     * @var array|false|string
-     */
-    private $user;
-    /**
-     * @var array|false|string
-     */
-    private $password;
 
     /**
      * @param string|null $host
      * @param string|null $db_name
      * @param string|null $user
      * @param string|null $password
+     * @return PDO
      */
-    private function __construct(
-        string $host = null,
-        string $db_name = null,
-        string $user = null,
-        string $password = null
+    public function __construct(
+        ?string $host = null,
+        ?string $db_name = null,
+        ?string $user = null,
+        ?string $password = null
     ) {
         $this->host = $host ? $host : getenv('DB_HOST');
         $this->db_name = $db_name ? $db_name : getenv('DB_NAME');

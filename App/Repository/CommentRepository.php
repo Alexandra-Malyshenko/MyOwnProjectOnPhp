@@ -3,15 +3,16 @@
 namespace App\Repository;
 
 use App\models\Comment;
+use libs\Database;
 use PDO;
 
 class CommentRepository
 {
     private PDO $getConnect;
 
-    public function __construct(PDO $PDO)
+    public function __construct(Database $database)
     {
-        $this->getConnect = $PDO;
+        $this->getConnect = $database->getConnection();
     }
     /**
      * @return array
