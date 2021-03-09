@@ -7,7 +7,7 @@
 require '../vendor/autoload.php';
 use libs\Router;
 
-$envName = getenv('APP_ENV') === 'testing' ? '.env.testing' : '.env';
+$envName = $_SERVER['APP_ENV'] === 'testing' ? '.env.testing' : '.env';
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__), $envName);
 $dotenv->load();
 

@@ -3,8 +3,6 @@
 use App\Repository\ProductRepository;
 use App\Resources\ProductResource;
 use App\Services\ProductService;
-use DI\Container;
-use Codeception\Module;
 
 class ValidationProductsCest
 {
@@ -13,11 +11,7 @@ class ValidationProductsCest
 
     public function _before(UnitTester $I, libs\Database $database)
     {
-        $host = 'localhost';
-        $db_name = "proj_test";
-        $userDB = 'proj_user';
-        $passwordDB = 'Password1!';
-        $this->db = new $database($host, $db_name, $userDB, $passwordDB);
+        $this->db = new $database($_ENV['DB_HOST'], $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
         $this->productRepository = new App\Repository\ProductRepository($this->db);
         $this->productResourse = new ProductResource();
     }
