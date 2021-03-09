@@ -3,7 +3,6 @@
 namespace libs;
 
 use App\models\User;
-use App\Repository\UserRepository;
 use libs\Session;
 use App\tools\Errors\UsersValidationException;
 use App\Services\UserService;
@@ -14,7 +13,7 @@ class Authentication
     private UserService $userService;
     private string $sessionKey;
 
-    public function __construct($session, $userService)
+    public function __construct(Session $session, UserService $userService)
     {
         $this->sessionObject = $session;
         $this->userService = $userService;

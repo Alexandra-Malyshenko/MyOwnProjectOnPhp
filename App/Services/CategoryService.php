@@ -9,7 +9,7 @@ class CategoryService
 {
     private CategoryRepository $categoryRepos;
 
-    public function __construct($categoryRepos)
+    public function __construct(CategoryRepository $categoryRepos)
     {
         $this->categoryRepos = $categoryRepos;
     }

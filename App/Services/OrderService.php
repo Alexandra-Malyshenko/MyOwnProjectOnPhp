@@ -4,13 +4,14 @@ namespace App\Services;
 
 use App\Repository\OrderRepository;
 use App\tools\Errors\ProductsErrorException;
+use App\Services\UserService;
 
 class OrderService
 {
     private OrderRepository $orderRepos;
     private UserService $userService;
 
-    public function __construct($orderRepos, $userService)
+    public function __construct(OrderRepository $orderRepos, UserService $userService)
     {
         $this->orderRepos = $orderRepos;
         $this->userService = $userService;

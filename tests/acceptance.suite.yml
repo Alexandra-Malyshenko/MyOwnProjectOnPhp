@@ -8,7 +8,7 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://lovelybakery.loc/
-#            url: http://localhost:8005
+#            url: http://lovelybakery.loc/
+            url: http://localhost:8005
         - \Helper\Acceptance
 step_decorators: ~        

@@ -8,7 +8,7 @@ use function DI\factory;
 
 return [
     'Database' => \DI\factory(function () {
-        return Database::getInstance()->getConnection();
+        return Database::getInstance();
     }),
     'Session' => \DI\factory(function () {
         return new \libs\Session();

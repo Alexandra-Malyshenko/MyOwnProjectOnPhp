@@ -8,7 +8,7 @@ class SearchService
 {
     private ProductService $prodService;
 
-    public function __construct($prodService)
+    public function __construct(ProductService $prodService)
     {
         $this->prodService = $prodService;
     }

@@ -79,7 +79,7 @@ class CartController extends BaseController
                 'checkoutPage',
                 [
                     $this->categoryService->getAll(),
-                    $products,
+                    $productsFromCart,
                     $total,
                     $user,
                     $result,

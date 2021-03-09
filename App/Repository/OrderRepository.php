@@ -4,15 +4,16 @@ namespace App\Repository;
 
 use App\models\Order;
 use App\models\Product;
+use libs\Database;
 use PDO;
 
 class OrderRepository
 {
     private PDO $getConnect;
 
-    public function __construct(PDO $PDO)
+    public function __construct(Database $database)
     {
-        $this->getConnect = $PDO;
+        $this->getConnect = $database->getConnection();
     }
 
     /**

@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Repository\CommentRepository;
+use App\Services\ProductService;
 
 class CommentService
 {
     private CommentRepository $commentRepos;
     private ProductService $prodService;
 
-    public function __construct($commentRepos, $prodService)
+    public function __construct(CommentRepository $commentRepos, ProductService $prodService)
     {
         $this->commentRepos = $commentRepos;
         $this->prodService = $prodService;

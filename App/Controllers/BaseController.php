@@ -2,24 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Repository\CategoryRepository;
-use App\Repository\CommentRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
-use App\Repository\WishListRepository;
 use App\Services\CartService;
 use App\Services\CategoryService;
 use App\Services\CommentService;
-use App\Services\LoggerService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\UserService;
 use App\Services\WishListService;
+use DI\Container;
 use libs\Authentication;
-use libs\ContainerDI;
-use libs\Database;
-use libs\Session;
 use libs\TemplateMaker;
 use Monolog\Logger;
 
@@ -65,16 +56,16 @@ class BaseController
 
     public function __construct()
     {
-        $builder = (new ContainerDI())->getContainer();
-        $this->logger = $builder->get('Logger');
-        $this->render = $builder->get('Render');
-        $this->prodService = $builder->get('ProductService');
-        $this->userService = $builder->get('UserService');
-        $this->orderService = $builder->get('OrderService');
-        $this->commentService = $builder->get('CommentService');
-        $this->wishListService = $builder->get('WishListService');
-        $this->cartService = $builder->get('CartService');
-        $this->categoryService = $builder->get('CategoryService');
-        $this->authentication = $builder->get('Authentication');
+        $container = new Container();
+        $this->logger = $container->get('App\Services\LoggerService')->getLogger();
+        $this->render = $container->get('libs\TemplateMaker');
+        $this->prodService = $container->get('App\Services\ProductService');
+        $this->userService = $container->get('App\Services\UserService');
+        $this->orderService = $container->get('App\Services\OrderService');
+        $this->commentService = $container->get('App\Services\CommentService');
+        $this->wishListService = $container->get('App\Services\WishListService');
+        $this->cartService = $container->get('App\Services\CartService');
+        $this->categoryService = $container->get('App\Services\CategoryService');
+        $this->authentication = $container->get('libs\Authentication');
     }
 }

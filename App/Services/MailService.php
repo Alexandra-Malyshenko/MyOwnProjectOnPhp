@@ -5,6 +5,7 @@ namespace App\Services;
 use App\MailTransport\MailTransport;
 use App\MailTransport\Message;
 use App\Render\Render;
+use App\Services\OrderService;
 
 class MailService
 {
@@ -12,7 +13,7 @@ class MailService
     private OrderService $orderService;
     private Render $render;
 
-    public function __construct($orderService)
+    public function __construct(OrderService $orderService)
     {
         $this->mailTransport = new MailTransport(
             getenv('MAILER_HOST'),
