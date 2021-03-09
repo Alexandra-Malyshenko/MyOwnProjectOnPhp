@@ -53,7 +53,7 @@ class OrderService
         string $comments,
         array $productsFromSession,
         array $productsFromCart,
-        int $user_id = null,
+        $user_id = null,
         string $user_name = null,
         string $user_email = null
     ): bool {

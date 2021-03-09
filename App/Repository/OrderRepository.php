@@ -72,7 +72,7 @@ class OrderRepository
      * @return bool
      */
     public function create(
-        int $user_id,
+        $user_id,
         string $user_name,
         string $user_email,
         string $address,

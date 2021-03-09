@@ -62,7 +62,7 @@ class CartController extends BaseController
         $total = $this->cartService
             ->getTotalPrice($productsFromCart);
         $user = $this->authentication
-            ->getUser();
+            ->getUser() || null;
         $result = false;
         if (!empty($_POST)) {
             $result = $this->post($productsFromSession, $productsFromCart, $user, $total);
@@ -81,7 +81,7 @@ class CartController extends BaseController
                     $this->categoryService->getAll(),
                     $productsFromCart,
                     $total,
-                    $user,
+                    $user ? $user : null,
                     $result,
                     $this->authentication,
                     $this->cartService,
@@ -107,7 +107,7 @@ class CartController extends BaseController
                     $comments,
                     $productsFromSession,
                     $productsFromCart,
-                    $user->getId(),
+                    $user ? $user->getId() : null,
                     $name,
                     $email
                 );

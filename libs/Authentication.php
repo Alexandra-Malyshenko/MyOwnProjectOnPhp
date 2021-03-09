@@ -89,13 +89,15 @@ class Authentication
         }
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         if ($this->isAuth()) {
             $id = $this->sessionObject
                 ->get($this->sessionKey);
             return $this->userService
                 ->getUser($id);
+        } else {
+            return null;
         }
     }
 }
