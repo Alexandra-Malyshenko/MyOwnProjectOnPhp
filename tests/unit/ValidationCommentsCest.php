@@ -10,13 +10,13 @@ class ValidationCommentsCest
     private CommentService $commentsService;
     private ProductService $prodService;
 
-    public function _before(UnitTester $I)
+    public function _before(UnitTester $I, libs\Database $database)
     {
         $host = 'localhost';
         $db_name = "proj_test";
         $userDB = 'proj_user';
         $passwordDB = 'Password1!';
-        $this->db = new PDO("mysql:host={$host};dbname={$db_name}", $userDB, $passwordDB);
+        $this->db = new $database($host, $db_name, $userDB, $passwordDB);
         $this->prodService = new ProductService(new ProductRepository($this->db));
         $this->commentsService = new CommentService(new CommentRepository($this->db), $this->prodService);
     }

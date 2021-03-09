@@ -10,13 +10,13 @@ class ValidationOrdersCest
     protected OrderService $orderService;
     private UserService $userService;
 
-    public function _before(UnitTester $I)
+    public function _before(UnitTester $I, libs\Database $database)
     {
         $host = 'localhost';
         $db_name = "proj_test";
         $userDB = 'proj_user';
         $passwordDB = 'Password1!';
-        $this->db = new PDO("mysql:host={$host};dbname={$db_name}", $userDB, $passwordDB);
+        $this->db = new $database($host, $db_name, $userDB, $passwordDB);
         $this->userService = new UserService(new UserRepository($this->db));
         $this->orderService = new OrderService(new OrderRepository($this->db), $this->userService);
     }

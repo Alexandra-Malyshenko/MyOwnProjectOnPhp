@@ -8,6 +8,25 @@ class Database
 {
     private static $instance = null;
 
+    /**
+     * @param string|null $host
+     * @param string|null $db_name
+     * @param string|null $user
+     * @param string|null $password
+     * @return PDO
+     */
+    public function __construct(
+        ?string $host = null,
+        ?string $db_name = null,
+        ?string $user = null,
+        ?string $password = null
+    ) {
+        $this->host = $host ? $host : getenv('DB_HOST');
+        $this->db_name = $db_name ? $db_name : getenv('DB_NAME');
+        $this->user = $user ? $user : getenv('DB_USER');
+        $this->password = $password ? $password : getenv('DB_PASSWORD');
+    }
+
     public static function getInstance(): ?Database
     {
         if (null === self::$instance) {
@@ -16,29 +35,9 @@ class Database
         return self::$instance;
     }
 
-    /**
-     * @param string|null $host
-     * @param string|null $db_name
-     * @param string|null $user
-     * @param string|null $password
-     * @return PDO
-     */
-    public function getConnection(
-        ?string $host = null,
-        ?string $db_name = null,
-        ?string $user = null,
-        ?string $password = null
-    ): PDO {
-        if (isset($host) && isset($db_name)) {
-            $dsn = "mysql:host={$host};dbname={$db_name}";
-            return new PDO($dsn, $user, $password);
-        } else {
-            $host = getenv('DB_HOST');
-            $db_name = getenv('DB_NAME');
-            $user = getenv('DB_USER');
-            $password = getenv('DB_PASSWORD');
-            $dsn = "mysql:host={$host};dbname={$db_name}";
-            return new PDO($dsn, $user, $password);
-        }
+    public function getConnection(): PDO
+    {
+        $dsn = "mysql:host={$this->host};dbname={$this->db_name}";
+        return new PDO($dsn, $this->user, $this->password);
     }
 }

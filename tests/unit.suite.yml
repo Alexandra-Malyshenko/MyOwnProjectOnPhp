@@ -8,6 +8,7 @@ modules:
         - Asserts
         - \Helper\Unit
         - Db:
+            reconnect: true
             dsn: "mysql:host=localhost;dbname=proj_test"
             user: "proj_user"
             password: "Password1!"
