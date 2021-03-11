@@ -20,7 +20,12 @@ class UserController extends BaseController
                 ->render(
                     'registerTemplate',
                     'mainPage',
-                    $this->categoryService->getAll()
+                    [
+                        $this->categoryService->getAll(),
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());
@@ -37,7 +42,12 @@ class UserController extends BaseController
                 ->render(
                     'loginTemplate',
                     'mainPage',
-                    $this->categoryService->getAll()
+                    [
+                        $this->categoryService->getAll(),
+                        $this->authentication,
+                        $this->cartService,
+                        $this->wishListService
+                    ]
                 );
         } catch (\Throwable $error) {
             $this->logger->warning($error->getMessage());

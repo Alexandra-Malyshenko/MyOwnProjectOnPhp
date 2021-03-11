@@ -25,11 +25,9 @@ class Authentication
     {
         $this->sessionObject->start();
         if (
-            $this->sessionObject
-                ->sessionExists()
+            $this->sessionObject->sessionExists()
             &&
-            $this->sessionObject
-                ->contains($this->sessionKey)
+            $this->sessionObject->contains($this->sessionKey)
         ) {
             return true;
         } else {
