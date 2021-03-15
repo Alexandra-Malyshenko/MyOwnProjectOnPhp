@@ -8,3 +8,4 @@ phpcs.phar
 .env
 App/storage
 node_modules
+dbdata
