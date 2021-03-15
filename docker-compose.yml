@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mopop-app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: php:7.4-fpm
+    container_name: mopop-app
+    restart: always
+    working_dir: /var/www
+    volumes:
+    - ./:/var/www
+    networks:
+      - mopop-app-network
+
+  mopop-webserver:
+    image: nginx
+    container_name: mopop-webserver
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - mopop-app-network
+
+  mopop-db:
+    image: mysql:latest
+    container_name: mopop-db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+      - ./dump.sql:/var/dump.sql
+    networks:
+      - mopop-app-network
+
+networks:
+  mopop-app-network:
+    driver: bridge

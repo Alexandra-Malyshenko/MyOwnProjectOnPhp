@@ -25,6 +25,7 @@ class Database
         $this->db_name = $db_name ? $db_name : getenv('DB_NAME');
         $this->user = $user ? $user : getenv('DB_USER');
         $this->password = $password ? $password : getenv('DB_PASSWORD');
+        $this->port = getenv("DB_PORT");
     }
 
     public static function getInstance(): ?Database
@@ -37,7 +38,7 @@ class Database
 
     public function getConnection(): PDO
     {
-        $dsn = "mysql:host={$this->host};dbname={$this->db_name}";
+        $dsn = "mysql:host={$this->host};dbname={$this->db_name};port={$this->port}";
         return new PDO($dsn, $this->user, $this->password);
     }
 }
